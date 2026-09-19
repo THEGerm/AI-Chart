@@ -1,1 +1,39 @@
-#placeholder
+name: Compile Mermaid Diagrams
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'charts/**.mmd' # Only triggers when source diagram files are modified
+
+jobs:
+  build-and-compile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Create Output Directory
+        run: mkdir -p assets/images
+
+      - name: Compile Diagrams to Images
+        uses: mardak/mermaid-cli-action@v1
+        with:
+          images_dir: 'assets/images' # Compiles everything inside /charts to /assets/images
+          output_format: png          # Can be changed to 'svg' for vector scaling
+
+      - name: Commit and Push Compiled Images
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@://github.com"
+          git add assets/images/*.png
+          
+          # Only commit if changes exist to avoid empty commit pipeline errors
+          if ! git diff-index --quiet HEAD; then
+            git commit -m "chore: automatically compiled mermaid charts [skip ci]"
+            git push
+          else
+            echo "No changes detected in compiled images."
+          fi
+          

@@ -1,3 +1,7 @@
+# Background 
+
+I want to make a chart of AI and machine learning in the style of usefulcharts. Let's go step by step. Recommend two main roots structures. Don't go yet in the specific examples/companies/models. I want to start a bit of higher level.
+
 # File Structure
 
 ```text

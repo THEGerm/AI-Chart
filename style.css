@@ -39,7 +39,6 @@ svg {
 .flowchart-link,
 .edgePath path {
   stroke: #78501E !important;
-  stroke-width: 8px !important;
   fill: none !important;
 }
 

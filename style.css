@@ -23,9 +23,12 @@ svg {
   text-align: center !important;
   width: 100% !important;
   height: 100% !important;
-  padding: 10px !important;
-  box-sizing: border-box !important;
 }
+
+.node foreignObject {
+  overflow: visible !important;
+}
+
 
 .node circle {
   stroke: #78501E !important;

@@ -1,39 +1,64 @@
-name: Compile Mermaid Diagrams
+name: Compile Charts
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'charts/**.mmd' # Only triggers when source diagram files are modified
+      - 'charts/**.mmd'
+      - 'style.css'
+      - '.github/workflows/compile-charts.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
-  build-and-compile:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create Output Directory
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Mermaid CLI
+        run: npm install -g @mermaid-js/mermaid-cli
+
+      - name: Configure Puppeteer for GitHub Actions
+        run: |
+          echo '{"args": ["--no-sandbox", "--disable-setuid-sandbox"]}' > puppeteer-config.json
+
+      - name: Ensure output directory exists
         run: mkdir -p assets/images
 
-      - name: Compile Diagrams to Images
-        uses: mardak/mermaid-cli-action@v1
-        with:
-          images_dir: 'assets/images' # Compiles everything inside /charts to /assets/images
-          output_format: png          # Can be changed to 'svg' for vector scaling
+      - name: Compile Charts to PNG
+        run: |
+          CSS_ARG=""
+          if [ -f "style.css" ]; then
+            CSS_ARG="-C style.css"
+          fi
 
-      - name: Commit and Push Compiled Images
+          for file in charts/*.mmd; do
+            [ -e "$file" ] || continue
+            filename=$(basename "$file" .mmd)
+            echo "Compiling $file to assets/images/${filename}.png"
+            mmdc -p puppeteer-config.json -i "$file" -o "assets/images/${filename}.png" $CSS_ARG
+          done
+
+      - name: Commit and push generated images
         run: |
           git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@://github.com"
-          git add assets/images/*.png
-          
-          # Only commit if changes exist to avoid empty commit pipeline errors
-          if ! git diff-index --quiet HEAD; then
-            git commit -m "chore: automatically compiled mermaid charts [skip ci]"
-            git push
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f assets/images/*.png
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
           else
-            echo "No changes detected in compiled images."
+            git commit -m "Auto-compile charts to PNG [skip ci]"
+            git push
           fi
           

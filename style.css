@@ -23,6 +23,8 @@ svg {
   text-align: center !important;
   width: 100% !important;
   height: 100% !important;
+  padding: 10px !important;
+  box-sizing: border-box !important;
 }
 
 .node circle {

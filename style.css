@@ -1,0 +1,39 @@
+/* style.css - Standard Mermaid Styling */
+
+/* Base font and typography */
+.node, .label, text {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+
+/* Node shapes: default fill, border, and corner radius */
+.node rect,
+.node circle,
+.node ellipse,
+.node polygon,
+.node path {
+  fill: #f8fafc;
+  stroke: #475569;
+  stroke-width: 1.5px;
+}
+
+/* Connecting lines/arrows */
+.flowchart-link,
+.edgePath path {
+  stroke: #64748b;
+  stroke-width: 1.5px;
+}
+
+/* Arrowheads */
+.marker,
+#flowchart-pointEnd {
+  fill: #64748b;
+  stroke: #64748b;
+}
+
+/* Cluster/Subgroup containers */
+.cluster rect {
+  fill: #f1f5f9;
+  stroke: #cbd5e1;
+  stroke-width: 1px;
+}

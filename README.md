@@ -6,13 +6,6 @@ I want to make a chart of AI and machine learning in the style of usefulcharts. 
 
 This guide outlines the design constraints, color systems, and tools required to accurately replicate the distinct visual style created by Matt Baker for UsefulCharts.
 
-## Recommended Tools
-
-To achieve the vector-illustration look rather than a clinical flowchart appearance, use one of the following options:
-
-*   **LibreOffice Draw (Open-Source Desktop):** The native tool used by the creator of UsefulCharts. It acts as a vector canvas providing full control over exact line placement.
-*   **Figma (Cloud-Based Design Platform):** Recommended for browser-based layouts. 
-
 ## Core Design Principles
 
 ### 1. Canvas Background
@@ -37,7 +30,7 @@ Use this specific muted, historical pastel-vibrant palette to categorize nodes, 
 
 ### 4. Typography & Hierarchy
 *   **Font Family:** Use a clean, timeless sans-serif font family (e.g., *Inter*, *Helvetica*, or *Arial*).
-*   **Headers / Names:** Regular or **Bold** weighting.
+*   **Headers / Names:** Always use **Bold** weighting.
 *   **Minor Details / Dates:** *Italics* weighting for chronological transitions or supplementary meta-data.
 
 ### 5. Layout & Connections
@@ -61,8 +54,6 @@ Use this specific muted, historical pastel-vibrant palette to categorize nodes, 
 │   ├── Level_2_2.md
 │   ├── Level_2_2.mmd  
 │   └── Main.mmd                     # Write the Mermaid code for the whole file (all levels)      
-├── templates/
-│   └── template.mmd                 # Your global UsefulCharts configuration skeleton
 ├── README.md                        # Project documentation
-└── style.md                         # Core style guidelines & design tokens
+└── style.css                        # Core style guidelines & design tokens
 ```

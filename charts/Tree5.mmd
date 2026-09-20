@@ -1,0 +1,48 @@
+%%{init: {"flowchart": {"nodeSpacing": 60, "rankSpacing": 120, "htmlLabels": true}}}%%
+flowchart BT
+    AI((AI<br>Tree)):::ucRoot
+    
+    AI --- B1((Predictive<br>AI)):::ucRoot
+    AI --- B2((Generative<br>AI)):::ucRoot
+    
+    B1 --- B1A((Continuous<br>Estimation)):::ucGreen
+    B1 --- B1B((Categorical<br>Assignment)):::ucBlue
+    B1 --- B1C((Temporal<br>Dynamics)):::ucGreen
+    B1 --- B1D((Pattern<br>Discovery)):::ucBlue
+    
+    B1A --- B1A1((Quantity<br>Forecasting)):::ucGreen
+    B1A --- B1A2((Trend<br>Estimation)):::ucBlue
+    
+    B1B --- B1B1((Binary<br>Decisions)):::ucGreen
+    B1B --- B1B2((Multi-class<br>Sorting)):::ucBlue
+    B1B --- B1B3((Perception<br>Labeling)):::ucGreen
+    
+    B1C --- B1C1((Time<br>Series)):::ucGreen
+    B1C --- B1C2((Trajectory<br>Tracking)):::ucGreen
+    B1C --- B1C3((Event<br>Timing)):::ucGreen
+    
+    B1D --- B1D1((Data<br>Clustering)):::ucBlue
+    B1D --- B1D2((Anomaly<br>Detection)):::ucGreen
+    
+    B2 --- B2A((Generative<br>Synthesis)):::ucRed
+    B2 --- B2B((Cross-Modal<br>Alignment)):::ucPurple
+    B2 --- B2C((Conversational<br>Reasoning)):::ucPurple
+    B2 --- B2D((Autonomous<br>Agency)):::ucGreen
+    
+    B2A --- B2A1((Code<br>Generation)):::ucGreen
+    B2A --- B2A2((Visual<br>Generation)):::ucRed
+    B2A --- B2A3((Music<br>Synthesis)):::ucRed
+    B2A --- B2A4((Material<br>Design)):::ucBlue
+    
+    B2B --- B2B1((Speech<br>Transcription)):::ucPurple
+    B2B --- B2B2((Visual<br>Captioning)):::ucPurple
+    B2B --- B2B3((Language<br>Translation)):::ucPurple
+    B2B --- B2B4((Restyling<br>Models)):::ucRed
+    
+    B2C --- B2C1((Dialogue<br>Systems)):::ucPurple
+    B2C --- B2C2((Analytical<br>Reasoning)):::ucBlue
+    B2C --- B2C3((Search<br>Augmentation)):::ucPurple
+    
+    B2D --- B2D1((Tool<br>Augmentation)):::ucGreen
+    B2D --- B2D2((Action<br>Planning)):::ucGreen
+    B2D --- B2D3((Physical<br>Interaction)):::ucGreen

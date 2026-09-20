@@ -4,10 +4,11 @@ svg {
   background-color: #EDE8D8 !important;
 }
 
-.node, .label, text {
-  font-family: "Inter", Helvetica, Arial, sans-serif !important;
-  color: #1a1a1a !important;
-  fill: #1a1a1a !important;
+.node .label, .node text {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  text-anchor: middle !important;
+  dominant-baseline: middle !important;
 }
 
 .node circle {

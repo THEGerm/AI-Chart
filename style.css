@@ -23,12 +23,13 @@ svg {
   text-align: center !important;
   width: 100% !important;
   height: 100% !important;
+  padding: 8px !important;
+  box-sizing: border-box !important;
 }
 
 .node foreignObject {
   overflow: visible !important;
 }
-
 
 .node circle {
   stroke: #78501E !important;
@@ -54,4 +55,3 @@ defs marker path {
 .ucRed circle    { fill: #F26654 !important; }
 .ucPurple circle { fill: #AD81AF !important; }
 .ucRoot circle   { fill: #EFC239 !important; }
-                  

@@ -1,150 +1,149 @@
-%%{init: {"flowchart": {"nodeSpacing": 40, "rankSpacing": 90, "htmlLabels": true, "padding": 15}}}%%
+%%{init: {"flowchart": {"nodeSpacing": 60, "rankSpacing": 150, "htmlLabels": true, "padding": 20}}}%%
 flowchart BT
-    classDef cYellow fill:#f9e04c,stroke:#bfa100,color:#000;
-    classDef cBlue fill:#3a86ff,stroke:#1d4ed8,color:#fff;
-    classDef cGreen fill:#38b000,stroke:#206b00,color:#fff;
-    classDef cRed fill:#e63946,stroke:#9d0208,color:#fff;
-    classDef cPurple fill:#8338ec,stroke:#5a189a,color:#fff;
+    AI(("AI<br>Tree")):::ucRoot
+    
+    %% Level 1 Links (Indexes 0-1)
+    AI --- B1(("Predictive<br>AI")):::ucRoot
+    AI --- B2(("Generative<br>AI")):::ucRoot
+    
+    %% Level 2 Links (Indexes 2-9)
+    B1 --- B1A(("Continuous<br>Estimation")):::ucGreen
+    B1 --- B1B(("Categorical<br>Assignment")):::ucBlue
+    B1 --- B1C(("Temporal<br>Dynamics")):::ucGreen
+    B1 --- B1D(("Pattern<br>Discovery")):::ucBlue
+    
+    B2 --- B2A(("Generative<br>Synthesis")):::ucRed
+    B2 --- B2B(("Cross-Modal<br>Alignment")):::ucPurple
+    B2 --- B2C(("Conversational<br>Reasoning")):::ucPurple
+    B2 --- B2D(("Autonomous<br>Agency")):::ucGreen
+    
+    %% Level 3 Links (Indexes 10-33)
+    B1A --- B1A1(("Quantity<br>Forecasting")):::ucGreen
+    B1A --- B1A2(("Trend<br>Estimation")):::ucBlue
+    
+    B1B --- B1B1(("Binary<br>Decisions")):::ucGreen
+    B1B --- B1B2(("Multi-class<br>Sorting")):::ucBlue
+    B1B --- B1B3(("Perception<br>Labeling")):::ucGreen
+    
+    B1C --- B1C1(("Time<br>Series")):::ucGreen
+    B1C --- B1C2(("Trajectory<br>Tracking")):::ucGreen
+    B1C --- B1C3(("Event<br>Timing")):::ucBlue
+    
+    B1D --- B1D1(("Data<br>Clustering")):::ucBlue
+    B1D --- B1D2(("Anomaly<br>Detection")):::ucGreen
+    
+    B2A --- B2A1(("Code<br>Generation")):::ucGreen
+    B2A --- B2A2(("Visual<br>Generation")):::ucRed
+    B2A --- B2A3(("Music<br>Synthesis")):::ucRed
+    B2A --- B2A4(("Material<br>Design")):::ucBlue
+    
+    B2B --- B2B1(("Speech<br>Transcription")):::ucPurple
+    B2B --- B2B2(("Visual<br>Captioning")):::ucPurple
+    B2B --- B2B3(("Language<br>Translation")):::ucPurple
+    B2B --- B2B4(("Restyling<br>Models")):::ucRed
+    
+    B2C --- B2C1(("Dialogue<br>Systems")):::ucPurple
+    B2C --- B2C2(("Analytical<br>Reasoning")):::ucBlue
+    B2C --- B2C3(("Search<br>Augmentation")):::ucPurple
+    
+    B2D --- B2D1(("Tool<br>Augmentation")):::ucGreen
+    B2D --- B2D2(("Action<br>Planning")):::ucGreen
+    B2D --- B2D3(("Physical<br>Interaction")):::ucGreen
 
-    AI((AI<br>Tree)):::cYellow
+    %% Level 4 Links (B1 Only) (Indexes 34-53)
+    B1A1 --- B1A1A(("Point<br>Prediction")):::ucGreen
+    B1A1 --- B1A1B(("Distributional<br>Estimation")):::ucGreen
     
-    AI --- B1((Predictive<br>AI)):::cYellow
-    AI --- B2((Generative<br>AI)):::cYellow[span_0](start_span)[span_0](end_span)
+    B1A2 --- B1A2A(("Trajectory<br>Modeling")):::ucBlue
+    B1A2 --- B1A2B(("Score<br>Derivation")):::ucBlue
     
-    %% Branch 1 Sub-categories (Macro)
-    B1 --- B1A((Continuous<br>Estimation)):::cYellow[span_1](start_span)[span_1](end_span)
-    B1 --- B1B((Categorical<br>Assignment)):::cYellow[span_2](start_span)[span_2](end_span)
-    B1 --- B1C((Temporal<br>Dynamics)):::cYellow[span_3](start_span)[span_3](end_span)
-    B1 --- B1D((Pattern<br>Discovery)):::cYellow[span_4](start_span)[span_4](end_span)
+    B1B1 --- B1B1A(("Gatekeeping<br>Filters")):::ucGreen
+    B1B1 --- B1B1B(("Condition<br>Verification")):::ucGreen
     
-    %% Continuous Estimation
-    B1A --- B1A1((Quantity<br>Forecasting)):::cYellow[span_5](start_span)[span_5](end_span)
-    B1A --- B1A2((Trend<br>Estimation)):::cYellow[span_6](start_span)[span_6](end_span)
+    B1B2 --- B1B2A(("Content<br>Categorization")):::ucBlue
+    B1B2 --- B1B2B(("Subjective<br>Attribute")):::ucBlue
     
-    B1A1 --- B1A1a((Point<br>Prediction)):::cGreen
-    B1A1 --- B1A1b((Distributional<br>Estimation)):::cBlue
+    B1B3 --- B1B3A(("Spatial<br>Boundary")):::ucGreen
+    B1B3 --- B1B3B(("State & Clinical<br>Assessment")):::ucGreen
     
-    B1A1a --- B1A1a1((Demand & Inventory<br>Planning)):::cGreen
-    B1A1a --- B1A1a2((Financial Asset<br>Pricing)):::cGreen
+    B1C1 --- B1C1A(("Univariate<br>Horizon")):::ucGreen
+    B1C1 --- B1C1B(("Multimodal<br>Dynamic")):::ucGreen
     
-    B1A1b --- B1A1b1((Prediction<br>Intervals)):::cBlue
-    B1A1b --- B1A1b2((Value-at-Risk<br>Calculations)):::cGreen
+    B1C2 --- B1C2A(("Kinematic<br>Extrapolation")):::ucGreen
+    B1C2 --- B1C2B(("Flow<br>Modeling")):::ucGreen
     
-    B1A2 --- B1A2a((Trajectory<br>Modeling)):::cBlue
-    B1A2 --- B1A2b((Score<br>Derivation)):::cGreen
+    B1C3 --- B1C3A(("Survival<br>Analysis")):::ucBlue
+    B1C3 --- B1C3B(("Recurrence<br>Modeling")):::ucBlue
     
-    B1A2a --- B1A2a1((Macroeconomic<br>Trends)):::cBlue
-    B1A2a --- B1A2a2((User Growth<br>Models)):::cGreen
+    B1D1 --- B1D1A(("Partitioning<br>Methods")):::ucBlue
+    B1D1 --- B1D1B(("Density<br>Grouping")):::ucBlue
     
-    B1A2b --- B1A2b1((Credit & Solvency<br>Scoring)):::cGreen
-    B1A2b --- B1A2b2((Composite Risk<br>Rating)):::cGreen
-    
-    %% Categorical Assignment
-    B1B --- B1B1((Binary<br>Decisions)):::cYellow[span_7](start_span)[span_7](end_span)
-    B1B --- B1B2((Multi-class<br>Sorting)):::cYellow[span_8](start_span)[span_8](end_span)
-    B1B --- B1B3((Perception<br>Labeling)):::cYellow[span_9](start_span)[span_9](end_span)
-    
-    B1B1 --- B1B1a((Gatekeeping<br>Filters)):::cPurple
-    B1B1 --- B1B1b((Condition<br>Verification)):::cGreen
-    
-    B1B1a --- B1B1a1((Spam Filtering)):::cPurple
-    B1B1a --- B1B1a2((Content Moderation)):::cPurple
-    
-    B1B1b --- B1B1b1((Manufacturing<br>Pass/Fail QC)):::cGreen
-    B1B1b --- B1B1b2((Authentication<br>Access)):::cGreen
-    
-    B1B2 --- B1B2a((Content<br>Categorization)):::cGreen
-    B1B2 --- B1B2b((Subjective Attribute<br>Labeling)):::cPurple
-    
-    B1B2a --- B1B2a1((Topic Tagging)):::cGreen
-    B1B2a --- B1B2a2((Document Routing)):::cGreen
-    
-    B1B2b --- B1B2b1((Sentiment Polarity)):::cPurple
-    B1B2b --- B1B2b2((Intent Detection)):::cPurple
-    
-    B1B3 --- B1B3a((Spatial Boundary<br>Detection)):::cGreen
-    B1B3 --- B1B3b((State & Clinical<br>Assessment)):::cBlue
-    
-    B1B3a --- B1B3a1((Bounding Boxes)):::cGreen
-    B1B3a --- B1B3a2((Image Segmentation)):::cGreen
-    
-    B1B3b --- B1B3b1((Medical Triage)):::cBlue
-    B1B3b --- B1B3b2((Defect Localization)):::cGreen
-    
-    %% Temporal Dynamics
-    B1C --- B1C1((Time<br>Series)):::cYellow[span_10](start_span)[span_10](end_span)
-    B1C --- B1C2((Trajectory<br>Tracking)):::cYellow[span_11](start_span)[span_11](end_span)
-    B1C --- B1C3((Event<br>Timing)):::cYellow[span_12](start_span)[span_12](end_span)
-    
-    B1C1 --- B1C1a((Univariate Horizon<br>Forecasting)):::cGreen
-    B1C1 --- B1C1b((Multimodal Dynamic<br>Modeling)):::cBlue
-    
-    B1C1a --- B1C1a1((Sensor Forecasting)):::cGreen
-    B1C1a --- B1C1a2((Energy Load<br>Forecasting)):::cGreen
-    
-    B1C1b --- B1C1b1((Multi-Signal Tracking)):::cBlue
-    B1C1b --- B1C1b2((Weather & Climate<br>Models)):::cBlue
-    
-    B1C2 --- B1C2a((Kinematic<br>Extrapolation)):::cGreen
-    B1C2 --- B1C2b((Flow<br>Modeling)):::cBlue
-    
-    B1C2a --- B1C2a1((Flight/Vessel Routing)):::cGreen
-    B1C2a --- B1C2a2((Vehicle Positioning)):::cGreen
-    
-    B1C2b --- B1C2b1((Fluid Motion Tracking)):::cBlue
-    B1C2b --- B1C2b2((Crowd Dynamics)):::cGreen
-    
-    B1C3 --- B1C3a((Survival<br>Analysis)):::cBlue
-    B1C3 --- B1C3b((Recurrence<br>Modeling)):::cGreen
-    
-    B1C3a --- B1C3a1((Time-to-Failure)):::cGreen
-    B1C3a --- B1C3a2((Customer Churn Timing)):::cGreen
-    
-    B1C3b --- B1C3b1((Maintenance Triggers)):::cGreen
-    B1C3b --- B1C3b2((Periodicity Detection)):::cBlue
-    
-    %% Pattern Discovery
-    B1D --- B1D1((Data<br>Clustering)):::cYellow[span_13](start_span)[span_13](end_span)
-    B1D --- B1D2((Anomaly<br>Detection)):::cYellow[span_14](start_span)[span_14](end_span)
-    
-    B1D1 --- B1D1a((Partitioning)):::cGreen
-    B1D1 --- B1D1b((Hierarchical & Density<br>Grouping)):::cBlue
-    
-    B1D1a --- B1D1a1((Customer Segmentation)):::cGreen
-    B1D1a --- B1D1a2((Geographic Grouping)):::cGreen
-    
-    B1D1b --- B1D1b1((Community Detection)):::cBlue
-    B1D1b --- B1D1b2((Spatial Cluster Extraction)):::cBlue
-    
-    B1D2 --- B1D2a((Outlier<br>Spotting)):::cGreen
-    B1D2 --- B1D2b((Behavioral<br>Deviations)):::cGreen
-    
-    B1D2a --- B1D2a1((Transactional Fraud)):::cGreen
-    B1D2a --- B1D2a2((Sensor Failure Isolation)):::cGreen
-    
-    B1D2b --- B1D2b1((Network Intrusion)):::cGreen
-    B1D2b --- B1D2b2((Process Drift Detection)):::cGreen
+    B1D2 --- B1D2A(("Outlier<br>Spotting")):::ucGreen
+    B1D2 --- B1D2B(("Behavioral<br>Deviations")):::ucGreen
 
-    %% Branch 2 Unchanged
-    B2 --- B2A((Generative<br>Synthesis)):::cYellow[span_15](start_span)[span_15](end_span)
-    B2 --- B2B((Cross-Modal<br>Alignment)):::cYellow[span_16](start_span)[span_16](end_span)
-    B2 --- B2C((Conversational<br>Reasoning)):::cYellow[span_17](start_span)[span_17](end_span)
-    B2 --- B2D((Autonomous<br>Agency)):::cYellow[span_18](start_span)[span_18](end_span)
+    %% Level 5 Links (B1 Only) (Indexes 54-93)
+    B1A1A --- B1A1A1(("Demand & Inventory:<br>Blue Yonder (2024.2)<br>SAP IBP (2408)")):::ucGreen
+    B1A1A --- B1A1A2(("Financial Asset:<br>BlackRock Aladdin (2024)<br>Bloomberg PORT (2024)")):::ucGreen
     
-    B2A --- B2A1((Code<br>Generation)):::cGreen[span_19](start_span)[span_19](end_span)
-    B2A --- B2A2((Visual<br>Generation)):::cRed[span_20](start_span)[span_20](end_span)
-    B2A --- B2A3((Music<br>Synthesis)):::cRed[span_21](start_span)[span_21](end_span)
-    B2A --- B2A4((Material<br>Design)):::cBlue[span_22](start_span)[span_22](end_span)
+    B1A1B --- B1A1B1(("Prediction Intervals:<br>Meta Prophet (1.4.0)<br>AWS GluonTS (0.17.0)")):::ucGreen
+    B1A1B --- B1A1B2(("Value-at-Risk:<br>MSCI RiskMetrics (4.12)<br>Qontigo Axioma (2024.1)")):::ucGreen
+
+    B1A2A --- B1A2A1(("Long-Term Macro:<br>Oxford Economics (2024.1)<br>Moody's Analytics (2024)")):::ucBlue
+    B1A2A --- B1A2A2(("Population Growth:<br>SAS Visual (2024.03)<br>IBM Planning (2.1.0)")):::ucBlue
     
-    B2B --- B2B1((Speech<br>Transcription)):::cPurple[span_23](start_span)[span_23](end_span)
-    B2B --- B2B2((Visual<br>Captioning)):::cPurple[span_24](start_span)[span_24](end_span)
-    B2B --- B2B3((Language<br>Translation)):::cPurple[span_25](start_span)[span_25](end_span)
-    B2B --- B2B4((Restyling<br>Models)):::cRed[span_26](start_span)[span_26](end_span)
+    B1A2B --- B1A2B1(("Credit & Solvency:<br>FICO Score (10T)<br>VantageScore (4.0)")):::ucBlue
+    B1A2B --- B1A2B2(("Composite Risk:<br>Moody's CreditEdge (2024)<br>S&P Credit (2024.2)")):::ucBlue
+
+    B1B1A --- B1B1A1(("Spam Filtering:<br>SpamAssassin (4.0.1)<br>Cisco Secure (15.0)")):::ucGreen
+    B1B1A --- B1B1A2(("Content Moderation:<br>Hive AI (API 2.0)<br>AWS Rekognition (7.0)")):::ucGreen
     
-    B2C --- B2C1((Dialogue<br>Systems)):::cPurple[span_27](start_span)[span_27](end_span)
-    B2C --- B2C2((Analytical<br>Reasoning)):::cBlue[span_28](start_span)[span_28](end_span)
-    B2C --- B2C3((Search<br>Augmentation)):::cPurple[span_29](start_span)[span_29](end_span)
+    B1B1B --- B1B1B1(("Quality Control:<br>Cognex ViDi (1.8.0)<br>Keyence IV3 (2.20)")):::ucGreen
+    B1B1B --- B1B1B2(("Access & Auth:<br>Okta Adaptive (2024.04)<br>PingOne Protect (2024.2)")):::ucGreen
+
+    B1B2A --- B1B2A1(("Topic Tagging:<br>Google Cloud NLP (v2)<br>IBM Watson (2.2.1)")):::ucBlue
+    B1B2A --- B1B2A2(("Document Routing:<br>Amazon Comprehend (2.25)<br>ABBYY Vantage (2.4)")):::ucBlue
     
-    B2D --- B2D1((Tool<br>Augmentation)):::cGreen[span_30](start_span)[span_30](end_span)
-    B2D --- B2D2((Action<br>Planning)):::cGreen[span_31](start_span)[span_31](end_span)
-    B2D --- B2D3((Physical<br>Interaction)):::cGreen[span_32](start_span)[span_32](end_span)
+    B1B2B --- B1B2B1(("Sentiment Polarity:<br>Azure AI (2023)<br>MonkeyLearn (API 3.0)")):::ucBlue
+    B1B2B --- B1B2B2(("User Intent:<br>Rasa Open Source (3.6.14)<br>Google Dialogflow (v3)")):::ucBlue
+
+    B1B3A --- B1B3A1(("Object Bounding:<br>Ultralytics YOLO (8.2)<br>Roboflow (0.9.18)")):::ucGreen
+    B1B3A --- B1B3A2(("Image Segmentation:<br>Meta SAM (2.0)<br>OpenMMLab (3.3.0)")):::ucGreen
+    
+    B1B3B --- B1B3B1(("Medical Triage:<br>Aidoc aiDOC (2.0)<br>Viz.ai Platform (2.1)")):::ucGreen
+    B1B3B --- B1B3B2(("Defect Localization:<br>LandingAI (2024.1)<br>Instrumental AI (2024.2)")):::ucGreen
+
+    B1C1A --- B1C1A1(("Sensor Forecasting:<br>Amazon Forecast (2024)<br>Darts Library (0.30.0)")):::ucGreen
+    B1C1A --- B1C1A2(("Energy Load:<br>AutoGluon-TS (1.1.1)<br>NeuralProphet (0.9.0)")):::ucGreen
+    
+    B1C1B --- B1C1B1(("Multi-Signal Track:<br>GraphCast (2023.1)<br>Microsoft ClimaX (1.0)")):::ucGreen
+    B1C1B --- B1C1B2(("Weather & Atmos:<br>ECMWF AIFS (48r1)<br>Huawei Pangu (2.0)")):::ucGreen
+
+    B1C2A --- B1C2A1(("Flight & Vessel:<br>FlightAware (3.0)<br>Spire Aviation (2.4)")):::ucGreen
+    B1C2A --- B1C2A2(("Vehicle Position:<br>Tesla FSD (12.5.4)<br>Waymo Driver (Gen 6)")):::ucGreen
+    
+    B1C2B --- B1C2B1(("Fluid Motion:<br>Ansys Fluent (2024 R1)<br>Siemens STAR-CCM+ (2402)")):::ucGreen
+    B1C2B --- B1C2B2(("Crowd Dynamics:<br>PTV Viswalk (2024.0)<br>MassMotion (11.5)")):::ucGreen
+
+    B1C3A --- B1C3A1(("Time-to-Failure:<br>Scikit-survival (0.28.0)<br>ReliaSoft Weibull (2024)")):::ucBlue
+    B1C3A --- B1C3A2(("Customer Churn:<br>Lifelines (0.29.0)<br>PySurvival (0.1.2)")):::ucBlue
+    
+    B1C3B --- B1C3B1(("Maintenance Cycles:<br>Uptake Industrial (2024.1)<br>GE Vernova APM (4.6)")):::ucBlue
+    B1C3B --- B1C3B2(("Event Periodicity:<br>Kats by Meta (0.2.0)<br>MatrixProfile (1.13.0)")):::ucBlue
+
+    B1D1A --- B1D1A1(("Customer Segments:<br>Scikit k-means (1.5.0)<br>RapidMiner (10.3)")):::ucBlue
+    B1D1A --- B1D1A2(("Market Grouping:<br>ArcGIS Pro (3.3)<br>QGIS Spatial (3.36)")):::ucBlue
+    
+    B1D1B --- B1D1B1(("Community Detect:<br>Gephi (0.10.1)<br>NetworkX (3.3)")):::ucBlue
+    B1D1B --- B1D1B2(("Dense Spatial:<br>HDBSCAN (0.8.38)<br>Scikit DBSCAN (1.5.0)")):::ucBlue
+
+    B1D2A --- B1D2A1(("Fraud Detection:<br>DataVisor (4.2)<br>Feedzai RiskLedger (2024)")):::ucGreen
+    B1D2A --- B1D2A2(("Sensor Failure:<br>PyOD Outlier (3.6.5)<br>Alteryx ML (2024.1)")):::ucGreen
+    
+    B1D2B --- B1D2B1(("Network Intrusion:<br>Darktrace EIS (6.0)<br>Vectra AI NDR (7.3)")):::ucGreen
+    B1D2B --- B1D2B2(("Process Drift:<br>Splunk Enterprise (8.0.0)<br>Dynatrace Davis (1.290)")):::ucGreen
+
+    linkStyle 0,1 stroke-width:24px;
+    linkStyle 2,3,4,5,6,7,8,9 stroke-width:16px;
+    linkStyle 10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33 stroke-width:10px;
+    linkStyle 34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53 stroke-width:6px;
+    linkStyle 54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93 stroke-width:3px;

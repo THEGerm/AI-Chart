@@ -1,80 +1,73 @@
-/* style.css - UsefulCharts (Matt Baker) Aesthetic */
+/* style.css - UsefulCharts Evolutionary Tree Style */
 
-/* Background canvas: Warm archival paper / cream tone */
+/* Canvas background from style guide */
 svg {
-  background-color: #f7f4ec !important;
+  background-color: #EDE8D8 !important;
 }
 
-/* Typography: Clean modernist grotesque sans-serif */
+/* Base typography */
 .node, .label, text {
-  font-family: "Alte Haas Grotesk", "Liberation Sans", "Helvetica Neue", Arial, sans-serif !important;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
   color: #1a1a1a !important;
   fill: #1a1a1a !important;
-  letter-spacing: 0.02em;
 }
 
-/* Node labels: Prominent, clear, slightly heavier weight */
-.node .label {
-  font-size: 13px !important;
-  font-weight: 600 !important;
-}
-
-/* Default Box Cards: Crisp white fill with Matt Baker's signature warm-brown borders */
+/* Default node cards */
 .node rect,
-.node polygon {
-  fill: #ffffff !important;
-  stroke: #5a3e26 !important;
-  stroke-width: 2px !important;
-  rx: 4px !important;
-  ry: 4px !important;
-}
-
-/* Circular/Pill nodes */
 .node circle,
-.node ellipse {
-  fill: #ffffff !important;
-  stroke: #5a3e26 !important;
+.node ellipse,
+.node polygon {
+  fill: #FFFFFF !important;
+  stroke: #78501E !important;
   stroke-width: 2px !important;
-}
-
-/* Flow connector lines: Solid, distinct dark brown path */
-.flowchart-link,
-.edgePath path {
-  stroke: #5a3e26 !important;
-  stroke-width: 2px !important;
-}
-
-/* Arrowheads */
-.marker,
-#flowchart-pointEnd,
-defs marker path {
-  fill: #5a3e26 !important;
-  stroke: #5a3e26 !important;
-}
-
-/* Subgraph & Category Groupings: Warm tinted paper boxes */
-.cluster rect {
-  fill: #eee8d5 !important;
-  stroke: #8c7864 !important;
-  stroke-width: 1.5px !important;
   rx: 6px !important;
   ry: 6px !important;
 }
 
-.cluster text {
-  font-size: 14px !important;
+.node .label {
+  font-size: 13px !important;
   font-weight: 700 !important;
-  fill: #3b2816 !important;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
-/* Category Color Palette Accent Classes (UsefulCharts style) */
-/* Apply in Mermaid as: class NodeId ucBlue, etc. */
-.ucBlue rect   { fill: #d8e8f2 !important; stroke: #2a5d7c !important; }
-.ucRed rect    { fill: #f8d7da !important; stroke: #8f2d35 !important; }
-.ucGreen rect  { fill: #dff0d8 !important; stroke: #3e6b3b !important; }
-.ucYellow rect { fill: #fcf4d9 !important; stroke: #8f7422 !important; }
-.ucPurple rect { fill: #e8def2 !important; stroke: #5b3574 !important; }
-.ucOrange rect { fill: #fae6d7 !important; stroke: #994c1a !important; }
-                
+/* Branch connector lines: thicker, no arrow marker display */
+.flowchart-link,
+.edgePath path {
+  stroke: #78501E !important;
+  stroke-width: 2.5px !important;
+}
+
+/* Remove arrowheads per UsefulCharts guidelines */
+.marker,
+#flowchart-pointEnd,
+defs marker path {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Subgraph cluster containers */
+.cluster rect {
+  fill: rgba(120, 80, 30, 0.06) !important;
+  stroke: #78501E !important;
+  stroke-width: 1.5px !important;
+  stroke-dasharray: 4 4 !important;
+  rx: 8px !important;
+  ry: 8px !important;
+}
+
+/* Palette classes from README table */
+.ucRed rect, .ucRed circle, .ucRed polygon       { fill: #F26654 !important; stroke: #78501E !important; }
+.ucOrange rect, .ucOrange circle, .ucOrange polygon { fill: #EF953A !important; stroke: #78501E !important; }
+.ucYellow rect, .ucYellow circle, .ucYellow polygon { fill: #EFC239 !important; stroke: #78501E !important; }
+.ucGreen rect, .ucGreen circle, .ucGreen polygon    { fill: #96BC96 !important; stroke: #78501E !important; }
+.ucBlue rect, .ucBlue circle, .ucBlue polygon       { fill: #80C3E1 !important; stroke: #78501E !important; }
+.ucViolet rect, .ucViolet circle, .ucViolet polygon { fill: #AD81AF !important; stroke: #78501E !important; }
+
+/* Dark branch nodes with white text (Root and major clade headers) */
+.ucRoot rect, .ucRoot circle { fill: #78501E !important; stroke: #4A3010 !important; }
+.ucRoot .label, .ucRoot text { fill: #FFFFFF !important; color: #FFFFFF !important; font-weight: 700 !important; }
+
+.ucRed .label, .ucRed text,
+.ucViolet .label, .ucViolet text {
+  fill: #FFFFFF !important;
+  color: #FFFFFF !important;
+}

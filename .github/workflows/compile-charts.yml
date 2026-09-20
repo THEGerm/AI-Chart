@@ -47,7 +47,7 @@ jobs:
             [ -e "$file" ] || continue
             filename=$(basename "$file" .mmd)
             echo "Compiling $file to assets/images/${filename}.png"
-            mmdc -p puppeteer-config.json -i "$file" -o "assets/images/${filename}.png" $CSS_ARG
+            mmdc -p puppeteer-config.json -i "$file" -o "assets/images/${filename}.png" -s 4 $CSS_ARG
           done
 
       - name: Commit and push generated images

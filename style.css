@@ -1,39 +1,80 @@
-/* style.css - Standard Mermaid Styling */
+/* style.css - UsefulCharts (Matt Baker) Aesthetic */
 
-/* Base font and typography */
+/* Background canvas: Warm archival paper / cream tone */
+svg {
+  background-color: #f7f4ec !important;
+}
+
+/* Typography: Clean modernist grotesque sans-serif */
 .node, .label, text {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 14px;
+  font-family: "Alte Haas Grotesk", "Liberation Sans", "Helvetica Neue", Arial, sans-serif !important;
+  color: #1a1a1a !important;
+  fill: #1a1a1a !important;
+  letter-spacing: 0.02em;
 }
 
-/* Node shapes: default fill, border, and corner radius */
+/* Node labels: Prominent, clear, slightly heavier weight */
+.node .label {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+
+/* Default Box Cards: Crisp white fill with Matt Baker's signature warm-brown borders */
 .node rect,
-.node circle,
-.node ellipse,
-.node polygon,
-.node path {
-  fill: #f8fafc;
-  stroke: #475569;
-  stroke-width: 1.5px;
+.node polygon {
+  fill: #ffffff !important;
+  stroke: #5a3e26 !important;
+  stroke-width: 2px !important;
+  rx: 4px !important;
+  ry: 4px !important;
 }
 
-/* Connecting lines/arrows */
+/* Circular/Pill nodes */
+.node circle,
+.node ellipse {
+  fill: #ffffff !important;
+  stroke: #5a3e26 !important;
+  stroke-width: 2px !important;
+}
+
+/* Flow connector lines: Solid, distinct dark brown path */
 .flowchart-link,
 .edgePath path {
-  stroke: #64748b;
-  stroke-width: 1.5px;
+  stroke: #5a3e26 !important;
+  stroke-width: 2px !important;
 }
 
 /* Arrowheads */
 .marker,
-#flowchart-pointEnd {
-  fill: #64748b;
-  stroke: #64748b;
+#flowchart-pointEnd,
+defs marker path {
+  fill: #5a3e26 !important;
+  stroke: #5a3e26 !important;
 }
 
-/* Cluster/Subgroup containers */
+/* Subgraph & Category Groupings: Warm tinted paper boxes */
 .cluster rect {
-  fill: #f1f5f9;
-  stroke: #cbd5e1;
-  stroke-width: 1px;
+  fill: #eee8d5 !important;
+  stroke: #8c7864 !important;
+  stroke-width: 1.5px !important;
+  rx: 6px !important;
+  ry: 6px !important;
 }
+
+.cluster text {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  fill: #3b2816 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Category Color Palette Accent Classes (UsefulCharts style) */
+/* Apply in Mermaid as: class NodeId ucBlue, etc. */
+.ucBlue rect   { fill: #d8e8f2 !important; stroke: #2a5d7c !important; }
+.ucRed rect    { fill: #f8d7da !important; stroke: #8f2d35 !important; }
+.ucGreen rect  { fill: #dff0d8 !important; stroke: #3e6b3b !important; }
+.ucYellow rect { fill: #fcf4d9 !important; stroke: #8f7422 !important; }
+.ucPurple rect { fill: #e8def2 !important; stroke: #5b3574 !important; }
+.ucOrange rect { fill: #fae6d7 !important; stroke: #994c1a !important; }
+                

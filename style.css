@@ -1,42 +1,33 @@
 /* style.css - UsefulCharts Evolutionary Tree Style */
 
-/* Canvas background from style guide */
 svg {
   background-color: #EDE8D8 !important;
 }
 
-/* Base typography */
 .node, .label, text {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  font-family: "Inter", Helvetica, Arial, sans-serif !important;
   color: #1a1a1a !important;
   fill: #1a1a1a !important;
 }
 
-/* Default node cards */
-.node rect,
-.node circle,
-.node ellipse,
-.node polygon {
-  fill: #FFFFFF !important;
+.node circle {
   stroke: #78501E !important;
   stroke-width: 2px !important;
-  rx: 6px !important;
-  ry: 6px !important;
 }
 
 .node .label {
-  font-size: 13px !important;
+  font-size: 11px !important;
   font-weight: 700 !important;
+  text-align: center !important;
 }
 
-/* Branch connector lines: thicker, no arrow marker display */
 .flowchart-link,
 .edgePath path {
   stroke: #78501E !important;
   stroke-width: 2.5px !important;
+  fill: none !important;
 }
 
-/* Remove arrowheads per UsefulCharts guidelines */
 .marker,
 #flowchart-pointEnd,
 defs marker path {
@@ -44,30 +35,8 @@ defs marker path {
   visibility: hidden !important;
 }
 
-/* Subgraph cluster containers */
-.cluster rect {
-  fill: rgba(120, 80, 30, 0.06) !important;
-  stroke: #78501E !important;
-  stroke-width: 1.5px !important;
-  stroke-dasharray: 4 4 !important;
-  rx: 8px !important;
-  ry: 8px !important;
-}
-
-/* Palette classes from README table */
-.ucRed rect, .ucRed circle, .ucRed polygon       { fill: #F26654 !important; stroke: #78501E !important; }
-.ucOrange rect, .ucOrange circle, .ucOrange polygon { fill: #EF953A !important; stroke: #78501E !important; }
-.ucYellow rect, .ucYellow circle, .ucYellow polygon { fill: #EFC239 !important; stroke: #78501E !important; }
-.ucGreen rect, .ucGreen circle, .ucGreen polygon    { fill: #96BC96 !important; stroke: #78501E !important; }
-.ucBlue rect, .ucBlue circle, .ucBlue polygon       { fill: #80C3E1 !important; stroke: #78501E !important; }
-.ucViolet rect, .ucViolet circle, .ucViolet polygon { fill: #AD81AF !important; stroke: #78501E !important; }
-
-/* Dark branch nodes with white text (Root and major clade headers) */
-.ucRoot rect, .ucRoot circle { fill: #78501E !important; stroke: #4A3010 !important; }
-.ucRoot .label, .ucRoot text { fill: #FFFFFF !important; color: #FFFFFF !important; font-weight: 700 !important; }
-
-.ucRed .label, .ucRed text,
-.ucViolet .label, .ucViolet text {
-  fill: #FFFFFF !important;
-  color: #FFFFFF !important;
-}
+.ucBlue circle   { fill: #80C3E1 !important; }
+.ucGreen circle  { fill: #96BC96 !important; }
+.ucRed circle    { fill: #F26654 !important; }
+.ucPurple circle { fill: #AD81AF !important; }
+.ucRoot circle   { fill: #EFC239 !important; }

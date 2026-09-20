@@ -4,31 +4,44 @@ svg {
   background-color: #EDE8D8 !important;
 }
 
-.node .label, .node text {
-  font-size: 16px !important;
+/* Increase font size and ensure absolute centering for multi-line text */
+.node .label, 
+.node text, 
+.nodeLabel {
+  font-family: "Inter", Helvetica, Arial, sans-serif !important;
+  font-size: 18px !important;
   font-weight: 700 !important;
-  text-anchor: middle !important;
-  dominant-baseline: middle !important;
+  color: #1a1a1a !important;
+  fill: #1a1a1a !important;
+  text-align: center !important;
+  line-height: 1.2 !important;
 }
 
+/* Force Mermaid's HTML wrappers to center contents horizontally and vertically */
+.node foreignObject div {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Circle styling */
 .node circle {
   stroke: #78501E !important;
   stroke-width: 2px !important;
 }
 
-.node .label {
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  text-align: center !important;
-}
-
+/* Massively increase branch thickness to match reference */
 .flowchart-link,
 .edgePath path {
   stroke: #78501E !important;
-  stroke-width: 2.5px !important;
+  stroke-width: 8px !important;
   fill: none !important;
 }
 
+/* Hide arrowheads completely */
 .marker,
 #flowchart-pointEnd,
 defs marker path {
@@ -36,6 +49,7 @@ defs marker path {
   visibility: hidden !important;
 }
 
+/* Palette classes */
 .ucBlue circle   { fill: #80C3E1 !important; }
 .ucGreen circle  { fill: #96BC96 !important; }
 .ucRed circle    { fill: #F26654 !important; }

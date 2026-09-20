@@ -1,0 +1,48 @@
+flowchart BT
+    AI((AI Tree)):::ucRoot
+    
+    AI --- B1((Predictive)):::ucRoot
+    AI --- B2((Generative)):::ucRoot
+    
+    B1 --- B1A((Estimation)):::ucGreen
+    B1 --- B1B((Classify)):::ucBlue
+    B1 --- B1C((Temporal)):::ucGreen
+    B1 --- B1D((Discovery)):::ucBlue
+    
+    B1A --- B1A1((Forecast)):::ucGreen
+    B1A --- B1A2((Trends)):::ucBlue
+    
+    B1B --- B1B1((Binary)):::ucGreen
+    B1B --- B1B2((Sorting)):::ucBlue
+    B1B --- B1B3((Perception)):::ucGreen
+    
+    B1C --- B1C1((Time Series)):::ucGreen
+    B1C --- B1C2((Tracking)):::ucGreen
+    B1C --- B1C3((Timing)):::ucGreen
+    
+    B1D --- B1D1((Clustering)):::ucBlue
+    B1D --- B1D2((Anomaly)):::ucGreen
+    
+    B2 --- B2A((Synthesis)):::ucRed
+    B2 --- B2B((Conversion)):::ucPurple
+    B2 --- B2C((Interaction)):::ucPurple
+    B2 --- B2D((Autonomy)):::ucGreen
+    
+    B2A --- B2A1((Coding)):::ucGreen
+    B2A --- B2A2((Visuals)):::ucRed
+    B2A --- B2A3((Music)):::ucRed
+    B2A --- B2A4((Molecular)):::ucBlue
+    
+    B2B --- B2B1((Speech)):::ucPurple
+    B2B --- B2B2((Captioning)):::ucPurple
+    B2B --- B2B3((Translation)):::ucPurple
+    B2B --- B2B4((Restyling)):::ucRed
+    
+    B2C --- B2C1((Chatbots)):::ucPurple
+    B2C --- B2C2((Reasoning)):::ucBlue
+    B2C --- B2C3((Search)):::ucPurple
+    
+    B2D --- B2D1((Tools)):::ucGreen
+    B2D --- B2D2((Strategy)):::ucGreen
+    B2D --- B2D3((Robotics)):::ucGreen
+    

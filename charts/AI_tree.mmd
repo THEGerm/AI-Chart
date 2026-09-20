@@ -1,46 +1,46 @@
 flowchart LR
-    AI["Artificial Intelligence Tree"]
+    AI(["Artificial Intelligence Tree"]):::ucRoot
     
-    AI --> B1["Predictive & Analytical AI"]
+    AI --- B1["Predictive & Analytical AI"]:::ucBlue
     
-    B1 --> B1A["Continuous Estimation (Regression)"]
-    B1A --> B1A1["Quantity Forecasting"]
-    B1A --> B1A2["Trend Estimation"]
+    B1 --- B1A["Continuous Estimation (Regression)"]:::ucGreen
+    B1A --- B1A1["Quantity Forecasting"]
+    B1A --- B1A2["Trend Estimation"]
     
-    B1 --> B1B["Categorical Assignment (Classification)"]
-    B1B --> B1B1["Binary Decisions"]
-    B1B --> B1B2["Multi-class Sorting"]
-    B1B --> B1B3["Perception Labeling"]
+    B1 --- B1B["Categorical Assignment (Classification)"]:::ucGreen
+    B1B --- B1B1["Binary Decisions"]
+    B1B --- B1B2["Multi-class Sorting"]
+    B1B --- B1B3["Perception Labeling"]
     
-    B1 --> B1C["Sequential & Temporal Dynamics"]
-    B1C --> B1C1["Time Series Forecasting"]
-    B1C --> B1C2["Trajectory Tracking"]
-    B1C --> B1C3["Event Timing"]
+    B1 --- B1C["Sequential & Temporal Dynamics"]:::ucGreen
+    B1C --- B1C1["Time Series Forecasting"]
+    B1C --- B1C2["Trajectory Tracking"]
+    B1C --- B1C3["Event Timing"]
     
-    B1 --> B1D["Structure & Pattern Discovery"]
-    B1D --> B1D1["Grouping and Clustering"]
-    B1D --> B1D2["Anomaly Detection"]
+    B1 --- B1D["Structure & Pattern Discovery"]:::ucGreen
+    B1D --- B1D1["Grouping and Clustering"]
+    B1D --- B1D2["Anomaly Detection"]
     
-    AI --> B2["Generative & Interactive AI"]
+    AI --- B2["Generative & Interactive AI"]:::ucOrange
     
-    B2 --> B2A["Generative Synthesis (Freeform Generation)"]
-    B2A --> B2A1["Language and Code Generation"]
-    B2A --> B2A2["Visual and 3D Generation"]
-    B2A --> B2A3["Acoustic and Music Synthesis"]
-    B2A --> B2A4["Molecular and Material Design"]
+    B2 --- B2A["Generative Synthesis (Freeform Generation)"]:::ucYellow
+    B2A --- B2A1["Language and Code Generation"]
+    B2A --- B2A2["Visual and 3D Generation"]
+    B2A --- B2A3["Acoustic and Music Synthesis"]
+    B2A --- B2A4["Molecular and Material Design"]
     
-    B2 --> B2B["Cross-Modal Alignment & Conversion (Constrained Mapping)"]
-    B2B --> B2B1["Speech-to-Text Transcription"]
-    B2B --> B2B2["Visual Grounding and Captioning"]
-    B2B --> B2B3["Direct Language Translation"]
-    B2B --> B2B4["Infilling and Restyling"]
+    B2 --- B2B["Cross-Modal Alignment & Conversion"]:::ucYellow
+    B2B --- B2B1["Speech-to-Text Transcription"]
+    B2B --- B2B2["Visual Grounding and Captioning"]
+    B2B --- B2B3["Direct Language Translation"]
+    B2B --- B2B4["Infilling and Restyling"]
     
-    B2 --> B2C["Conversational Reasoning & Interaction"]
-    B2C --> B2C1["Dialogue Systems"]
-    B2C --> B2C2["Analytical Reasoning"]
-    B2C --> B2C3["Search Augmentation"]
+    B2 --- B2C["Conversational Reasoning & Interaction"]:::ucYellow
+    B2C --- B2C1["Dialogue Systems"]
+    B2C --- B2C2["Analytical Reasoning"]
+    B2C --- B2C3["Search Augmentation"]
     
-    B2 --> B2D["Autonomous Agency & Action Planning"]
-    B2D --> B2D1["Tool Augmentation"]
-    B2D --> B2D2["Strategic & Course of Action Decision-Making"]
-    B2D --> B2D3["Physical Interaction"]
+    B2 --- B2D["Autonomous Agency & Action Planning"]:::ucYellow
+    B2D --- B2D1["Tool Augmentation"]
+    B2D --- B2D2["Strategic & Course of Action Decision-Making"]
+    B2D --- B2D3["Physical Interaction"]

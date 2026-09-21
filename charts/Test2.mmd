@@ -2,55 +2,66 @@ graph TD
     %% Main Decision Node
     Start(Decision: CJFC T&E Program Manager Opportunity)
 
-    %% GATES (Crucial Constraint Tests)
-    Start --> Gate_Pension{Gate 1: PS Pension Status <br> Substantive lateral substantive <br> transfer or external move <br> resulting in PS pension status <br> or a deferred pension?}
+    %% Node Definitions
+    Gate_Pension{Gate 1: "PS Pension Status <br> Substantive lateral substantive <br> transfer or external move <br> resulting in PS pension status <br> or a deferred pension?"}
+    External[Option: Pursue External exit <br> e.g., nominated contractor seat]
+    Ext_Cons{Restraining Forces / Cons}
+    Ext_PenLoss["Permanent reduction of <br> Public Service pension <br> multi-year security (Group 2)"]
+    Ext_Risk[Increased employment risk <br> Staff-Aug/Term model]
+    StayInternal[Sub-Decision: Remain in <br> current ADM/DS Role]
+    Stay_Cons{Restraining Forces / Cons}
+    Stay_Demo["DEMOTION IMINENT: L5"]
+    Stay_Promises["All 4 promised conditions <br> UNMET - no delegations, dissolving HR, <br> no travel, limited technical work"]
+    Stay_Admin["99% Contract Admin / 1% Technical"]
+    Stay_Team[Dissolving Team <br> Shashank/Richard departing]
+    CJFC[Option: Accept CJFC T&E <br> Program Manager Role]
+    Ikigai_Love{IKIGAI: <br> What you LOVE <br> - Technical work <br> - International travel <br> - Greenfield stand-up autonomy}
+    Ikigai_Good{IKIGAI: <br> What you are GOOD AT <br> - T&E V&V engineering framework <br> - Allied Interoperability validation}
+    Ikigai_Paid{"IKIGAI: <br> What you ARE PAID FOR <br> - Substantive ENG-05 <br> - PS Pension Security <br> - HIGH OT/Travel optimization potential"}
+    Ikigai_Needs{"IKIGAI: <br> Organisation NEEDS <br> - Centralized Pan-Domain T&E <br> - Interoperability with Allies <br> - System Behavior V&V"}
+    Pros{Driving Forces / Pros}
+    Pro_PenSec["Secures Public Service <br> pension status to <br> age 55 milestone"]
+    Pro_Location[Shirleys Bay: Close <br> commute, nature campus]
+    Pro_Parking[Free Parking worth <br> $2100/yr net]
+    Pro_Content[Escapes pure contract admin <br> for core T&E/V&V role]
+    Pro_OT_Potential["HIGH TRAVEL potential <br> enables optimized earnings <br> potential and professional optimization"]
+    Cons{Restraining Forces / Cons / Risks}
+    Con_Level[Authority fixed at L5 <br> Reports to LCol Chiasson <br> - no L4 Delegations]
+    Con_Domain[Domain shift: Aerospace to <br> distributed software systems PDC2]
+    Con_Staffing_Risk[Civ-HR lag on formal <br> position creation]
+    Con_Enterprise[Enterprise friction: Environmental <br> service Commands vs. CJFC centralisation]
+    FinalDecision[Decision Summary: The lateral substantive CJFC move is professionally dominant. It secures pension status and funding, fulfills all broken promises, optimizes earnings potential, fixes location, and aligns with professional expertise. The L5 reporting restriction is an acceptable risk.]
 
-    %% Branch: External/Other (cons-only, as requested)
-    Gate_Pension -- "$200K+ external <br> base salary" --> External[Option: Pursue External exit <br> e.g., nominated contractor seat]
+    %% Connections
+    Start --> Gate_Pension
+    Gate_Pension -- "$200K+ external <br> base salary" --> External
     External --> Ext_Evaluative_Gates
-
-    %% Cons-Only Evaluative Gates (ext_pros removed as requested)
-    Ext_Evaluative_Gates --> Ext_Cons{Restraining Forces / Cons}
-    Ext_Cons --> Ext_PenLoss[Permanent reduction of <br> Public Service pension <br> multi-year security (Group 2)]
-    Ext_Cons --> Ext_Risk[Increased employment risk <br> Staff-Aug/Term model]
-
-    %% Branch: Status Quo (Toxic Current Environment)
-    Gate_Pension -- "Stay (Reject transfer)" --> StayInternal[Sub-Decision: Remain in <br> current ADM/DS Role]
+    Ext_Evaluative_Gates --> Ext_Cons
+    Ext_Cons --> Ext_PenLoss
+    Ext_Cons --> Ext_Risk
+    Gate_Pension -- "Stay (Reject transfer)" --> StayInternal
     StayInternal --> Stay_Evaluative_Gates
-
-    %% Current State Evaluative Gates
-    Stay_Evaluative_Gates --> Stay_Cons{Restraining Forces / Cons}
-    Stay_Cons --> Stay_Demo[DEMOTION IMINENT: L5]
-    Stay_Cons --> Stay_Promises[All 4 promised conditions <br> UNMET - no delegations, dissolving HR, <br> no travel, limited technical work]
-    Stay_Cons --> Stay_Admin[99% Contract Admin / 1% Technical]
-    Stay_Cons --> Stay_Team[Dissolving Team <br> Shashank/Richard departing]
-
-    %% Main Branch: Accept Lateral CJFC (optimised security path)
-    Gate_Pension -- "Substantive lateral ENG-05 transfer" --> CJFC[Option: Accept CJFC T&E <br> Program Manager Role]
-
-    %% Evaluative Criteria Nodes (IKIGAI)
-    CJFC --> Ikigai_Love{IKIGAI: <br> What you LOVE <br> - Technical work <br> - International travel <br> - Greenfield stand-up autonomy}
-    Ikigai_Love -- "Matches <br> escaping toxicity" --> Ikigai_Good{IKIGAI: <br> What you are GOOD AT <br> - T&E V&V engineering framework <br> - Allied Interoperability validation}
-    Ikigai_Good -- "Matches" --> Ikigai_Paid{IKIGAI: <br> What you are PAID FOR <br> - Substantive ENG-05 <br> - PS Pension Security <br> - HIGH OT/Travel optimization potential}
-    Ikigai_Paid -- "Dominant <br> Driver: Security + potential" --> Ikigai_Needs{IKIGAI: <br> Organisation NEEDS <br> - Centralized Pan-Domain T&E <br> - Interoperability with Allies <br> - System Behavior V&V}
+    Stay_Evaluative_Gates --> Stay_Cons
+    Stay_Cons --> Stay_Demo
+    Stay_Cons --> Stay_Promises
+    Stay_Cons --> Stay_Admin
+    Stay_Cons --> Stay_Team
+    Gate_Pension -- "Substantive lateral ENG-05 transfer" --> CJFC
+    CJFC --> Ikigai_Love
+    Ikigai_Love -- "Matches <br> escaping toxicity" --> Ikigai_Good
+    Ikigai_Good -- "Matches" --> Ikigai_Paid
+    Ikigai_Paid -- "Dominant <br> Driver: Security + potential" --> Ikigai_Needs
     Ikigai_Needs -- "Strategic <br> Priority" --> Evaluative_Gates
-
-    %% Final Evaluative Gates (Pros vs. Cons/Risks)
-    Evaluative_Gates --> Pros{Driving Forces / Pros}
-    Pros --> Pro_PenSec[Secures Public Service <br> pension status to <br> age 55 milestone]
-    Pros --> Pro_Location[Shirleys Bay: Close <br> commute, nature campus]
-    Pros --> Pro_Parking[Free Parking worth <br> $2100/yr net]
-    Pros --> Pro_Content[Escapes pure contract admin <br> for core T&E/V&V role]
-    Pros --> Pro_OT_Potential[HIGH TRAVEL potential <br> enables optimized earnings <br> potential and professional optimization]
-
-    Evaluative_Gates --> Cons{Restraining Forces / Cons / Risks}
-    Cons --> Con_Level[Authority fixed at L5 <br> Reports to LCol Chiasson <br> - no L4 Delegations]
-    Cons --> Con_Domain[Domain shift: Aerospace to <br> distributed software systems PDC2]
-    Cons --> Con_Staffing_Risk[Civ-HR lag on formal <br> position creation]
-    Cons --> Con_Enterprise[Enterprise friction: Environmental <br> service Commands vs. CJFC centralisation]
-
-    %% Final Summary Node
-    FinalDecision[Decision Summary: The lateral substantive CJFC move is professionals substantive dominant. It lateral secures substantive pension status and funding, substantive fulfills all broken promises, substantive optimizes earnings substantive substantive potential, substantive fixes location, substantive substantive substantive and substantive aligns with professional substantive expertise. The L5 reporting restriction substantive is substantive substantive acceptable risk.]
+    Evaluative_Gates --> Pros
+    Pros --> Pro_PenSec
+    Pros --> Pro_Location
+    Pros --> Pro_Parking
+    Pros --> Pro_Content
+    Pros --> Pro_OT_Potential
+    Evaluative_Gates --> Cons
+    Cons --> Con_Level
+    Cons --> Con_Domain
+    Cons --> Con_Staffing_Risk
+    Cons --> Con_Enterprise
     Pros --> FinalDecision
     Cons --> FinalDecision
-    

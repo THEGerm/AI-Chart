@@ -6,6 +6,7 @@
   in pleated linen, broad collar and diadem, inside a finished Egyptian frame.
   Inks: Kohl Black, Red Ochre, Gold Ochre, Egyptian Blue (the painter's palette of the period).
   No images, no fonts, no libraries, no network. Canvas 2D only.
+  Costume switch (top left): II everyday dress, III court dress, IV full regalia.
   Controls: drag to pan, wheel or pinch to zoom, + / - zoom, arrow keys pan, 0 fits the sheet.
 -->
 <html lang="en">
@@ -18,10 +19,23 @@
 html,body{margin:0;height:100%;overflow:hidden;background:#2a2622;overscroll-behavior:none;-webkit-user-select:none;user-select:none}
 #c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
 #c:active{cursor:grabbing}
+#lv{position:fixed;top:max(14px,env(safe-area-inset-top));left:max(14px,env(safe-area-inset-left));display:flex;gap:2px;padding:4px;background:#f4ecda;border:1px solid #2a2629;box-shadow:0 0 0 3px #f4ecda,0 0 0 4px #c4482f,0 8px 22px rgba(0,0,0,.4);font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;color:#2a2629;z-index:2}
+#lv label{position:relative;display:flex;flex-direction:column;align-items:center;min-width:64px;padding:6px 8px 5px;cursor:pointer;line-height:1.1}
+#lv input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+#lv b{font-weight:400;font-size:19px;letter-spacing:.06em}
+#lv small{font-variant:small-caps;text-transform:lowercase;letter-spacing:.1em;font-size:11px;color:#245ca8}
+#lv label:has(input:checked){background:#e8aa34}
+#lv label:has(input:focus-visible){outline:2px solid #245ca8;outline-offset:1px}
+@media (max-width:420px){#lv label{min-width:54px;padding:5px 6px 4px}#lv b{font-size:17px}}
 </style>
 </head>
 <body>
 <canvas id="c"></canvas>
+<div id="lv" role="radiogroup" aria-label="Costume">
+<label><input type="radio" name="lv" value="2" id="lv2"><b>II</b><small>Everyday</small></label>
+<label><input type="radio" name="lv" value="3" id="lv3" checked><b>III</b><small>Court</small></label>
+<label><input type="radio" name="lv" value="4" id="lv4"><b>IV</b><small>Regalia</small></label>
+</div>
 <script>
 'use strict';
 /* ======================================================================
@@ -382,6 +396,7 @@ const INK = {
   lip: [0, 0.62, 0.3, 0.04], teeth: [0, 0.02, 0.07, 0], eyeW: [0, 0, 0.03, 0.03], iris: [0.72, 0.42, 0.2, 0],
 };
 const ov = (i) => i;   // readability: overprint inks are passed with { ko: false }
+let LV = 3;   // costume level: 2 everyday, 3 court, 4 regalia
 const HS = 0.42;
 const F = (x, y) => [897 + (x - 822) * HS, 662 + (y - 930) * HS];
 const fp = (L) => { const o = []; for (const [x, y] of L) { const p = F(x, y); o.push(p[0], p[1]); } return o; };
@@ -410,7 +425,9 @@ function drawFigure(P, R) {
   drawBody(P, R);
   drawFace(P, R);
   hairCurls(P, R, hairPoly);
-  drawDiadem(P, R);
+  drawEarrings(P);
+  if (LV >= 3) drawDiadem(P, R);
+  if (LV >= 4) drawCrown(P, R);
 }
 
 /* ---------------------------------------------------------------- frame */
@@ -557,7 +574,7 @@ function drawBody(P, R) {
   // the far edge of the hair mass that falls over her left shoulder is already printed; now the figure
   // ---- the gown below the waist: sheer pleated linen over the lap, falling to the ankles
   const skirt = sm([818, 1000, 776, 1052, 742, 1108, 738, 1166, 774, 1210, 798, 1300, 790, 1450, 772, 1582, 900, 1592, 1028, 1582, 1010, 1450, 1002, 1300, 1026, 1210, 1062, 1166, 1058, 1108, 1024, 1052, 982, 1000]);
-  P.poly(skirt, INK.linen, { line: 1.5 });
+  P.poly(skirt, LV === 2 ? [0, 0.02, 0.09, 0] : INK.linen, { line: 1.5 });
   P.stroke([812, 1012, 768, 1060, 748, 1112, 750, 1160], 1.1, [0.12, 0.25, 0.12, 0.05]);
   P.stroke([988, 1012, 1032, 1060, 1052, 1112, 1050, 1160], 1.1, [0.12, 0.25, 0.12, 0.05]);
   // the lap: thighs on the seat, the linen pulled over the knees and sagging between them
@@ -567,29 +584,39 @@ function drawBody(P, R) {
   }
   for (let k = 0; k < 4; k++) P.stroke([852, 1170 + k * 8, 900, 1214 + k * 12, 948, 1170 + k * 8], 0.9, [0.45, 0.06, 0, 0.12]);
   P.poly(sm([786, 1206, 900, 1236, 1014, 1206, 1004, 1250, 900, 1262, 796, 1250]), [0.02, 0.08, 0.06, 0.03], { ko: false, wob: 0.5 });
-  for (let i = 0; i < 14; i++) { const t = i / 13; P.stroke([812 + t * 176, 1004, 772 + t * 256, 1080, 752 + t * 296, 1150], 0.7, [0.5, 0.05, 0, 0.1]); }
+  const PL = LV === 4 ? [0.2, 0.12, 0.7, 0] : [0.5, 0.05, 0, 0.1], np = LV === 2 ? 4 : 1;
+  for (let i = 0; i < 14; i += np) { const t = i / 13; P.stroke([812 + t * 176, 1004, 772 + t * 256, 1080, 752 + t * 296, 1150], 0.7, PL); }
   // the shins under the fall of pleats
   for (const kx of [846, 954]) { P.stroke([kx - 30, 1250, kx - 26, 1420, kx - 20, 1570], 1, [0.04, 0.16, 0.1, 0.04]); P.stroke([kx + 30, 1250, kx + 26, 1420, kx + 20, 1570], 1, [0.04, 0.16, 0.1, 0.04]); }
-  for (let i = 0; i < 24; i++) { const t = i / 23, xa = 798 + t * 204, xb = 776 + t * 248; P.stroke([xa, 1214 + Math.sin(t * Math.PI) * 22, (xa + xb) / 2 + (R() - 0.5) * 3, 1410, xb, 1580 + Math.sin(t * Math.PI) * 8], 0.8, [0.5, 0.05, 0, 0.1]); }
+  for (let i = 0; i < 24; i++) { const t = i / 23, xa = 798 + t * 204, xb = 776 + t * 248, jr = R(); if (LV === 2 && i % 5) continue; P.stroke([xa, 1214 + Math.sin(t * Math.PI) * 22, (xa + xb) / 2 + (jr - 0.5) * 3, 1410, xb, 1580 + Math.sin(t * Math.PI) * 8], 0.8, PL); }
+  if (LV === 4) for (let x = 778; x < 1026; x += 12) P.dot(x, 1572, 2.4, INK.gold);
   P.stroke([770, 1582, 835, 1590, 900, 1594, 965, 1590, 1030, 1582], 1.6, K);
   // feet in gold sandals on the footstool
   for (const [fx, s] of [[858, -1], [942, 1]]) {
     P.poly(sm([fx - 22, 1580, fx - 26, 1596, fx - 18, 1612, fx, 1616, fx + 18, 1612, fx + 26, 1596, fx + 22, 1580]), INK.skin, { line: 1.2 });
     for (let k = -2; k <= 2; k++) P.dot(fx + k * 7 + s, 1611 - Math.abs(k) * 1.5, 2.6, [0, 0.3, 0.3, 0.02]);
-    P.stroke([fx - 26, 1612, fx + 26, 1612], 2.4, INK.gold, { taper: false });
-    P.stroke([fx, 1590, fx - 2, 1608], 1.6, INK.gold, { taper: false });
+    const SI = LV === 2 ? [0.1, 0.25, 0.55, 0] : INK.gold;
+    P.stroke([fx - 26, 1612, fx + 26, 1612], 2.4, SI, { taper: false });
+    P.stroke([fx, 1590, fx - 2, 1608], 1.6, SI, { taper: false });
+    if (LV === 4) P.dot(fx - 1, 1592, 3, INK.red);
   }
   // ---- torso: the bodice of fine linen, a shawl knotted under the bust
   const torso = sm([846, 700, 760, 724, 720, 760, 728, 860, 760, 940, 812, 1004, 900, 1016, 988, 1004, 1040, 940, 1072, 860, 1080, 760, 1040, 724, 954, 700]);
-  P.poly(torso, INK.linen, { line: 1.5 });
+  P.poly(torso, LV === 2 ? [0, 0.02, 0.09, 0] : INK.linen, { line: 1.5 });
   P.stroke([800, 860, 830, 900, 880, 905], 1.2, [0.15, 0.3, 0.15, 0.05]); P.stroke([920, 905, 970, 900, 1000, 860], 1.2, [0.15, 0.3, 0.15, 0.05]);
-  for (let i = 0; i < 18; i++) { const t = i / 17; P.stroke([790 + t * 220, 918 + Math.sin(t * Math.PI) * 8, 812 + t * 176, 1000], 0.7, [0.5, 0.05, 0, 0.1]); }
-  // the red sash, tied in a knot, its ends falling over the lap
-  P.poly(sm([812, 990, 900, 1004, 988, 990, 990, 1018, 900, 1032, 810, 1018]), INK.red, { line: 1.2 });
-  P.poly(sm([888, 1004, 912, 1004, 920, 1026, 900, 1040, 880, 1026]), INK.redD, { line: 1 });
-  P.poly(sm([884, 1034, 872, 1150, 880, 1240, 866, 1380, 892, 1384, 900, 1240, 896, 1150, 900, 1040]), INK.red, { line: 1.1 });
-  P.poly(sm([902, 1040, 906, 1150, 912, 1244, 922, 1350, 946, 1344, 932, 1244, 926, 1150, 916, 1034]), INK.red, { line: 1.1 });
-  for (const [x, y] of [[879, 1380], [932, 1346]]) for (let k = -2; k <= 2; k++) P.stroke([x + k * 3, y, x + k * 4, y + 18], 0.8, INK.redD);
+  for (let i = 0; i < 18; i += np) { const t = i / 17; P.stroke([790 + t * 220, 918 + Math.sin(t * Math.PI) * 8, 812 + t * 176, 1000], 0.7, PL); }
+  if (LV === 2) {   // a plain linen tie at the waist
+    P.stroke([814, 1000, 900, 1012, 986, 1000], 4, [0.06, 0.12, 0.3, 0], { taper: false });
+    P.stroke([898, 1012, 892, 1060, 896, 1100], 2.4, [0.06, 0.12, 0.3, 0]); P.stroke([904, 1012, 912, 1058, 908, 1094], 2.4, [0.06, 0.12, 0.3, 0]);
+  } else {
+    if (LV === 4) drawWings(P);
+    // the red sash, tied in a knot, its ends falling over the lap
+    P.poly(sm([812, 990, 900, 1004, 988, 990, 990, 1018, 900, 1032, 810, 1018]), INK.red, { line: 1.2 });
+    P.poly(sm([888, 1004, 912, 1004, 920, 1026, 900, 1040, 880, 1026]), INK.redD, { line: 1 });
+    P.poly(sm([884, 1034, 872, 1150, 880, 1240, 866, 1380, 892, 1384, 900, 1240, 896, 1150, 900, 1040]), INK.red, { line: 1.1 });
+    P.poly(sm([902, 1040, 906, 1150, 912, 1244, 922, 1350, 946, 1344, 932, 1244, 926, 1150, 916, 1034]), INK.red, { line: 1.1 });
+    for (const [x, y] of [[879, 1380], [932, 1346]]) for (let k = -2; k <= 2; k++) P.stroke([x + k * 3, y, x + k * 4, y + 18], 0.8, INK.redD);
+  }
   // ---- arms. Her right (our left) lifts a blue lotus to her breast; her left rests on the lion.
   limbC(P, [716, 790], [700, 980], 34, 27, INK.skin, -1);
   limbC(P, [700, 980], [800, 948], 26, 19, INK.skin, 1);
@@ -615,15 +642,22 @@ function drawBody(P, R) {
   for (const [x, len, r] of [[1112, 24, 4.6], [1123, 30, 4.8], [1134, 28, 4.7], [1145, 22, 4.3]]) finger([x, 1086], [x + 1, 1086 + len], r, r * 0.7, true);
   finger([1108, 1066], [1096, 1094], 5.4, 4.4, true);
   for (const x of [1112, 1123, 1134, 1145]) P.stroke([x - 4, 1088, x, 1085, x + 4, 1088], 0.7, [0.4, 0.3, 0.05, 0.05]);
-  P.stroke([1119, 1100, 1128, 1100], 3, INK.gold, { taper: false }); P.dot(1123.5, 1100, 2, INK.blue);
+  if (LV >= 3) { P.stroke([1119, 1100, 1128, 1100], 3, INK.gold, { taper: false }); P.dot(1123.5, 1100, 2, INK.blue); }
   // gold bracelets and armlets with blue inlay
-  for (const [a, b] of [[[788, 932], [792, 966]], [[1104, 1046], [1150, 1048]]]) { P.stroke([...a, ...b], 7, INK.gold, { taper: false }); P.stroke([...a, ...b], 2.4, INK.blue, { taper: false }); }
-  for (const [a, b] of [[[684, 892], [740, 896]], [[1062, 896], [1120, 892]]]) { P.stroke([...a, ...b], 9, INK.gold, { taper: false }); P.stroke([a[0], a[1] - 2, b[0], b[1] - 2], 2.2, INK.red, { taper: false }); }
+  if (LV === 2) { for (const [a, b] of [[[788, 932], [792, 966]], [[1104, 1046], [1150, 1048]]]) for (let k = 0; k <= 6; k++) P.dot(a[0] + (b[0] - a[0]) * k / 6, a[1] + (b[1] - a[1]) * k / 6, 2.6, k % 2 ? INK.blue : INK.blueL); }
+  else {
+    const bw = LV === 4 ? 12 : 7;
+    for (const [a, b] of [[[788, 932], [792, 966]], [[1104, 1046], [1150, 1048]]]) { P.stroke([...a, ...b], bw, INK.gold, { taper: false }); P.stroke([...a, ...b], 2.4, INK.blue, { taper: false }); if (LV === 4) P.stroke([a[0] + 4, a[1] + 3, b[0] + 4, b[1] + 3], 1.6, INK.red, { taper: false }); }
+    for (const [a, b] of [[[684, 892], [740, 896]], [[1062, 896], [1120, 892]]]) { P.stroke([...a, ...b], LV === 4 ? 13 : 9, INK.gold, { taper: false }); P.stroke([a[0], a[1] - 2, b[0], b[1] - 2], 2.2, INK.red, { taper: false }); }
+  }
   // short pleated cape sleeves over the shoulders
   for (const s of [-1, 1]) {
-    const c = 900, pts = sm([c + s * 130, 706, c + s * 196, 728, c + s * 222, 780, c + s * 236, 866, c + s * 202, 876, c + s * 172, 866, c + s * 156, 800]);
+    const c = 900;
+    if (LV === 2) { P.poly(sm([c + s * 130, 706, c + s * 190, 726, c + s * 212, 770, c + s * 218, 820, c + s * 180, 830, c + s * 160, 790]), [0, 0.02, 0.09, 0], { line: 1.4 }); continue; }
+    const pts = sm([c + s * 130, 706, c + s * 196, 728, c + s * 222, 780, c + s * 236, 866, c + s * 202, 876, c + s * 172, 866, c + s * 156, 800]);
     P.poly(pts, INK.linen, { line: 1.4 });
-    for (let k = 0; k < 7; k++) { const t = k / 6; P.stroke([c + s * (150 + t * 40), 716 + t * 10, c + s * (180 + t * 74), 870 - Math.abs(t - 0.5) * 6], 0.7, [0.5, 0.05, 0, 0.1]); }
+    for (let k = 0; k < 7; k++) { const t = k / 6; P.stroke([c + s * (150 + t * 40), 716 + t * 10, c + s * (180 + t * 74), 870 - Math.abs(t - 0.5) * 6], 0.7, PL); }
+    if (LV === 4) P.stroke([c + s * 236, 866, c + s * 202, 876, c + s * 172, 866], 3, INK.gold, { taper: false });
   }
   // ---- the blue lotus she holds
   const lx = 798, ly = 840;
@@ -633,19 +667,26 @@ function drawBody(P, R) {
   // ---- neck
   P.poly(sm(fp([[728, 858], [734, 930], [722, 1000], [930, 1000], [918, 930], [926, 860]])), INK.skin, { line: 1.4 });
   P.poly(sm(fp([[740, 905], [820, 950], [910, 905], [918, 960], [820, 990], [732, 960]])), [0.03, 0.2, 0.02, 0.1], { ko: false, wob: 0.4 });
-  // ---- the broad collar (wesekh): gold, lapis, carnelian, beads and drop pendants
   const cx = 900, cy = 674;
-  const ring = (r0, r1, ink, n) => {
-    const pts = [];
-    for (let i = 0; i <= 40; i++) { const a = Math.PI * i / 40; pts.push(cx - Math.cos(a) * r1, cy + Math.sin(a) * r1 * 0.66); }
-    for (let i = 40; i >= 0; i--) { const a = Math.PI * i / 40; pts.push(cx - Math.cos(a) * r0, cy + Math.sin(a) * r0 * 0.66); }
-    P.poly(pts, ink, { line: 0.9, wob: 0.25 });
-    if (n) for (let i = 0; i <= n; i++) { const a = Math.PI * (0.03 + 0.94 * i / n), rr = (r0 + r1) / 2; P.poly(ellipse(cx - Math.cos(a) * rr, cy + Math.sin(a) * rr * 0.66, (r1 - r0) * 0.32, (r1 - r0) * 0.42, a, 10), i % 2 ? INK.goldL : INK.gold, { wob: 0.1 }); }
-  };
-  ring(54, 76, INK.gold); ring(76, 98, INK.blue, 26); ring(98, 116, INK.red); ring(116, 138, INK.gold, 34); ring(138, 156, INK.blue);
-  for (let i = 0; i <= 38; i++) {
-    const a = Math.PI * (0.02 + 0.96 * i / 38), x = cx - Math.cos(a) * 166, y = cy + Math.sin(a) * 166 * 0.66;
-    P.poly(sm([x - 4, y - 10, x + 4, y - 10, x + 6, y + 6, x, y + 14, x - 6, y + 6]), [INK.gold, INK.red, INK.blue][i % 3], { line: 0.7 });
+  if (LV === 2) {   // an everyday string of faience beads
+    for (let i = 0; i <= 30; i++) { const a = Math.PI * (0.05 + 0.9 * i / 30); P.dot(cx - Math.cos(a) * 70, cy + Math.sin(a) * 70 * 1.6 - 4, 3.2, i % 3 ? INK.blue : INK.goldL); }
+    P.stroke([cx, 782, cx, 806], 1.2, INK.gold, { taper: false });
+  } else {
+    // ---- the broad collar (wesekh): gold, lapis, carnelian, beads and drop pendants
+    const ring = (r0, r1, ink, n) => {
+      const pts = [];
+      for (let i = 0; i <= 40; i++) { const a = Math.PI * i / 40; pts.push(cx - Math.cos(a) * r1, cy + Math.sin(a) * r1 * 0.66); }
+      for (let i = 40; i >= 0; i--) { const a = Math.PI * i / 40; pts.push(cx - Math.cos(a) * r0, cy + Math.sin(a) * r0 * 0.66); }
+      P.poly(pts, ink, { line: 0.9, wob: 0.25 });
+      if (n) for (let i = 0; i <= n; i++) { const a = Math.PI * (0.03 + 0.94 * i / n), rr = (r0 + r1) / 2; P.poly(ellipse(cx - Math.cos(a) * rr, cy + Math.sin(a) * rr * 0.66, (r1 - r0) * 0.32, (r1 - r0) * 0.42, a, 10), i % 2 ? INK.goldL : INK.gold, { wob: 0.1 }); }
+    };
+    ring(54, 76, INK.gold); ring(76, 98, INK.blue, 26); ring(98, 116, INK.red); ring(116, 138, INK.gold, 34); ring(138, 156, INK.blue);
+    if (LV === 4) { ring(156, 172, INK.red, 0); ring(172, 186, INK.gold, 44); }
+    for (let i = 0; i <= 38; i++) {
+      const a = Math.PI * (0.02 + 0.96 * i / 38), x = cx - Math.cos(a) * (LV === 4 ? 196 : 166), y = cy + Math.sin(a) * (LV === 4 ? 196 : 166) * 0.66;
+      P.poly(sm([x - 4, y - 10, x + 4, y - 10, x + 6, y + 6, x, y + 14, x - 6, y + 6]), [INK.gold, INK.red, INK.blue][i % 3], { line: 0.7 });
+    }
+    if (LV === 4) for (const s of [-1, 1]) falconClasp(P, cx + s * 186, cy + 4, s);
   }
   // the crescent moon amulet, as she wears it, hanging at the centre of the collar
   const ax = 900, ay = 822;
@@ -660,10 +701,14 @@ const HAIR_OUT = [[650, 655], [622, 640], [602, 585], [594, 520], [597, 440], [6
 const FACE = [[668, 478], [660, 540], [660, 610], [662, 690], [666, 780], [680, 846], [712, 893], [760, 924], [822, 936], [880, 926], [926, 895], [960, 846], [980, 775], [986, 700], [990, 620], [985, 545], [966, 478], [930, 425], [880, 393], [825, 384], [770, 392], [722, 418], [688, 448]];
 function fl(P, L, ink, o) { P.poly(sm(fp(L)), ink, Object.assign({ wob: 0.3 }, o || {})); }
 function fs(P, L, w, ink, o) { P.stroke(spline(fp(L), false, 4), w, ink || K, Object.assign({ wob: 0.25 }, o || {})); }
+const LF = [0.5, 0.42, 0.16, 0.04];   // warm sepia for the drawing of the face
 function drawFace(P, R) {
-  fl(P, FACE, INK.skin, { line: 1.6 });
+  fl(P, FACE, INK.skin, { line: 1.15, li: LF });
+  // soft light on the forehead, the bridge of the nose and the apples of the cheeks is left as paper-thin ink;
+  // the rest of the face is modelled around it
+  fl(P, [[700, 470], [760, 420], [880, 410], [950, 470], [940, 560], [880, 600], [760, 600], [690, 560]], [0, 0.03, 0.02, 0.01], { ko: false });
   // modelling: the turned side of the face, jaw, temples, the sockets of the eyes
-  fl(P, [[935, 430], [975, 500], [990, 620], [984, 720], [960, 805], [915, 885], [930, 820], [950, 720], [955, 610], [945, 500]], [0.02, 0.16, 0.02, 0.12], { ko: false });
+  fl(P, [[935, 430], [975, 500], [990, 620], [984, 720], [960, 805], [915, 885], [930, 820], [950, 720], [955, 610], [945, 500]], [0.0, 0.13, 0.03, 0.08], { ko: false });
   fl(P, [[690, 790], [735, 875], [790, 915], [760, 880], [722, 830]], [0.02, 0.15, 0.02, 0.08], { ko: false });
   fl(P, [[668, 520], [664, 640], [680, 740], [690, 660], [684, 560]], [0.02, 0.12, 0.02, 0.06], { ko: false });
   fl(P, [[790, 606], [778, 690], [768, 742], [784, 744], [796, 690], [804, 610]], [0.02, 0.16, 0.0, 0.08], { ko: false });
@@ -671,61 +716,62 @@ function drawFace(P, R) {
   fl(P, [[782, 776], [812, 786], [846, 774], [830, 792], [800, 794]], [0.04, 0.2, 0.0, 0.08], { ko: false });
   fl(P, [[770, 868], [820, 880], [870, 866], [850, 900], [800, 902]], [0.02, 0.14, 0.0, 0.08], { ko: false });
   // the warmth in her cheeks
-  for (let k = 0; k < 3; k++) { P.poly(ellipse(...F(726, 712), 20 - k * 6, 14 - k * 4, -0.2, 24), [0, 0.05, 0.0, 0], { ko: false, wob: 0.5 }); P.poly(ellipse(...F(916, 716), 20 - k * 6, 14 - k * 4, 0.2, 24), [0, 0.05, 0.0, 0], { ko: false, wob: 0.5 }); }
+  const bl = LV === 4 ? [0, 0.08, 0.02, 0] : LV === 2 ? [0, 0.04, 0, 0] : [0, 0.06, 0.01, 0];
+  for (let k = 0; k < 4; k++) { P.poly(ellipse(...F(722, 716), 26 - k * 6, 20 - k * 4.5, -0.2, 28), bl, { ko: false, wob: 0.5 }); P.poly(ellipse(...F(920, 720), 26 - k * 6, 20 - k * 4.5, 0.2, 28), bl, { ko: false, wob: 0.5 }); }
   // brows, light and arched
-  fs(P, [[676, 588], [700, 576], [734, 573], [766, 583]], 3.0, [0.82, 0.25, 0.1, 0.1], { tmin: 0.3 });
-  fs(P, [[858, 596], [892, 585], [928, 588], [956, 602]], 3.0, [0.82, 0.25, 0.1, 0.1], { tmin: 0.3 });
+  fs(P, [[676, 588], [700, 576], [734, 573], [766, 583]], 3.8, [0.58, 0.32, 0.12, 0.08], { tmin: 0.25 });
+  fs(P, [[858, 596], [892, 585], [928, 588], [956, 602]], 3.8, [0.58, 0.32, 0.12, 0.08], { tmin: 0.25 });
   // eyelids under the brows, a breath of malachite
-  fl(P, [[688, 606], [722, 590], [758, 604], [745, 606], [722, 600], [700, 608]], [0, 0, 0.2, 0.2], { ko: false });
-  fl(P, [[858, 616], [898, 598], [938, 614], [918, 612], [896, 607], [872, 616]], [0, 0, 0.2, 0.2], { ko: false });
+  if (LV >= 3) {
+    const mal = LV === 4 ? [0, 0, 0.36, 0.4] : [0, 0, 0.2, 0.2];
+    fl(P, LV === 4 ? [[684, 608], [722, 584], [764, 600], [745, 606], [722, 600], [700, 610]] : [[688, 606], [722, 590], [758, 604], [745, 606], [722, 600], [700, 608]], mal, { ko: false });
+    fl(P, LV === 4 ? [[856, 618], [898, 592], [944, 612], [918, 612], [896, 607], [872, 618]] : [[858, 616], [898, 598], [938, 614], [918, 612], [896, 607], [872, 616]], mal, { ko: false });
+  }
   // eyes: whites, dark brown irises, catch lights, kohl line drawn out to the temple
   for (const E of [
     { up: [[688, 619], [705, 609], [725, 606], [745, 609], [758, 618]], lo: [[758, 618], [740, 624], [718, 625], [698, 622]], c: [724, 615], wing: [[688, 617], [676, 613], [664, 607]], crease: [[690, 601], [725, 590], [756, 601]], bag: [[696, 636], [725, 643], [752, 635]] },
     { up: [[858, 626], [875, 617], [897, 614], [918, 617], [935, 625]], lo: [[935, 625], [915, 631], [893, 632], [872, 630]], c: [894, 622], wing: [[935, 624], [948, 621], [961, 615]], crease: [[862, 611], [898, 599], [936, 611]], bag: [[866, 643], [895, 649], [926, 643]] },
   ]) {
     fl(P, E.up.concat(E.lo), INK.eyeW, { wob: 0.1 });
-    P.poly(ellipse(...F(E.c[0], E.c[1]), 6.2, 6.2, 0, 20), INK.iris, { wob: 0.1 });
+    P.poly(ellipse(...F(E.c[0], E.c[1]), 7.2, 7.2, 0, 22), [0.5, 0.5, 0.45, 0], { wob: 0.1 });
+    P.poly(ellipse(...F(E.c[0], E.c[1] + 1), 5.2, 5.2, 0, 20), [0.62, 0.55, 0.3, 0], { ko: false, wob: 0.1 });
+    P.outline(ellipse(...F(E.c[0], E.c[1]), 7.2, 7.2, 0, 22), 0.8, [0.8, 0.3, 0.1, 0]);
     P.poly(ellipse(...F(E.c[0], E.c[1]), 2.8, 2.8, 0, 14), K, { wob: 0 });
-    P.poly(ellipse(...F(E.c[0] + 3, E.c[1] - 3), 1.1, 1.1, 0, 8), [0, 0, 0, 0], { wob: 0 });
-    fs(P, E.up, 2.6, K, { tmin: 0.5 });
-    fs(P, [E.up[0], ...E.wing.slice(1)], 2.2, K, { tmin: 0.2 });
-    fs(P, [E.up[E.up.length - 1], ...E.lo, E.up[0]], 1.3, K, { tmin: 0.3 });
-    fs(P, E.crease, 1.0, [0.6, 0.3, 0, 0]);
-    fs(P, E.bag, 0.9, [0.4, 0.35, 0.05, 0.05]);
+    P.poly(ellipse(...F(E.c[0] + 3.5, E.c[1] - 3.5), 1.5, 1.5, 0, 10), [0, 0, 0, 0], { wob: 0 });
+    P.poly(ellipse(...F(E.c[0] - 3, E.c[1] + 3), 0.8, 0.8, 0, 8), [0, 0, 0, 0], { wob: 0 });
+    fs(P, E.up, LV === 2 ? 1.8 : LV === 4 ? 3.2 : 2.6, K, { tmin: 0.5 });
+    if (LV >= 3) { const w = E.wing.slice(1); if (LV === 4) { const l = w[w.length - 1], q = w[w.length - 2]; w.push([l[0] + (l[0] - q[0]) * 1.4, l[1] + (l[1] - q[1]) * 1.4]); } fs(P, [E.up[0], ...w], LV === 4 ? 3 : 2.2, K, { tmin: 0.2 }); }
+    fs(P, [E.up[E.up.length - 1], ...E.lo, E.up[0]], LV === 2 ? 0.9 : LV === 4 ? 2 : 1.3, K, { tmin: 0.3 });
+    fs(P, E.crease, 0.9, LF);
+    fs(P, E.bag, 0.7, [0.25, 0.3, 0.05, 0.03]);
   }
   // laughter lines at the outer corners
   fs(P, [[946, 630], [958, 638], [966, 650]], 0.8, [0.4, 0.3, 0, 0]); fs(P, [[944, 636], [952, 650]], 0.7, [0.4, 0.3, 0, 0]);
   fs(P, [[680, 626], [670, 636]], 0.7, [0.4, 0.3, 0, 0]);
   // nose: bridge, the round tip, wings and nostrils
   fs(P, [[794, 640], [788, 690], [780, 728]], 0.8, [0.3, 0.3, 0.05, 0.05]);
-  fs(P, [[772, 730], [758, 748], [764, 766], [782, 774]], 1.5, K);
-  fs(P, [[856, 724], [870, 742], [864, 762], [846, 770]], 1.5, K);
-  fs(P, [[790, 772], [812, 780], [834, 770]], 1.3, K);
-  P.poly(ellipse(...F(792, 767), 5, 2.4, 0.2, 12), [0.75, 0.55, 0.1, 0], { wob: 0.1 });
-  P.poly(ellipse(...F(836, 764), 5, 2.4, -0.2, 12), [0.75, 0.55, 0.1, 0], { wob: 0.1 });
+  fs(P, [[772, 730], [758, 748], [764, 766], [782, 774]], 1.4, LF);
+  fs(P, [[856, 724], [870, 742], [864, 762], [846, 770]], 1.4, LF);
+  fs(P, [[790, 772], [812, 780], [834, 770]], 1.1, LF);
+  P.poly(ellipse(...F(792, 767), 4.6, 2.2, 0.2, 12), [0.55, 0.6, 0.15, 0], { wob: 0.1 });
+  P.poly(ellipse(...F(836, 764), 4.6, 2.2, -0.2, 12), [0.55, 0.6, 0.15, 0], { wob: 0.1 });
   fs(P, [[796, 742], [812, 752], [830, 744]], 0.9, [0.25, 0.3, 0.05, 0.05]);
   // the smile: lips, the upper teeth, the dark of the mouth
-  fl(P, [[722, 790], [768, 840], [820, 856], [878, 844], [912, 798], [884, 830], [820, 848], [764, 832]], INK.lip, { line: 1.0 });
-  fl(P, [[722, 790], [760, 797], [790, 795], [812, 798], [836, 794], [872, 796], [912, 798], [886, 801], [812, 803], [752, 803]], INK.lip, { line: 0.8 });
-  fl(P, [[752, 803], [812, 802], [886, 800], [900, 810], [882, 828], [820, 846], [764, 832], [746, 812]], [0.55, 0.6, 0.05, 0.05]);
-  fl(P, [[756, 804], [812, 803], [884, 801], [890, 811], [870, 826], [830, 832], [790, 831], [764, 822]], INK.teeth, { line: 0.9 });
-  for (const x of [786, 808, 830, 852, 872]) fs(P, [[x, 805], [x + 1, 817], [x - 1, 830 - Math.abs(x - 820) * 0.12]], 0.6, [0.35, 0.2, 0.1, 0.05]);
-  fs(P, [[764, 824], [790, 832], [830, 833], [868, 826], [888, 813]], 1.0, K);
-  fs(P, [[722, 790], [752, 803], [812, 802], [886, 800], [912, 798]], 1.5, K);
-  fs(P, [[790, 864], [820, 870], [852, 862]], 1.0, [0.3, 0.45, 0.05, 0.05]);
+  const LIP = LV === 2 ? [0, 0.44, 0.3, 0.04] : LV === 4 ? [0, 0.84, 0.22, 0.05] : INK.lip;
+  fl(P, [[722, 790], [768, 834], [820, 849], [878, 838], [912, 798], [884, 826], [820, 842], [764, 828]], LIP, { line: 0.8, li: LF });
+  fl(P, [[722, 790], [760, 797], [790, 795], [812, 798], [836, 794], [872, 796], [912, 798], [886, 801], [812, 803], [752, 803]], LIP, { line: 0.8 });
+  fl(P, [[752, 803], [812, 802], [886, 800], [900, 810], [882, 826], [820, 841], [764, 828], [746, 812]], [0.5, 0.6, 0.08, 0.04]);
+  fl(P, [[756, 804], [812, 803], [884, 801], [890, 811], [870, 826], [830, 832], [790, 831], [764, 822]], [0, 0.03, 0.11, 0.01], { line: 0.6, li: LF });
+  fl(P, [[760, 806], [812, 805], [882, 803], [884, 808], [812, 809], [762, 810]], [0, 0.18, 0.08, 0], { ko: false });
+  for (const x of [786, 808, 830, 852, 872]) fs(P, [[x, 806], [x + 1, 816], [x - 1, 828 - Math.abs(x - 820) * 0.12]], 0.45, [0.2, 0.15, 0.1, 0.03]);
+  fs(P, [[764, 824], [790, 832], [830, 833], [868, 826], [888, 813]], 0.8, LF);
+  fs(P, [[722, 790], [752, 803], [812, 802], [886, 800], [912, 798]], 1.2, [0.6, 0.6, 0.15, 0.04]);
+  fs(P, [[790, 858], [820, 864], [852, 856]], 0.9, [0.2, 0.35, 0.05, 0.04]);
   // the laughing folds from nose to mouth, and the dimple of the chin
-  fs(P, [[748, 738], [724, 770], [710, 806], [714, 838]], 1.4, [0.35, 0.4, 0.05, 0.08]);
-  fs(P, [[872, 738], [902, 768], [918, 804], [920, 836]], 1.4, [0.35, 0.4, 0.05, 0.08]);
+  fs(P, [[748, 738], [724, 770], [710, 806], [714, 838]], 1.1, [0.2, 0.32, 0.05, 0.05]);
+  fs(P, [[872, 738], [902, 768], [918, 804], [920, 836]], 1.1, [0.2, 0.32, 0.05, 0.05]);
   fs(P, [[796, 895], [822, 900], [848, 893]], 0.9, [0.3, 0.35, 0.05, 0.05]);
-  // earrings: large gold discs with blue and red, as worn at court
-  for (const [ex, ey] of [[652, 722], [1004, 732]]) {
-    const c = F(ex, ey);
-    P.stroke([c[0], c[1] - 18, c[0], c[1] - 8], 2, INK.gold, { taper: false });
-    P.poly(ellipse(c[0], c[1], 14, 14, 0, 28), INK.gold, { line: 1.1 });
-    P.poly(ellipse(c[0], c[1], 9, 9, 0, 24), INK.red, { line: 0.6 });
-    P.poly(ellipse(c[0], c[1], 4.5, 4.5, 0, 16), INK.blue, { wob: 0 });
-    for (let k = -2; k <= 2; k++) { P.stroke([c[0] + k * 5, c[1] + 12, c[0] + k * 6, c[1] + 26], 1.2, INK.gold, { taper: false }); P.dot(c[0] + k * 6, c[1] + 28, 2.2, k % 2 ? INK.blue : INK.red); }
-  }
+
 }
 
 /* ---------------------------------------------------------------- hair */
@@ -796,6 +842,62 @@ function drawDiadem(P, R) {
     P.poly(sm([e[0] - 8, e[1], e[0], e[1] + 22, e[0] + 8, e[1]]), INK.blue, { line: 0.9 });
   }
 }
+
+/* ---------------------------------------------------------------- regalia (level IV) */
+function falconClasp(P, x, y, s) {
+  // the falcon-head terminals that close a broad collar at the shoulders
+  P.poly(sm([x - s * 4, y - 14, x + s * 14, y - 18, x + s * 26, y - 8, x + s * 30, y + 4, x + s * 18, y + 6, x + s * 10, y + 18, x - s * 6, y + 14]), INK.gold, { line: 1.1 });
+  P.poly(sm([x + s * 24, y - 6, x + s * 34, y - 2, x + s * 26, y + 4]), INK.goldS, { line: 0.8 });
+  P.dot(x + s * 16, y - 8, 2.6, K);
+  P.stroke([x + s * 16, y - 6, x + s * 12, y + 4, x + s * 6, y + 8], 1.2, INK.blue);
+}
+function drawWings(P) {
+  // a feathered wrap of gold, lapis and carnelian folded round the hips, the wings of the vulture goddess
+  for (const s of [-1, 1]) {
+    const X = (x) => 900 + s * (900 - x);
+    const outer = [[812, 1010], [770, 1056], [752, 1120], [762, 1186], [808, 1226], [880, 1230], [898, 1196], [892, 1120], [862, 1060]];
+    P.poly(sm(flat(outer.map(([x, y]) => [X(x), y]))), INK.gold, { line: 1.3 });
+    const rows = [[INK.blue, 0.0], [INK.red, 0.25], [INK.blue, 0.5], [INK.red, 0.72]];
+    for (const [ink, f] of rows) {
+      const pts = [];
+      for (let i = 0; i <= 10; i++) { const t = i / 10, x = 812 - f * 40 + t * (90 + f * 30), y = 1030 + f * 150 + Math.sin(t * Math.PI) * 20 * (1 - f) + t * 40; pts.push(X(x), y); }
+      P.stroke(pts, 10, ink, { taper: false, wob: 0.3 });
+      for (let i = 1; i < 10; i++) P.stroke([pts[i * 2], pts[i * 2 + 1] - 5, pts[i * 2], pts[i * 2 + 1] + 5], 0.9, K, { taper: false });
+    }
+    for (let i = 0; i < 7; i++) { const t = i / 6, x = 790 + t * 96, y = 1214 + Math.sin(t * Math.PI) * 10; P.poly(sm([X(x) - 7, y, X(x), y + 22, X(x) + 7, y]), i % 2 ? INK.gold : INK.blue, { line: 0.8 }); }
+  }
+}
+function drawCrown(P, R) {
+  // the modius: a low gold crown ringed with cobras, carrying two tall plumes and a sun disc
+  const b0 = F(744, 330), b1 = F(900, 332), mid = F(822, 318);
+  const h = 30;
+  P.poly([b0[0], b0[1] + 4, b1[0], b1[1] + 4, b1[0] + 4, b1[1] - h, b0[0] - 4, b0[1] - h], INK.gold, { line: 1.4 });
+  P.stroke([b0[0], b0[1] - h + 8, b1[0], b1[1] - h + 8], 3, INK.red, { taper: false });
+  for (let k = 0; k < 9; k++) { const x = b0[0] + (b1[0] - b0[0]) * (k + 0.5) / 9, y = b0[1] - 4; P.poly(sm([x - 3.4, y + 4, x - 3.4, y - 10, x, y - 15, x + 3.4, y - 10, x + 3.4, y + 4]), INK.goldS, { line: 0.6 }); P.dot(x, y - 9, 1.4, INK.blue); }
+  const top = mid[1] - h - 6;
+  for (const [dx, ink] of [[-10, INK.blue], [10, INK.red]]) {
+    const x = mid[0] + dx;
+    P.poly(sm([x - 8, top, x - 11, top - 56, x - 6, top - 92, x, top - 104, x + 6, top - 92, x + 11, top - 56, x + 8, top]), ink, { line: 1.3 });
+    for (let k = 1; k < 7; k++) P.stroke([x - 9, top - k * 14, x, top - k * 14 - 5, x + 9, top - k * 14], 0.9, K);
+  }
+  P.poly(ellipse(mid[0], top - 8, 15, 15, 0, 28), INK.red, { line: 1.2 });
+  for (const s of [-1, 1]) P.poly(sm([mid[0] + s * 18, top + 6, mid[0] + s * 30, top - 8, mid[0] + s * 26, top - 22, mid[0] + s * 16, top - 6]), INK.gold, { line: 0.9 });
+  P.poly(sm([mid[0] - 5, b0[1] + 14, mid[0] - 4, b0[1] - 6, mid[0], b0[1] - 14, mid[0] + 4, b0[1] - 6, mid[0] + 5, b0[1] + 14]), INK.gold, { line: 0.9 });
+}
+
+function drawEarrings(P) {
+  // earrings: large gold discs with blue and red, as worn at court
+  for (const [ex, ey] of [[652, 722], [1004, 732]]) {
+    const c = F(ex, ey);
+    if (LV === 2) { P.outline(ellipse(c[0], c[1] - 6, 6, 7, 0, 18), 1.8, INK.gold); continue; }
+    P.stroke([c[0], c[1] - 18, c[0], c[1] - 8], 2, INK.gold, { taper: false });
+    P.poly(ellipse(c[0], c[1], 14, 14, 0, 28), INK.gold, { line: 1.1 });
+    P.poly(ellipse(c[0], c[1], 9, 9, 0, 24), INK.red, { line: 0.6 });
+    P.poly(ellipse(c[0], c[1], 4.5, 4.5, 0, 16), INK.blue, { wob: 0 });
+    const dl = LV === 4 ? 40 : 26;
+    for (let k = -2; k <= 2; k++) { P.stroke([c[0] + k * 5, c[1] + 12, c[0] + k * 6, c[1] + dl], 1.2, INK.gold, { taper: false }); P.dot(c[0] + k * 6, c[1] + dl + 2, LV === 4 ? 3 : 2.2, k % 2 ? INK.blue : INK.red); }
+  }
+}
 /* ======================================================================
    THE SHEET: tile pyramid, manual camera
    ====================================================================== */
@@ -822,7 +924,8 @@ function replay(ops, a, b, x0, y0, x1, y1) {
   }
 }
 const LMAX = 7;
-const tiles = new Map();
+let tiles = new Map();
+const TILESL = {}, OPSL = {};
 let frameNo = 0, MAXT = 700;
 const lvlP = (L) => 0.25 * Math.pow(2, L);
 const tkey = (L, x, y, v) => ((L * 1024 + x) * 1024 + y) * 4 + v;
@@ -1000,11 +1103,19 @@ function frame() {
 function start() {
   resize();
   cam.x = SW / 2; cam.y = SH / 2; cam.z = fitZ();
-  OPS = [0, 1, 2].map((v) => { const P = new Pen(2718, v, 1); drawSheet(P, mulberry(31)); return P.ops; });
-  for (const l of [0, 1]) { const pl = lvlP(l); for (let ty = 0; ty * TS < SH * pl; ty++) for (let tx = 0; tx * TS < SW * pl; tx++) bakeTile(l, tx, ty, 0); }
+  setLevel(3);
   PRINT0 = now() + 0.3;
   requestAnimationFrame(frame);
 }
+
+// costume levels: each keeps its own display lists and tile cache, so switching back is instant
+function setLevel(lv) {
+  if (!OPSL[lv]) { LV = lv; OPSL[lv] = [0, 1, 2].map((v) => { const P = new Pen(2718, v, 1); drawSheet(P, mulberry(31)); return P.ops; }); TILESL[lv] = new Map(); }
+  LV = lv; OPS = OPSL[lv]; tiles = TILESL[lv];
+  for (const l of [0, 1]) { const pl = lvlP(l); for (let ty = 0; ty * TS < SH * pl; ty++) for (let tx = 0; tx * TS < SW * pl; tx++) if (!tiles.has(tkey(l, tx, ty, 0))) bakeTile(l, tx, ty, 0); }
+  dirty = true;
+}
+for (const r of document.querySelectorAll('#lv input')) r.addEventListener('change', () => { if (r.checked) setLevel(+r.value); });
 start();
 </script>
 </body>

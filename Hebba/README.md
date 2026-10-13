@@ -2,7 +2,7 @@
 
 A portrait drawn entirely in code, in the same simulated risograph technique as `Egypt/`. It shows Hebba as a princess of the New Kingdom (c. 1550 to 1069 BCE), seated on a gilded throne inside a finished Egyptian frame.
 
-- **File:** `index.html`, **73905 bytes**. It is a single file with Canvas 2D only: no images, fonts, libraries or network requests beyond the page itself.
+- **File:** `index.html`, **76676 bytes**. It is a single file with Canvas 2D only: no images, fonts, libraries or network requests beyond the page itself.
 - **No background:** only the paper stock shows behind the figure and throne.
 - **Controls:** manual only. Drag to pan (with inertia), wheel or pinch to zoom, `+` / `-` to zoom, arrow keys to pan, and `0` to fit the sheet. The camera never moves by itself.
 
@@ -12,7 +12,7 @@ A switch in the top-left corner changes her dress. Her face, body and pose are i
 
 | Level | Name | What she wears |
 | :--- | :--- | :--- |
-| II | Everyday | Plain linen sheath with a simple tie, a string of faience beads with her crescent amulet, small gold hoops, bead bracelets, light kohl, papyrus sandals, no diadem |
+| II | Everyday | Modelled on New Kingdom banquet paintings (tomb of Nakht): a linen fillet striped in blue with a lotus bud at the temple, a fringed shawl over one shoulder, a bead girdle, an opaque linen gown with fringed hem, several strands of small beads at the throat with her crescent amulet, large gold disc earrings, striped bead cuffs and armlets, a light kohl wing, bare feet |
 | III | Court | Pleated linen gown with cape sleeves and red sash, broad collar, diadem with lotus and streamers, gold disc earrings, gold bracelets and armlets, kohl and malachite |
 | IV | Regalia | Adds a gold modius crown with cobras, twin plumes and sun disc; a larger broad collar with falcon-head clasps; a feathered vulture-wing wrap; gold-threaded pleats; heavier jewellery; ceremonial makeup with a long kohl wing, strong malachite, deep red lips and cheeks |
 

@@ -1,0 +1,1053 @@
+<!doctype html>
+<!--
+  THE MUSICIAN OF NAKHT
+  A figure drawn entirely in code as a simulated four-ink risograph print, after the
+  banquet musicians painted in the tomb of Nakht at Thebes (18th Dynasty, c. 1400 BCE).
+  She is an invented figure in the tomb's own conventions, not a portrait of anyone.
+  Inks: Kohl Black, Red Ochre, Gold Ochre, Egyptian Blue (the painter's palette of the period).
+  No images, no fonts, no libraries, no network. Canvas 2D only.
+  Costume switch (top left): I dancer, II sheer gown, III linen dress, IV festival dress, V royal regalia.
+  Controls: drag to pan, wheel or pinch to zoom, + / - zoom, arrow keys pan, 0 fits the sheet.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<link rel="icon" href="data:,">
+<title>The Musician of Nakht</title>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#2a2622;overscroll-behavior:none;-webkit-user-select:none;user-select:none}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+#c:active{cursor:grabbing}
+#lv{position:fixed;top:max(14px,env(safe-area-inset-top));left:max(14px,env(safe-area-inset-left));display:flex;gap:2px;padding:4px;background:#f4ecda;border:1px solid #2a2629;box-shadow:0 0 0 3px #f4ecda,0 0 0 4px #c4482f,0 8px 22px rgba(0,0,0,.4);font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;color:#2a2629;z-index:2}
+#lv label{position:relative;display:flex;flex-direction:column;align-items:center;min-width:56px;padding:6px 8px 5px;cursor:pointer;line-height:1.1}
+#lv input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+#lv b{font-weight:400;font-size:19px;letter-spacing:.06em}
+#lv small{font-variant:small-caps;text-transform:lowercase;letter-spacing:.1em;font-size:11px;color:#245ca8}
+#lv label:has(input:checked){background:#e8aa34}
+#lv label:has(input:focus-visible){outline:2px solid #245ca8;outline-offset:1px}
+@media (max-width:440px){#lv label{min-width:42px;padding:5px 4px 4px}#lv b{font-size:16px}#lv small{font-size:9px;letter-spacing:.04em}}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="lv" role="radiogroup" aria-label="Costume">
+<label><input type="radio" name="lv" value="1" id="lv1"><b>I</b><small>Dancer</small></label>
+<label><input type="radio" name="lv" value="2" id="lv2"><b>II</b><small>Sheer</small></label>
+<label><input type="radio" name="lv" value="3" id="lv3" checked><b>III</b><small>Linen</small></label>
+<label><input type="radio" name="lv" value="4" id="lv4"><b>IV</b><small>Festival</small></label>
+<label><input type="radio" name="lv" value="5" id="lv5"><b>V</b><small>Royal</small></label>
+</div>
+<script>
+'use strict';
+/* ======================================================================
+   1. PRESS: inks, paper, seeded randomness, noise
+   ====================================================================== */
+const TAU = Math.PI * 2, D2R = Math.PI / 180, C30 = Math.cos(Math.PI / 6);
+// Four spot inks. a = screen angle (deg), o = misregistration of the drum (sheet units).
+const INKS = [
+  { n: 'Kohl Black',    hex: '#2a2629', c: [42, 38, 41],   a: 45, o: [0, 0] },
+  { n: 'Red Ochre',     hex: '#c4482f', c: [196, 72, 47],  a: 75, o: [0.9, -0.55] },
+  { n: 'Gold Ochre',    hex: '#e8aa34', c: [232, 170, 52], a: 0,  o: [-0.65, 0.8] },
+  { n: 'Egyptian Blue', hex: '#245ca8', c: [36, 92, 168],  a: 15, o: [0.55, 0.95] },
+];
+const PAPER = [244, 236, 218];
+const CELL = 2.1;                       // halftone cell, sheet units
+const ABS = INKS.map(k => k.c.map(v => 1 - v / 255));
+
+function mulberry(a) {
+  return function () {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function hash3(a, b, c) {
+  let h = (Math.imul(a | 0, 374761393) + Math.imul(b | 0, 668265263) + Math.imul(c | 0, 1442695041)) | 0;
+  h = Math.imul(h ^ h >>> 13, 1274126177); h ^= h >>> 16;
+  return h >>> 0;
+}
+
+// Tileable value noise, 256 x 256, normalised to 0..1. Used for paper grain, ink density and dropout.
+const NS = 256, NM = 255, NZ = new Float32Array(NS * NS);
+(function () {
+  const r = mulberry(1979);
+  const oct = [[64, 0.34], [32, 0.24], [16, 0.17], [8, 0.12], [4, 0.08], [2, 0.05]];
+  for (const [P, w] of oct) {
+    const L = NS / P, g = new Float32Array(L * L);
+    for (let i = 0; i < g.length; i++) g[i] = r();
+    for (let y = 0; y < NS; y++) {
+      const gy = y / P, y0 = Math.floor(gy), fy = gy - y0, sy = fy * fy * (3 - 2 * fy);
+      for (let x = 0; x < NS; x++) {
+        const gx = x / P, x0 = Math.floor(gx), fx = gx - x0, sx = fx * fx * (3 - 2 * fx);
+        const a = g[(y0 % L) * L + x0 % L], b = g[(y0 % L) * L + (x0 + 1) % L];
+        const c = g[((y0 + 1) % L) * L + x0 % L], d = g[((y0 + 1) % L) * L + (x0 + 1) % L];
+        NZ[y * NS + x] += w * (a + (b - a) * sx + (c + (d - c) * sx - a - (b - a) * sx) * sy);
+      }
+    }
+  }
+  let lo = 1e9, hi = -1e9;
+  for (const v of NZ) { lo = Math.min(lo, v); hi = Math.max(hi, v); }
+  for (let i = 0; i < NZ.length; i++) NZ[i] = (NZ[i] - lo) / (hi - lo);
+})();
+function nz(x, y) {
+  const xi = Math.floor(x), yi = Math.floor(y), fx = x - xi, fy = y - yi;
+  const x0 = xi & NM, y0 = yi & NM, x1 = (x0 + 1) & NM, y1 = (y0 + 1) & NM;
+  const a = NZ[y0 * NS + x0], b = NZ[y0 * NS + x1], c = NZ[y1 * NS + x0], d = NZ[y1 * NS + x1];
+  const t = a + (b - a) * fx;
+  return t + (c + (d - c) * fx - t) * fy;
+}
+const COS = new Float32Array(1024);
+for (let i = 0; i < 1024; i++) COS[i] = Math.cos(i / 1024 * TAU);
+
+/* ======================================================================
+   2. SEPARATIONS -> HALFTONE
+   Coverage for the four inks is painted as greyscale into two canvases:
+     A.rgb = Lapis, Carnelian, Ochre      B.r = Turquoise, B.g = object mask
+   A knock-out fill paints every channel (so it erases what is behind it);
+   an overprint uses 'lighter' on only its own channels.
+   shade() turns those separations into a printed sheet: per-ink rotated
+   amplitude-modulated dot screens with jitter, drum misregistration,
+   uneven density, dropout in solids, multiply over grained cream paper.
+   ====================================================================== */
+function shade(A, B, wA, m, out, w, h, ox, oy, p, sprite, alpha) {
+  const inv = 1 / p, cpx = CELL * p;
+  const dm = cpx < 1.6 ? 0 : cpx > 3.4 ? 1 : (cpx - 1.6) / 1.8;   // dots vs. averaged tone
+  const K = Math.max(1, cpx * 0.6);                                 // dot edge sharpness
+  const ca = [], sa = [], sx = [], sy = [];
+  for (let k = 0; k < 4; k++) {
+    const a = INKS[k].a * D2R;
+    ca[k] = Math.cos(a) / CELL; sa[k] = Math.sin(a) / CELL;
+    sx[k] = Math.round(INKS[k].o[0] * p); sy[k] = Math.round(INKS[k].o[1] * p);
+  }
+  const o = out.data, ow = sprite ? w * 2 : w;
+  for (let j = 0; j < h; j++) {
+    const wy = oy + (j + 0.5) * inv;
+    for (let i = 0; i < w; i++) {
+      const wx = ox + (i + 0.5) * inv;
+      let r = 1, g = 1, b = 1, any = 0;
+      if (sprite) {   // most of a sprite's box is empty: skip it fast
+        const q0 = (j * ow + i) * 4, mk0 = B[((j + m) * wA + i + m) * 4 + 1];
+        let e = mk0;
+        for (let k = 0; k < 4 && !e; k++) { const idx = ((j + m - sy[k]) * wA + (i + m - sx[k])) * 4; e = k < 3 ? A[idx + k] > 2 : B[idx] > 2; }
+        if (!e) { o[q0 + 3] = 0; o[q0 + w * 4 + 3] = 0; continue; }
+      }
+      const n1 = nz(wx * 0.045, wy * 0.045), n2 = nz(wx * 0.045 + 61, wy * 0.045 + 23);
+      for (let k = 0; k < 4; k++) {
+        const idx = ((j + m - sy[k]) * wA + (i + m - sx[k])) * 4;
+        let c = k < 3 ? A[idx + k] : B[idx];
+        if (c < 3) continue;
+        c = c / 255 * alpha;
+        // uneven ink laydown across the drum
+        c *= 0.88 + 0.22 * (k === 0 ? n1 : k === 1 ? n2 : k === 2 ? 1 - n1 : 1 - n2);
+        let cc = c;
+        if (dm > 0) {
+          const u = wx * ca[k] + wy * sa[k], v = wy * ca[k] - wx * sa[k];
+          const iu = Math.floor(u + 0.5), iv = Math.floor(v + 0.5);
+          const hh = hash3(iu, iv, k);
+          const fu = u - iu - ((hh & 255) / 255 - 0.5) * 0.18;
+          const fv = v - iv - (((hh >>> 8) & 255) / 255 - 0.5) * 0.18;
+          const s = 0.5 + 0.25 * (COS[(fu * 1024 | 0) & 1023] + COS[(fv * 1024 | 0) & 1023]);
+          const cj = c * (1 + (((hh >>> 16) & 255) / 255 - 0.5) * 0.16) * 1.1 - 0.035;
+          let d = (cj - (1 - s)) * K + 0.5;
+          d = d < 0 ? 0 : d > 1 ? 1 : d;
+          if (c > 0.95) d = 1;
+          cc = c + (d - c) * dm;
+        }
+        if (c > 0.6) {           // dropout: the drum starves in big solids
+          const q = nz(wx * 0.5 + k * 97, wy * 0.5 + k * 13) * 0.55 + nz(wx * 2.4 + k * 7, wy * 2.4 + k * 41) * 0.45;
+          const lim = 0.36 * (c - 0.6) / 0.4;
+          if (q < lim) cc *= 0.15 + 0.85 * (q / lim) * (q / lim);
+        }
+        if (cc <= 0) continue;
+        const a = ABS[k];
+        r *= 1 - cc * a[0]; g *= 1 - cc * a[1]; b *= 1 - cc * a[2]; any = 1;
+      }
+      const pg = 0.955 + 0.045 * nz(wx * 1.9, wy * 1.9) + 0.03 * (nz(wx * 0.21 + 90, wy * 0.21 + 30) - 0.5);
+      if (!sprite) {
+        const q = (j * ow + i) * 4;
+        o[q] = PAPER[0] * pg * r; o[q + 1] = PAPER[1] * pg * g; o[q + 2] = PAPER[2] * pg * b; o[q + 3] = 255;
+      } else {
+        const mk = B[((j + m) * wA + i + m) * 4 + 1] / 255 * alpha;
+        const q = (j * ow + i) * 4, q2 = q + w * 4;
+        o[q] = PAPER[0] * pg * r; o[q + 1] = PAPER[1] * pg * g; o[q + 2] = PAPER[2] * pg * b; o[q + 3] = mk * 255;
+        o[q2] = 255 * r; o[q2 + 1] = 255 * g; o[q2 + 2] = 255 * b; o[q2 + 3] = any ? (1 - mk) * 255 : 0;
+      }
+    }
+  }
+}
+
+/* ======================================================================
+   3. PEN: a display list of inked polygons, with hand-drawn wobble.
+   Layout randomness is seeded per scene; wobble is seeded per scene,
+   per op and per boil variant, so the three variants differ only in
+   the hand, never in the drawing.
+   ====================================================================== */
+const LINE = [1, 0, 0, 0];
+function inkStr(i, ko) {
+  const A = 'rgb(' + (i[0] * 255 | 0) + ',' + (i[1] * 255 | 0) + ',' + (i[2] * 255 | 0) + ')';
+  const B = (ko || i[3] > 0) ? 'rgb(' + (i[3] * 255 | 0) + ',' + (ko ? 255 : 0) + ',0)' : null;
+  return [A, B];
+}
+const INKCACHE = new Map();
+function inkS(i, ko) {
+  const key = i[0].toFixed(3) + i[1].toFixed(3) + i[2].toFixed(3) + i[3].toFixed(3) + (ko ? 'k' : 'o');
+  let v = INKCACHE.get(key);
+  if (!v) { v = inkStr(i, ko); INKCACHE.set(key, v); }
+  return v;
+}
+function mix(a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t, a[3] + (b[3] - a[3]) * t]; }
+function shd(i, a, warm) { // darken with lapis (and a little carnelian if warm)
+  const w = warm == null ? 0.25 : warm;
+  return [Math.min(1, i[0] + a), Math.min(1, i[1] + a * w), i[2], i[3]];
+}
+function tint(i, s) { return [i[0] * s, i[1] * s, i[2] * s, i[3] * s]; }
+
+class Pen {
+  constructor(seed, v, lod) {
+    this.ops = []; this.seed = seed; this.v = v; this.n = 0; this.lod = lod == null ? 1 : lod;
+    this.ws = 1; this.alpha = 1;
+  }
+  wr() { return mulberry(hash3(this.seed, this.n++, this.v * 7919 + 13)); }
+  push(pts, ink, ko) {
+    if (this.alpha < 1) ink = tint(ink, this.alpha);
+    if (!ko && ink[0] + ink[1] + ink[2] + ink[3] <= 0) return;
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (let i = 0; i < pts.length; i += 2) {
+      const x = pts[i], y = pts[i + 1];
+      if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+    }
+    const s = inkS(ink, ko);
+    this.ops.push({ p: pts instanceof Float32Array ? pts : new Float32Array(pts), a: s[0], b: s[1], ko: !!ko, x0, y0, x1, y1, path: null });
+  }
+  // closed filled polygon; o: {ko, wob, line, lw, li}
+  poly(pts, ink, o) {
+    o = o || {};
+    const r = this.wr();
+    const amp = (o.wob == null ? 0.35 : o.wob) * this.ws;
+    const q = amp > 0 && this.lod > 0.5 ? wobble(pts, true, amp, r, o.step || 4) : pts;
+    this.push(q, ink, o.ko !== false);
+    if (o.line) this.outline(pts, o.line, o.li || LINE, o.lwob);
+  }
+  // tapered, wobbling stroke along an open polyline
+  stroke(pts, w, ink, o) {
+    o = o || {};
+    if (pts.length < 4) return;
+    const r = this.wr();
+    const amp = (o.wob == null ? 0.42 : o.wob) * this.ws;
+    const ext = o.ext == null ? 0.5 : o.ext;
+    let P = pts.slice();
+    if (ext > 0 && this.lod > 0.5) {  // hand overshoot
+      const n = P.length;
+      let dx = P[0] - P[2], dy = P[1] - P[3], l = Math.hypot(dx, dy) || 1, e = ext * r() * w;
+      P[0] += dx / l * e; P[1] += dy / l * e;
+      dx = P[n - 2] - P[n - 4]; dy = P[n - 1] - P[n - 3]; l = Math.hypot(dx, dy) || 1; e = ext * r() * w;
+      P[n - 2] += dx / l * e; P[n - 1] += dy / l * e;
+    }
+    const L = plen(P, false);
+    if (L < 0.01) return;
+    const step = Math.max(0.6, Math.min(3.2, L / 10));
+    const S = resample(P, false, step);
+    const N = S.length / 2;
+    const f1 = 0.06 + r() * 0.07, f2 = 0.17 + r() * 0.12, f3 = 0.05 + r() * 0.08;
+    const p1 = r() * TAU, p2 = r() * TAU, p3 = r() * TAU;
+    const left = new Float32Array(N * 2), right = new Float32Array(N * 2);
+    const taper = o.taper !== false, tmin = o.tmin == null ? 0.18 : o.tmin;
+    let s = 0;
+    for (let i = 0; i < N; i++) {
+      const ia = Math.max(0, i - 1), ib = Math.min(N - 1, i + 1);
+      let tx = S[ib * 2] - S[ia * 2], ty = S[ib * 2 + 1] - S[ia * 2 + 1];
+      const tl = Math.hypot(tx, ty) || 1; tx /= tl; ty /= tl;
+      if (i > 0) s += Math.hypot(S[i * 2] - S[i * 2 - 2], S[i * 2 + 1] - S[i * 2 - 1]);
+      const t = N > 1 ? i / (N - 1) : 0.5;
+      let tw = 1;
+      if (taper) tw = tmin + (1 - tmin) * Math.pow(Math.min(1, t / 0.24), 0.6) * Math.pow(Math.min(1, (1 - t) / 0.24), 0.6);
+      const hw = w * 0.5 * tw * (1 + 0.2 * Math.sin(s * f3 + p3));
+      const off = this.lod > 0.5 ? amp * (0.65 * Math.sin(s * f1 + p1) + 0.35 * Math.sin(s * f2 + p2)) : 0;
+      const cx = S[i * 2] - ty * off, cy = S[i * 2 + 1] + tx * off;
+      left[i * 2] = cx - ty * hw; left[i * 2 + 1] = cy + tx * hw;
+      right[i * 2] = cx + ty * hw; right[i * 2 + 1] = cy - tx * hw;
+    }
+    const poly = new Float32Array(N * 4);
+    poly.set(left, 0);
+    for (let i = 0; i < N; i++) { poly[N * 2 + i * 2] = right[(N - 1 - i) * 2]; poly[N * 2 + i * 2 + 1] = right[(N - 1 - i) * 2 + 1]; }
+    this.push(poly, ink || LINE, !!o.ko);
+  }
+  // hand-drawn outline of a closed polygon: a few overlapping tapered strokes
+  outline(pts, w, ink, wob) {
+    const n = pts.length / 2;
+    if (this.lod < 0.6 || n > 8) {
+      const L = plen(pts, true);
+      const k = this.lod < 0.6 ? 1 : Math.max(2, Math.min(4, Math.round(L / 60)));
+      const S = resample(pts, true, Math.max(1, L / 64));
+      const M = S.length / 2;
+      for (let c = 0; c < k; c++) {
+        const a = Math.floor(c * M / k), b = Math.floor((c + 1) * M / k) + (k > 1 ? 2 : 1);
+        const seg = [];
+        for (let i = a; i <= b; i++) { const j = i % M; seg.push(S[j * 2], S[j * 2 + 1]); }
+        this.stroke(seg, w, ink, { wob: wob, ext: 0.3 });
+      }
+    } else {
+      for (let i = 0; i < n; i++) {
+        const j = (i + 1) % n;
+        this.stroke([pts[i * 2], pts[i * 2 + 1], pts[j * 2], pts[j * 2 + 1]], w, ink, { wob: wob, ext: 0.9 });
+      }
+    }
+  }
+  ell(cx, cy, rx, ry, ink, o) { this.poly(ellipse(cx, cy, rx, ry, (o && o.rot) || 0, Math.max(10, Math.min(40, (rx + ry) * 0.8 | 0))), ink, o); }
+  dot(cx, cy, r, ink, ko) { this.push(ellipse(cx, cy, r, r, 0, 8), ink, !!ko); }
+  // stepped halftone light: concentric rings that overprint, so ink steps up toward the source
+  rings(cx, cy, r0, r1, n, ink, sy) {
+    sy = sy || 1;
+    for (let i = 0; i < n; i++) {
+      const rr = r1 - (r1 - r0) * i / (n - 1 || 1);
+      this.poly(ellipse(cx, cy, rr, rr * sy, 0, 40), ink, { ko: false, wob: 0.6 });
+    }
+  }
+}
+
+function plen(P, closed) {
+  let L = 0;
+  for (let i = 2; i < P.length; i += 2) L += Math.hypot(P[i] - P[i - 2], P[i + 1] - P[i - 1]);
+  if (closed) L += Math.hypot(P[0] - P[P.length - 2], P[1] - P[P.length - 1]);
+  return L;
+}
+function resample(P, closed, step) {
+  const out = [];
+  const n = P.length / 2, segs = closed ? n : n - 1;
+  for (let i = 0; i < segs; i++) {
+    const ax = P[i * 2], ay = P[i * 2 + 1], j = (i + 1) % n, bx = P[j * 2], by = P[j * 2 + 1];
+    const l = Math.hypot(bx - ax, by - ay), k = Math.max(1, Math.ceil(l / step));
+    for (let s = 0; s < k; s++) out.push(ax + (bx - ax) * s / k, ay + (by - ay) * s / k);
+  }
+  if (!closed) out.push(P[P.length - 2], P[P.length - 1]);
+  return out;
+}
+function wobble(P, closed, amp, r, step) {
+  const S = resample(P, closed, step);
+  const N = S.length / 2;
+  const f1 = 0.05 + r() * 0.06, f2 = 0.15 + r() * 0.1, p1 = r() * TAU, p2 = r() * TAU;
+  const out = new Float32Array(S.length);
+  let s = 0;
+  for (let i = 0; i < N; i++) {
+    const ia = (i - 1 + N) % N, ib = (i + 1) % N;
+    let tx = S[ib * 2] - S[ia * 2], ty = S[ib * 2 + 1] - S[ia * 2 + 1];
+    const tl = Math.hypot(tx, ty) || 1; tx /= tl; ty /= tl;
+    if (i > 0) s += Math.hypot(S[i * 2] - S[i * 2 - 2], S[i * 2 + 1] - S[i * 2 - 1]);
+    const off = amp * (0.7 * Math.sin(s * f1 + p1) + 0.3 * Math.sin(s * f2 + p2));
+    out[i * 2] = S[i * 2] - ty * off; out[i * 2 + 1] = S[i * 2 + 1] + tx * off;
+  }
+  return out;
+}
+function ellipse(cx, cy, rx, ry, rot, n) {
+  n = n || 24;
+  const c = Math.cos(rot), s = Math.sin(rot), out = new Float32Array(n * 2);
+  for (let i = 0; i < n; i++) {
+    const a = i / n * TAU, x = Math.cos(a) * rx, y = Math.sin(a) * ry;
+    out[i * 2] = cx + x * c - y * s; out[i * 2 + 1] = cy + x * s + y * c;
+  }
+  return out;
+}
+// Catmull-Rom through points (flat), returns flat
+function spline(P, closed, k) {
+  k = k || 4;
+  const n = P.length / 2, out = [];
+  const g = i => closed ? ((i % n) + n) % n : Math.max(0, Math.min(n - 1, i));
+  const segs = closed ? n : n - 1;
+  for (let i = 0; i < segs; i++) {
+    const a = g(i - 1), b = g(i), c = g(i + 1), d = g(i + 2);
+    for (let s = 0; s < k; s++) {
+      const t = s / k, t2 = t * t, t3 = t2 * t;
+      for (let e = 0; e < 2; e++) {
+        const p0 = P[a * 2 + e], p1 = P[b * 2 + e], p2 = P[c * 2 + e], p3 = P[d * 2 + e];
+        out.push(0.5 * (2 * p1 + (-p0 + p2) * t + (2 * p0 - 5 * p1 + 4 * p2 - p3) * t2 + (-p0 + 3 * p1 - 3 * p2 + p3) * t3));
+      }
+    }
+  }
+  if (!closed) out.push(P[P.length - 2], P[P.length - 1]);
+  return out;
+}
+const K = [1, 0, 0, 0];
+function capsule(a, b, ra, rb, rm) {
+  const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1e-6;
+  const u = [dx / l, dy / l], n = [-u[1], u[0]], m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+  rm = rm == null ? (ra + rb) / 2 : rm;
+  const P = [a[0] + n[0] * ra, a[1] + n[1] * ra, m[0] + n[0] * rm, m[1] + n[1] * rm];
+  for (let k = 0; k <= 6; k++) { const f = k / 6 * Math.PI; P.push(b[0] + rb * (n[0] * Math.cos(f) + u[0] * Math.sin(f)), b[1] + rb * (n[1] * Math.cos(f) + u[1] * Math.sin(f))); }
+  P.push(m[0] - n[0] * rm, m[1] - n[1] * rm);
+  for (let k = 0; k <= 6; k++) { const f = k / 6 * Math.PI; P.push(a[0] + ra * (-n[0] * Math.cos(f) - u[0] * Math.sin(f)), a[1] + ra * (-n[1] * Math.cos(f) - u[1] * Math.sin(f))); }
+  return P;
+}
+const add = (a, v, s) => [a[0] + v[0] * s, a[1] + v[1] * s];
+const lp = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+
+const sm = (L, closed) => spline(L, closed !== false, 4);
+const flat = (L) => { const o = []; for (const p of L) o.push(p[0], p[1]); return o; };
+/* ---------------------------------------------------------------- frame */
+function drawFrame(P, R) {
+  const x0 = 50, y0 = 50, x1 = SW - 50, y1 = SH - 50;
+  const rect = (a, b, c, d, ink, o) => P.poly([a, b, c, b, c, d, a, d], ink, Object.assign({ wob: 0.25 }, o || {}));
+  const rule = (inset, w) => P.stroke([x0 + inset, y0 + inset, x1 - inset, y0 + inset, x1 - inset, y1 - inset, x0 + inset, y1 - inset, x0 + inset, y0 + inset], w, K, { taper: false, ext: 0, wob: 0.2 });
+  // outer block border: blue, red, gold, green panels between kohl bars, as on tomb ceilings
+  const bw = 42, cols = [INK.blue, INK.red, INK.gold, INK.green];
+  const edge = (ax, ay, bx, by, nx, ny) => {
+    const len = Math.hypot(bx - ax, by - ay), n = Math.round(len / 46), ux = (bx - ax) / len, uy = (by - ay) / len;
+    for (let i = 0; i < n; i++) {
+      const s0 = i * len / n + 2.5, s1 = (i + 1) * len / n - 2.5;
+      const p = [ax + ux * s0, ay + uy * s0, ax + ux * s1, ay + uy * s1, ax + ux * s1 + nx * bw, ay + uy * s1 + ny * bw, ax + ux * s0 + nx * bw, ay + uy * s0 + ny * bw];
+      P.poly(p, cols[i % 4], { wob: 0.25 });
+      P.stroke([ax + ux * (s1 + 2.5), ay + uy * (s1 + 2.5), ax + ux * (s1 + 2.5) + nx * bw, ay + uy * (s1 + 2.5) + ny * bw], 2.4, K, { taper: false, ext: 0 });
+    }
+  };
+  const a = x0 + 6, b = y0 + 6, c = x1 - 6, d = y1 - 6, I = bw + 4;
+  edge(a + I, b, c - I, b, 0, 1); edge(a + I, d, c - I, d, 0, -1);
+  edge(a, b + I, a, d - I, 1, 0); edge(c, b + I, c, d - I, -1, 0);
+  // corner rosettes
+  for (const [cx, cy] of [[a + bw / 2 + 2, b + bw / 2 + 2], [c - bw / 2 - 2, b + bw / 2 + 2], [a + bw / 2 + 2, d - bw / 2 - 2], [c - bw / 2 - 2, d - bw / 2 - 2]]) {
+    rect(cx - 23, cy - 23, cx + 23, cy + 23, INK.gold, { line: 1.2 });
+    for (let k = 0; k < 8; k++) { const t = k / 8 * TAU; P.poly(ellipse(cx + Math.cos(t) * 11, cy + Math.sin(t) * 11, 7, 4, t, 12), k % 2 ? INK.red : INK.blue, { line: 0.6, wob: 0.2 }); }
+    P.poly(ellipse(cx, cy, 6, 6, 0, 16), INK.gold, { line: 0.8 });
+  }
+  rule(0, 2.2); rule(52, 1.6);
+  // a gilded torus roll, bound with a spiral of kohl and blue
+  const tw = 20, ti = 58;
+  const torus = (ax, ay, bx, by, nx, ny) => {
+    const len = Math.hypot(bx - ax, by - ay), ux = (bx - ax) / len, uy = (by - ay) / len;
+    P.poly([ax, ay, bx, by, bx + nx * tw, by + ny * tw, ax + nx * tw, ay + ny * tw], INK.gold, { wob: 0.2 });
+    P.poly([ax + nx * tw * 0.62, ay + ny * tw * 0.62, bx + nx * tw * 0.62, by + ny * tw * 0.62, bx + nx * tw, by + ny * tw, ax + nx * tw, ay + ny * tw], [0.1, 0.25, 0.1, 0], { ko: false, wob: 0.2 });
+    for (let s = 6; s < len - 4; s += 13) {
+      const px = ax + ux * s, py = ay + uy * s;
+      P.stroke([px, py, px + ux * 9 + nx * tw, py + uy * 9 + ny * tw], 2.6, (Math.round(s / 13) % 2) ? K : INK.blue, { taper: false, ext: 0, wob: 0.15 });
+    }
+  };
+  torus(x0 + ti, y0 + ti, x1 - ti, y0 + ti, 0, 1); torus(x0 + ti, y1 - ti, x1 - ti, y1 - ti, 0, -1);
+  torus(x0 + ti, y0 + ti + tw, x0 + ti, y1 - ti - tw, 1, 0); torus(x1 - ti, y0 + ti + tw, x1 - ti, y1 - ti - tw, -1, 0);
+  rule(ti + tw + 2, 1.4); rule(ti + tw + 12, 0.8);
+  // a frieze of lotus buds and open flowers along the foot of the frame
+  const fy = y1 - ti - tw - 16;
+  for (let x = x0 + 120, k = 0; x < x1 - 110; x += 34, k++) {
+    if (k % 2) { P.poly(sm([x - 10, fy, x - 12, fy - 22, x - 4, fy - 34, x, fy - 24, x + 4, fy - 34, x + 12, fy - 22, x + 10, fy]), INK.blue, { line: 0.9 }); P.poly([x - 4, fy - 4, x, fy - 20, x + 4, fy - 4], INK.gold, { wob: 0 }); }
+    else { P.poly(sm([x - 5, fy, x - 6, fy - 16, x, fy - 26, x + 6, fy - 16, x + 5, fy]), INK.green, { line: 0.9 }); }
+    P.stroke([x - 17, fy + 2, x + 17, fy + 2], 1.2, K, { taper: false });
+  }
+  // the winged sun disc crowning the frame, with its two cobras
+  const sx = SW / 2, sy = y0 + 32;
+  for (const s of [-1, 1]) {
+    for (let r = 0; r < 3; r++) {
+      const pts = [];
+      const len = 330 - r * 40, top = -26 + r * 14, bot = 18 + r * 10;
+      pts.push(sx + s * 40, sy + top + 8);
+      for (let i = 1; i <= 8; i++) { const u = i / 8; pts.push(sx + s * (40 + len * u), sy + top + 8 - Math.sin(u * Math.PI) * 10 + u * 20); }
+      for (let i = 8; i >= 1; i--) { const u = i / 8; pts.push(sx + s * (40 + len * u * 0.94), sy + bot - Math.sin(u * Math.PI) * 4 + u * 10); }
+      P.poly(sm(pts), [INK.gold, INK.blue, INK.red][r], { line: 1.2 });
+      for (let i = 1; i < 16; i++) { const u = i / 16; P.stroke([sx + s * (40 + len * u), sy + top + 10 + u * 20 - Math.sin(u * Math.PI) * 10, sx + s * (40 + len * u * 0.94), sy + bot - 2 + u * 10 - Math.sin(u * Math.PI) * 4], 0.9, K, { taper: true }); }
+    }
+    P.poly(sm([sx + s * 22, sy + 30, sx + s * 30, sy - 4, sx + s * 44, sy - 16, sx + s * 52, sy - 4, sx + s * 40, sy + 4, sx + s * 36, sy + 30]), INK.green, { line: 1 });
+  }
+  P.poly(ellipse(sx, sy, 32, 32, 0, 40), INK.red, { line: 1.6 });
+  P.rings(sx, sy, 34, 70, 4, [0, 0.03, 0.08, 0]);
+}
+
+
+function inside(P, x, y) { let c = false; for (let i = 0, j = P.length / 2 - 1; i < P.length / 2; j = i++) { const xi = P[i * 2], yi = P[i * 2 + 1], xj = P[j * 2], yj = P[j * 2 + 1]; if (((yi > y) !== (yj > y)) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; }
+/* ======================================================================
+   THE MUSICIAN OF NAKHT
+   An invented figure after the banquet musicians in the tomb of Nakht
+   (Theban tomb 52, 18th Dynasty). Standing in profile to the right, in the
+   tomb's own conventions: profile head with the eye seen whole, shoulders
+   turned toward us, legs in stride. Five costume levels:
+     I   dancer: bead girdle with a short bead fringe, her own hair
+     II  sheer pleated gown, light makeup, her own hair with a small hairpiece
+     III opaque linen dress, more jewellery, braided wig
+     IV  festival dress, perfume cone and lotus over a great wig, heavy makeup
+     V   royal regalia: vulture crown, plumes, feathered wings, sistrum
+   ====================================================================== */
+let LV = 3;
+const INK = {
+  skin: [0.02, 0.34, 0.52, 0.03], skinS: [0.06, 0.44, 0.52, 0.08],
+  hair: [0.9, 0.1, 0, 0.3], hairL: [0.45, 0.06, 0, 0.35],
+  gold: [0, 0.1, 0.88, 0], goldS: [0.1, 0.32, 0.92, 0], goldL: [0, 0.04, 0.5, 0],
+  blue: [0, 0, 0, 0.92], blueD: [0.3, 0, 0, 0.95], blueL: [0, 0, 0, 0.45],
+  red: [0, 0.88, 0.22, 0], redD: [0.2, 0.9, 0.3, 0],
+  green: [0, 0, 0.62, 0.62], linen: [0, 0, 0.035, 0], wood: [0.25, 0.6, 0.55, 0],
+};
+const LF = [0.5, 0.42, 0.16, 0.04];
+const shadeI = [0.02, 0.16, 0.0, 0.08];
+// drawn in a compact layout, then stretched to the canon: [drawn y, canon y]
+const CANON = [[0, 0], [300, 300], [566, 566], [800, 832], [930, 1098], [1090, 1364], [1580, 1896], [2160, 2310]];
+function canon(y) { for (let i = 1; i < CANON.length; i++) { const [a0, b0] = CANON[i - 1], [a1, b1] = CANON[i]; if (y <= a1 || i === CANON.length - 1) return b0 + (y - a0) * (b1 - b0) / (a1 - a0); } return y; }
+const P2 = (P, L, ink, o) => P.poly(sm(flat(L)), ink, Object.assign({ wob: 0.3 }, o || {}));
+const S2 = (P, L, w, ink, o) => P.stroke(spline(flat(L), false, 4), w, ink || K, Object.assign({ wob: 0.25 }, o || {}));
+
+function drawSheet(P, R) {
+  drawFrame(P, R);
+  const n0 = P.ops.length;
+  P.poly(ellipse(920, 2148, 300, 26, 0, 40), [0.16, 0.06, 0, 0.05], { ko: false, wob: 0.8 });
+  drawHairBack(P, R);
+  drawFigure(P, R);
+  // bring her to the canon of proportions (head 266 units: chin 1, breast 2, navel 3, crotch 4, knee 6, soles 7.5) and fit the frame
+  const T = (x, y) => { const yy = canon(y); return [920 + (x - 920) * 0.97, 260 + (yy - 300) * 0.97]; };
+  for (let i = n0; i < P.ops.length; i++) {
+    const op = P.ops[i], q = op.p;
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (let j = 0; j < q.length; j += 2) { const t = T(q[j], q[j + 1]); q[j] = t[0]; q[j + 1] = t[1]; x0 = Math.min(x0, t[0]); x1 = Math.max(x1, t[0]); y0 = Math.min(y0, t[1]); y1 = Math.max(y1, t[1]); }
+    op.x0 = x0; op.y0 = y0; op.x1 = x1; op.y1 = y1;
+  }
+}
+
+/* ---------------------------------------------------------------- body */
+const TORSO = [[870, 600], [812, 650], [812, 740], [830, 830], [846, 900], [838, 950], [810, 986], [784, 1026], [774, 1062], [784, 1096], [830, 1112], [900, 1104], [952, 1098], [992, 1066], [1004, 1012], [998, 950], [984, 900], [994, 840], [1004, 812], [1026, 806], [1040, 790], [1044, 762], [1036, 732], [1022, 704], [1020, 664], [990, 640], [960, 616]];
+const LEG_F = [[990, 1050], [1012, 1250], [1012, 1420], [1010, 1560], [1004, 1800], [992, 2050], [986, 2082], [1040, 2110], [1094, 2128], [1098, 2144], [972, 2146], [952, 2130], [956, 2080], [952, 1900], [962, 1760], [966, 1580], [938, 1300], [920, 1090]];
+const LEG_B = [[904, 1080], [906, 1300], [890, 1578], [862, 1820], [834, 2058], [886, 2108], [906, 2142], [792, 2146], [774, 2126], [786, 2070], [800, 1830], [822, 1700], [830, 1592], [816, 1300], [796, 1160], [786, 1100]];
+function finger(P, a, b, r0, r1, nail) {
+  P.poly(capsule(a, b, r0, r1, (r0 + r1) / 2), INK.skin, { line: 1.0, li: LF, wob: 0.15 });
+  if (nail) { const d = [b[0] - a[0], b[1] - a[1]], t = lp(a, b, 0.86); P.poly(ellipse(t[0], t[1], r1 * 0.6, r1 * 0.46, Math.atan2(d[1], d[0]), 10), [0, 0.18, 0.12, 0], { line: 0.5, wob: 0.05 }); }
+}
+function arm(P, L, shadeL) {
+  P2(P, L, INK.skin, { line: 1.3, li: LF });
+  if (shadeL) P2(P, shadeL, shadeI, { ko: false });
+}
+function limb(P, a, b, ra, rb, side) {
+  P.poly(capsule(a, b, ra, rb, (ra + rb) / 2 * 1.05), INK.skin, { line: 1.3, li: LF, wob: 0.35 });
+  const u = [b[0] - a[0], b[1] - a[1]], l = Math.hypot(u[0], u[1]), n = [-u[1] / l * side, u[0] / l * side];
+  P.poly(capsule(add(a, n, ra * 0.45), add(b, n, rb * 0.45), ra * 0.55, rb * 0.55, (ra + rb) * 0.29), shadeI, { ko: false, wob: 0.3 });
+}
+function drawFigure(P, R) {
+  // her far arm: the upper arm hangs behind the body
+  arm(P, [[846, 672], [818, 652], [800, 690], [790, 760], [782, 840], [784, 884], [804, 904], [840, 902], [872, 896], [898, 892], [898, 862], [868, 862], [834, 866], [812, 858], [812, 800], [822, 736], [840, 700]],
+    [[818, 660], [800, 700], [792, 780], [786, 860], [796, 892], [812, 880], [804, 820], [810, 740], [826, 690]]);
+  // the far leg, a step behind, a shade darker
+  P2(P, LEG_B, INK.skin, { line: 1.3, li: LF });
+  P2(P, LEG_B, [0.04, 0.12, 0.02, 0.06], { ko: false });
+  // neck, torso, near leg
+  P2(P, [[882, 548], [970, 556], [982, 612], [1000, 646], [870, 640]], INK.skin, { line: 1.2, li: LF });
+  P2(P, TORSO, INK.skin, { line: 1.4, li: LF });
+  P2(P, [[812, 660], [830, 760], [850, 900], [818, 990], [800, 1050], [806, 1090], [840, 1100], [840, 1040], [868, 960], [880, 900], [862, 760], [850, 660]], shadeI, { ko: false });
+  S2(P, [[788, 1098], [826, 1110], [866, 1104]], 1.2, LF);   // the fold under the buttock
+  S2(P, [[846, 905], [826, 960], [810, 1000]], 0.8, [0.2, 0.25, 0.05, 0.04]);
+  P2(P, LEG_F, INK.skin, { line: 1.4, li: LF });
+  P2(P, [[938, 1100], [946, 1300], [962, 1580], [952, 1780], [956, 2070], [972, 2070], [978, 1800], [984, 1580], [968, 1300], [960, 1100]], shadeI, { ko: false });
+  // anatomy kept to the tomb painter's few lines: the curve of the breast, the navel, the knee
+  const soft = [0.22, 0.28, 0.06, 0.05];
+  // collarbones and the pit of the throat
+  S2(P, [[952, 628], [984, 640], [1012, 644]], 1.0, LF);
+  S2(P, [[872, 628], [906, 636], [930, 636]], 0.8, soft);
+  P.poly(ellipse(944, 640, 5, 3, 0, 10), [0.0, 0.12, 0.02, 0.05], { ko: false, wob: 0.1 });
+  // the breast in profile with its small nipple, as the Nakht painter drew it; the far breast as a single soft line
+  // the torso is turned toward us, as the Nakht painter turns it: the near breast in profile at the front edge,
+  // the far breast seen rounded on the chest; each with a small nipple
+  S2(P, [[1000, 810], [1022, 812], [1040, 794]], 1.0, LF);
+  P.poly(ellipse(1042, 772, 3, 3.4, 0, 10), [0.15, 0.48, 0.32, 0.02], { wob: 0.1 });
+  S2(P, [[930, 760], [928, 790], [944, 810], [970, 812], [990, 798]], 1.0, LF);
+  P.poly(ellipse(958, 790, 3, 3.4, 0, 10), [0.15, 0.48, 0.32, 0.02], { wob: 0.1 });
+  P.poly(sm(flat([[934, 796], [960, 812], [988, 802], [970, 818], [944, 816]])), [0.0, 0.1, 0.02, 0.05], { ko: false });
+  P.poly(sm(flat([[1004, 806], [1030, 808], [1040, 794], [1026, 818], [1004, 818]])), [0.0, 0.1, 0.02, 0.05], { ko: false });
+  // ribcage, the line down the belly, the navel, the soft curve of the lower belly
+  S2(P, [[962, 828], [984, 818], [998, 832]], 0.7, soft);
+  S2(P, [[990, 836], [986, 880], [982, 918]], 0.7, soft);
+  S2(P, [[972, 926], [978, 922], [982, 930], [976, 938]], 1.0, LF);
+  P.poly(ellipse(977, 931, 3, 4, 0, 10), [0.1, 0.25, 0.08, 0.03], { wob: 0.1 });
+  S2(P, [[996, 960], [1002, 994], [998, 1020]], 0.8, soft);
+  // the hip bone and the crease of the hip
+  S2(P, [[926, 990], [954, 1012], [980, 1046]], 0.8, soft);
+  S2(P, [[918, 1060], [944, 1080], [972, 1092]], 0.8, soft);
+  // kneecaps and the shin
+  for (const [kx, ky] of [[996, 1560], [870, 1584]]) {
+    P.poly(ellipse(kx, ky, 12, 16, 0.1, 16), [0.0, 0.08, 0.02, 0.04], { ko: false, wob: 0.2 });
+    S2(P, [[kx - 6, ky - 18], [kx + 8, ky - 10], [kx + 10, ky + 6], [kx + 2, ky + 18]], 0.9, LF);
+    S2(P, [[kx - 10, ky + 24], [kx - 2, ky + 30]], 0.7, soft);
+  }
+  S2(P, [[1000, 1620], [996, 1800], [990, 2000]], 0.7, soft);
+  // ankle bones
+  S2(P, [[972, 2070], [980, 2076], [976, 2086]], 0.9, LF);
+  S2(P, [[808, 2066], [816, 2072], [812, 2082]], 0.9, LF);
+  // the calf and the back of the thigh
+  S2(P, [[954, 1640], [946, 1720], [952, 1800]], 0.7, soft);
+  S2(P, [[800, 1180], [810, 1300], [822, 1420]], 0.7, soft);
+  for (const [x, y] of [[1066, 2124], [1080, 2128], [1092, 2134]]) S2(P, [[x, y - 8], [x + 2, y]], 0.7, LF);
+  drawCostume(P, R);
+  drawNeckJewels(P);
+  drawLappet(P);
+  drawHead(P, R);
+  drawHairFront(P, R);
+  drawHeadgear(P, R);
+  drawProps(P, R);
+}
+
+/* ---------------------------------------------------------------- costume by level */
+function girdle(P, withFringe) {
+  // a girdle of beads riding low on the hips and dipping at the front, as the dancers wear it
+  const at = (t, d) => { const x = 806 + t * 196, y = 1040 + Math.sin(t * Math.PI) * 6 + t * t * 34 + d; return [x, y]; };
+  for (let k = 0; k <= 32; k++) { const [x, y] = at(k / 32, 0); P.dot(x, y, 3.6, k % 3 === 0 ? INK.blue : k % 3 === 1 ? INK.red : INK.gold); }
+  for (let k = 0; k <= 32; k++) { const [x, y] = at(k / 32, 10); P.dot(x, y, 2.8, k % 2 ? INK.goldL : INK.blue); }
+  if (withFringe) {   // a short fringe of bead strings at the front, following the curve of the girdle
+    for (let k = 0; k < 6; k++) {
+      const t = 0.7 + k * 0.045, [x, y] = at(t, 14), len = 2 + Math.round(Math.sin((k + 0.5) / 6 * Math.PI) * 2);
+      for (let j = 0; j < len; j++) P.dot(x - j * 1.2, y + j * 6, 2.4, (j + k) % 3 === 0 ? INK.blue : (j + k) % 3 === 1 ? INK.red : INK.goldL);
+    }
+  }
+}
+function pleats(P, x0, x1, y0, y1, n, ink, w) { for (let i = 0; i <= n; i++) { const t = i / n; P.stroke([x0 + (x1 - x0) * t * 0.9, y0, x0 + (x1 - x0) * t, y1], w || 0.7, ink, { wob: 0.4 }); } }
+function drawCostume(P, R) {
+  if (LV === 1) { girdle(P, true); return; }
+  if (LV === 2) {
+    girdle(P, true);
+    // a gown of the finest pleated linen, so sheer that the body reads through it; it is printed as a pale wash and fine pleats
+    const gown = [[880, 600], [790, 660], [776, 900], [770, 1300], [740, 1800], [720, 2130], [1110, 2134], [1080, 1800], [1046, 1300], [1030, 900], [1040, 700], [1000, 630]];
+    P2(P, gown, [0, 0.0, 0.09, 0.0], { ko: false });
+    pleats(P, 790, 1030, 900, 2120, 30, [0.18, 0.06, 0.22, 0.03], 0.6);
+    for (let i = 0; i < 12; i++) { const t = i / 11; P.stroke([880 + t * 120, 620 + t * 20, 820 + t * 200, 880], 0.6, [0.15, 0.05, 0.2, 0.03], { wob: 0.3 }); }
+    S2(P, [[790, 660], [776, 900], [770, 1300], [740, 1800], [720, 2130]], 1.2, [0.3, 0.2, 0.3, 0.05]);
+    S2(P, [[1040, 700], [1030, 900], [1046, 1300], [1080, 1800], [1110, 2134]], 1.2, [0.3, 0.2, 0.3, 0.05]);
+    S2(P, [[720, 2130], [820, 2140], [920, 2142], [1020, 2140], [1110, 2134]], 1.4, [0.3, 0.2, 0.3, 0.05]);
+    return;
+  }
+  // III and above: opaque linen to the ankles
+  const dress = LV >= 4
+    ? [[880, 596], [780, 650], [764, 900], [760, 1300], [730, 1800], [708, 2132], [1124, 2136], [1090, 1800], [1060, 1300], [1044, 900], [1050, 700], [1004, 626]]
+    : [[880, 604], [800, 652], [792, 900], [790, 1300], [770, 1800], [760, 2120], [1070, 2124], [1060, 1800], [1032, 1300], [1022, 900], [1036, 700], [1000, 632]];
+  P2(P, dress, INK.linen, { line: 1.5 });
+  pleats(P, LV >= 4 ? 780 : 806, LV >= 4 ? 1050 : 1020, 1000, 2120, LV >= 4 ? 34 : 14, LV === 5 ? [0.15, 0.1, 0.6, 0] : [0.45, 0.05, 0.02, 0.1], 0.7);
+  S2(P, [[1036, 740], [1046, 780], [1030, 806]], 1.0, [0.2, 0.2, 0.15, 0.05]);
+  if (LV === 3) {   // a plain sash and a fringed hem
+    P.stroke([798, 1000, 900, 1012, 1028, 996], 6, [0.06, 0.12, 0.3, 0], { taper: false });
+    for (let x = 764; x < 1068; x += 7) P.stroke([x, 2118, x + 1, 2132], 0.8, [0.3, 0.1, 0.2, 0]);
+  }
+  if (LV >= 4) {    // a pleated shawl over the shoulders, a red sash with long ends
+    P2(P, [[880, 596], [770, 650], [740, 760], [760, 880], [880, 900], [1000, 880], [1070, 790], [1060, 680], [1004, 626]], INK.linen, { line: 1.4 });
+    for (let k = 0; k < 12; k++) { const t = k / 11; P.stroke([800 + t * 220, 660, 770 + t * 290, 880 - Math.sin(t * Math.PI) * 10], 0.7, LV === 5 ? [0.15, 0.1, 0.6, 0] : [0.45, 0.05, 0.02, 0.1]); }
+    P2(P, [[790, 1000], [900, 1016], [1040, 996], [1042, 1024], [900, 1044], [788, 1028]], INK.red, { line: 1.2 });
+    P2(P, [[950, 1030], [972, 1030], [990, 1400], [966, 1404]], INK.red, { line: 1.1 });
+    P2(P, [[978, 1028], [998, 1026], [1030, 1340], [1006, 1346]], INK.red, { line: 1.1 });
+  }
+  if (LV === 5) {   // the feathered wings of the vulture goddess wrapped round the hips and legs
+    P2(P, [[780, 1060], [1050, 1040], [1070, 1500], [1040, 1900], [760, 1900], [770, 1500]], INK.blueD, { line: 1.3 });
+    for (let r = 0; r < 12; r++) {
+      const y = 1070 + r * 70;
+      for (let i = 0; i < 14; i++) {
+        const x = 772 + i * 21 + (r % 2) * 10, yy = y + Math.sin(i / 13 * Math.PI) * 14;
+        if (x > 1060) continue;
+        P2(P, [[x - 9, yy], [x - 8, yy + 34], [x, yy + 46], [x + 8, yy + 34], [x + 9, yy]], [INK.gold, INK.blue, INK.red][(r + (i % 2)) % 3], { line: 0.7, li: K });
+      }
+    }
+    for (let x = 714; x < 1120; x += 10) P.dot(x, 2128, 3, INK.gold);
+  }
+}
+
+function drawNeckJewels(P) {
+  const cx = 930, cy = 618;
+  // the broad collar, larger at each level; the dancer wears a narrow one as in the tomb
+  const rings = LV === 1 ? 2 : LV === 2 ? 3 : LV === 3 ? 4 : LV === 4 ? 5 : 6;
+  const inks = [INK.gold, INK.blue, INK.red, INK.gold, INK.blue, INK.red];
+  for (let r = rings - 1; r >= 0; r--) {
+    const r0 = 40 + r * 18, r1 = r0 + 18, pts = [];
+    for (let i = 0; i <= 30; i++) { const a = Math.PI * (0.02 + 0.96 * i / 30); pts.push(cx - Math.cos(a) * r1 * 1.08, cy + Math.sin(a) * r1 * 0.72); }
+    for (let i = 30; i >= 0; i--) { const a = Math.PI * (0.02 + 0.96 * i / 30); pts.push(cx - Math.cos(a) * r0 * 1.08, cy + Math.sin(a) * r0 * 0.72); }
+    P.poly(pts, inks[r], { line: 0.8, wob: 0.2 });
+    for (let i = 0; i <= 22 + r * 4; i++) { const a = Math.PI * (0.04 + 0.92 * i / (22 + r * 4)), rr = r0 + 9; P.dot(cx - Math.cos(a) * rr * 1.08, cy + Math.sin(a) * rr * 0.72, 2.6, i % 2 ? INK.goldL : INK.gold); }
+  }
+  const R0 = 40 + rings * 18;
+  for (let i = 0; i <= 26; i++) { const a = Math.PI * (0.03 + 0.94 * i / 26), x = cx - Math.cos(a) * (R0 + 6) * 1.08, y = cy + Math.sin(a) * (R0 + 6) * 0.72; P.poly(sm([x - 4, y - 8, x + 4, y - 8, x + 5, y + 6, x, y + 12, x - 5, y + 6]), [INK.gold, INK.red, INK.blue][i % 3], { line: 0.6 }); }
+  if (LV === 5) for (const s of [-1, 1]) { const x = cx + s * (R0 + 10) * 1.08, y = cy + 6; P.poly(sm([x - 10, y - 12, x + 10, y - 14, x + 18, y, x + 6, y + 14, x - 10, y + 10]), INK.gold, { line: 1 }); P.dot(x + 4, y - 4, 2.4, K); }
+}
+
+/* ---------------------------------------------------------------- head */
+const HEAD = [[872, 560], [840, 500], [828, 440], [842, 370], [880, 322], [930, 302], [972, 322], [990, 362], [994, 405], [998, 428], [994, 440], [1006, 462], [1022, 484], [1012, 494], [1000, 496], [1004, 508], [994, 516], [1002, 524], [994, 534], [998, 552], [986, 566], [960, 574], [930, 566], [912, 540]];
+function drawHead(P, R) {
+  P2(P, HEAD, INK.skin, { line: 1.3, li: LF });
+  P2(P, [[880, 540], [910, 548], [940, 560], [960, 572], [920, 572], [880, 560]], shadeI, { ko: false });
+  // cheek and ear
+  const blush = LV >= 4 ? [0, 0.12, 0.02, 0] : LV >= 2 ? [0, 0.06, 0.0, 0] : [0, 0.03, 0, 0];
+  for (let k = 0; k < 3; k++) P.poly(ellipse(952, 500, 22 - k * 6, 16 - k * 4, -0.2, 24), blush, { ko: false, wob: 0.4 });
+  P2(P, [[906, 452], [918, 444], [928, 458], [926, 488], [914, 498], [904, 486]], INK.skinS, { line: 1.1, li: LF });
+  S2(P, [[920, 458], [914, 470], [920, 484]], 0.8, LF);
+  // the eye, drawn whole as the Egyptian painter draws it on a profile face
+  const kohl = LV === 1 ? 1.2 : LV === 2 ? 1.8 : LV === 3 ? 2.4 : 3.2;
+  if (LV >= 3) P2(P, [[938, 438], [962, 424], [986, 438], [962, 434]], LV >= 4 ? [0, 0, 0.38, 0.4] : [0, 0, 0.2, 0.2], { ko: false });
+  P2(P, [[944, 444], [962, 434], [982, 444], [962, 452]], [0, 0, 0.03, 0.03], { wob: 0.1 });
+  P.poly(ellipse(968, 443, 7, 7, 0, 18), [0.55, 0.5, 0.35, 0], { wob: 0.1 });
+  P.poly(ellipse(968, 443, 3, 3, 0, 12), K, { wob: 0 });
+  P.poly(ellipse(970, 441, 1.2, 1.2, 0, 8), [0, 0, 0, 0], { wob: 0 });
+  S2(P, [[944, 444], [962, 433], [982, 444]], kohl, K, { tmin: 0.4 });
+  S2(P, [[944, 444], [962, 453], [982, 444]], kohl * 0.5, K, { tmin: 0.4 });
+  if (LV >= 2) S2(P, [[944, 444], [926, 440], [910 - LV * 4, 436]], kohl * 0.8, K, { tmin: 0.2 });
+  S2(P, [[930, 418], [956, 408], [990, 420]], LV >= 3 ? 3.2 : 2.6, LV >= 3 ? K : [0.6, 0.3, 0.12, 0.08], { tmin: 0.3 });
+  // nostril, the mouth with a quiet smile, lips coloured from level II
+  S2(P, [[1004, 486], [1010, 490]], 1.0, LF);
+  const lip = LV === 1 ? [0, 0.3, 0.3, 0.03] : LV === 2 ? [0, 0.45, 0.28, 0.03] : LV === 3 ? [0, 0.55, 0.25, 0.04] : [0, 0.85, 0.22, 0.05];
+  P2(P, [[1004, 506], [1000, 512], [992, 514], [1002, 524], [998, 516]], lip, { wob: 0.1 });
+  S2(P, [[1002, 512], [994, 514], [986, 512]], 1.0, LF);
+  // earring: the large disc of the tomb's musicians
+  const ex = 916, ey = 506;
+  P.poly(ellipse(ex, ey, LV >= 4 ? 18 : 15, LV >= 4 ? 18 : 15, 0, 28), INK.gold, { line: 1.1 });
+  P.poly(ellipse(ex, ey, 8, 8, 0, 20), LV >= 3 ? INK.red : INK.goldS, { line: 0.6 });
+  if (LV >= 4) for (let k = -2; k <= 2; k++) { P.stroke([ex + k * 5, ey + 16, ex + k * 6, ey + 34], 1.2, INK.gold, { taper: false }); P.dot(ex + k * 6, ey + 36, 2.6, k % 2 ? INK.blue : INK.red); }
+}
+
+/* ---------------------------------------------------------------- hair and wigs */
+function waves(P, R, poly, n, ink) {
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  for (let i = 0; i < poly.length; i += 2) { x0 = Math.min(x0, poly[i]); x1 = Math.max(x1, poly[i]); y0 = Math.min(y0, poly[i + 1]); y1 = Math.max(y1, poly[i + 1]); }
+  for (let k = 0; k < n; k++) {
+    const x = x0 + R() * (x1 - x0), y = y0 + R() * (y1 - y0);
+    if (!inside(poly, x, y)) continue;
+    const pts = []; for (let i = 0; i <= 6; i++) pts.push(x + Math.sin(i * 1.1 + k) * 4, y + i * 9);
+    P.stroke(pts, 1.4, ink, { wob: 0.3 });
+  }
+}
+function braids(P, x0, x1, ytop, ybot, n, curve) {
+  for (let k = 0; k < n; k++) {
+    const t = k / (n - 1), x = x0 + (x1 - x0) * t, yb = ybot - Math.abs(t - 0.5) * curve;
+    P.stroke([x, ytop + Math.abs(t - 0.5) * 30, x - 4, (ytop + yb) / 2, x - 2, yb], 6, INK.hair, { taper: false, wob: 0.3 });
+    for (let y = ytop + 16; y < yb - 6; y += 11) P.stroke([x - 6, y, x + 3, y + 5], 0.9, INK.hairL, { taper: false });
+  }
+}
+let HAIRPOLY = null;
+function drawHairBack(P, R) {
+  if (LV <= 2) {          // her own hair, dark and wavy, to the shoulders
+    HAIRPOLY = sm(flat([[996, 372], [978, 300], [900, 282], [834, 304], [804, 362], [790, 460], [786, 600], [790, 740], [806, 812], [840, 826], [866, 760], [876, 640], [882, 560], [902, 470], [930, 428], [968, 404]]));
+  } else if (LV === 3) {   // a braided wig to below the shoulders
+    HAIRPOLY = sm(flat([[996, 360], [966, 296], [900, 280], [836, 300], [800, 360], [784, 470], [780, 600], [786, 720], [830, 740], [880, 720], [890, 600], [892, 520], [910, 460], [940, 420], [980, 400]]));
+  } else {                 // the great festival wig, enveloping and full
+    HAIRPOLY = sm(flat([[1006, 362], [976, 284], [900, 262], [820, 284], [776, 356], [756, 480], [750, 640], [758, 780], [820, 806], [890, 780], [896, 640], [898, 540], [912, 470], [946, 424], [990, 404]]));
+  }
+  P.poly(HAIRPOLY, INK.hair, { wob: 0.6 });
+  if (LV <= 2) {   // long locks, loosely plaited, falling from the crown down the back
+    for (let k = 0; k < 12; k++) {
+      const t = k / 11, x0 = 960 - t * 130, y0 = 300 + Math.abs(t - 0.4) * 40, x1 = 800 + t * 60, y1 = 760 + Math.sin(t * Math.PI) * 60;
+      const pts = []; for (let i = 0; i <= 10; i++) { const u = i / 10; pts.push(x0 + (x1 - x0) * u + Math.sin(u * 9 + k) * 4, y0 + (y1 - y0) * u); }
+      P.stroke(pts, 1.4, INK.hairL, { wob: 0.3 });
+    }
+  }
+  else braids(P, LV === 3 ? 790 : 762, LV === 3 ? 884 : 892, LV === 3 ? 300 : 280, LV === 3 ? 732 : 796, LV === 3 ? 10 : 13, 40);
+}
+function drawHairFront(P, R) {
+  // the hair line over the forehead and in front of the ear
+  if (LV <= 2) {
+    P2(P, [[1000, 368], [972, 300], [900, 282], [850, 330], [880, 440], [904, 452], [912, 418], [950, 404], [988, 400], [998, 392]], INK.hair, { wob: 0.4 });
+    for (let k = 0; k < 7; k++) S2(P, [[996 - k * 14, 384], [984 - k * 14, 336], [964 - k * 14, 302]], 1.2, INK.hairL);
+    if (LV === 2) {   // a small hairpiece: three plaited locks clasped in gold at the temple
+      for (let k = 0; k < 3; k++) { const x = 900 + k * 9; P.stroke([x, 390, x - 2, 470, x + 2, 540], 6, INK.hair, { taper: false }); for (let y = 400; y < 535; y += 11) P.stroke([x - 5, y, x + 3, y + 5], 0.9, INK.hairL, { taper: false }); }
+      P.poly([890, 470, 928, 470, 928, 484, 890, 484], INK.gold, { line: 0.8 });
+      P.stroke([892, 477, 926, 477], 2, INK.blue, { taper: false });
+    }
+  } else {
+    // the front lappet of the wig falls over the shoulder
+    P2(P, [[1000, 368], [972, 300], [900, 282], [850, 330], [880, 440], [904, 452], [912, 418], [950, 404], [988, 400], [998, 392]], INK.hair, { wob: 0.4 });
+    for (let k = 0; k < 7; k++) S2(P, [[996 - k * 14, 372], [984 - k * 14, 330], [966 - k * 14, 300]], 1.2, INK.hairL);
+  }
+}
+
+/* ---------------------------------------------------------------- headgear */
+function drawHeadgear(P, R) {
+  if (LV === 1) return;
+  if (LV <= 3) {   // a fillet of white linen with blue bands, as worn by the musicians
+    P.stroke(spline([868, 340, 920, 318, 976, 330, 996, 346], false, 6), 12, INK.linen, { taper: false, ko: true });
+    P.stroke(spline([868, 336, 920, 314, 976, 326, 996, 342], false, 6), 2.2, INK.blue, { taper: false });
+    P.stroke(spline([868, 344, 920, 322, 976, 334, 996, 350], false, 6), 2.2, INK.blue, { taper: false });
+    if (LV === 3) { P.stroke([868, 342, 850, 380, 846, 430], 6, INK.linen, { ko: true }); P.stroke([868, 342, 850, 380, 846, 430], 1.2, INK.blue); }
+    return;
+  }
+  if (LV === 4) {  // the perfume cone and a lotus over the brow, on a wreath of petals
+    P2(P, [[884, 290], [900, 236], [944, 230], [956, 286]], [0, 0.05, 0.3, 0], { line: 1.2 });
+    for (let k = 0; k < 4; k++) S2(P, [[898 + k * 12, 286], [906 + k * 10, 240]], 0.8, [0, 0.3, 0.5, 0]);
+    P.stroke(spline([866, 330, 920, 300, 980, 318, 1002, 346], false, 6), 12, INK.green, { taper: false });
+    for (let k = 0; k < 12; k++) { const t = k / 11, x = 870 + t * 130, y = 330 - Math.sin(t * Math.PI) * 26 + t * 12; P.poly(sm([x - 5, y + 3, x, y - 9, x + 5, y + 3]), k % 2 ? INK.red : INK.blue, { line: 0.5 }); }
+    P.stroke([1000, 344, 1018, 330, 1030, 312], 2, INK.green);
+    P2(P, [[1022, 318], [1018, 290], [1030, 274], [1038, 290], [1046, 274], [1054, 292], [1046, 318]], INK.blue, { line: 1 });
+    return;
+  }
+  // V: the vulture crown, its wings folded down over the wig, a modius of cobras, twin plumes and a sun disc
+  P2(P, [[1006, 360], [990, 300], [930, 270], [860, 280], [812, 330], [790, 420], [800, 470], [840, 420], [880, 380], [940, 360]], INK.gold, { line: 1.4 });
+  for (let r = 0; r < 4; r++) { const pts = []; for (let i = 0; i <= 8; i++) { const t = i / 8; pts.push(990 - t * 190 + r * 6, 330 - Math.sin(t * Math.PI) * 40 + t * 90 + r * 18); } P.stroke(pts, 1.2, r % 2 ? INK.blue : INK.red); }
+  P2(P, [[1000, 346], [1024, 336], [1034, 350], [1020, 362]], INK.gold, { line: 1 });
+  P.dot(1026, 346, 2, K);
+  P.poly([872, 280, 960, 278, 966, 236, 866, 238], INK.gold, { line: 1.3 });
+  for (let k = 0; k < 7; k++) { const x = 874 + k * 14; P2(P, [[x - 4, 240], [x - 4, 226], [x, 218], [x + 4, 226], [x + 4, 240]], INK.goldS, { line: 0.5 }); P.dot(x, 228, 1.6, INK.blue); }
+  for (const [dx, ink] of [[-12, INK.blue], [12, INK.red]]) { const x = 916 + dx; P2(P, [[x - 9, 236], [x - 12, 214], [x - 6, 198], [x, 190], [x + 6, 198], [x + 12, 214], [x + 9, 236]], ink, { line: 1.3 }); for (let k = 1; k < 3; k++) S2(P, [[x - 10, 236 - k * 15], [x, 230 - k * 15], [x + 10, 236 - k * 15]], 0.9, K); }
+  P.poly(ellipse(916, 228, 14, 14, 0, 28), INK.red, { line: 1.2 });
+  for (const s of [-1, 1]) P2(P, [[916 + s * 18, 240], [916 + s * 30, 222], [916 + s * 26, 204], [916 + s * 16, 222]], INK.gold, { line: 0.9 });
+}
+
+/* ---------------------------------------------------------------- arms, instruments, bracelets */
+function drawProps(P, R) {
+  const lute = LV <= 3;
+  if (lute) {   // the long-necked lute: body against her ribs, neck rising to her raised hand, tassels at the end
+    P.stroke([900, 868, 1300, 690], 9, INK.wood, { taper: false });
+    P.stroke([900, 868, 1300, 690], 1.2, K, { taper: false });
+    P.poly(ellipse(868, 878, 72, 40, -0.42, 32), INK.wood, { line: 1.4 });
+    P.poly(ellipse(868, 878, 50, 26, -0.42, 28), [0.1, 0.5, 0.5, 0], { line: 0.8 });
+    for (const [x, y] of [[850, 878], [880, 866], [866, 892]]) P.poly(ellipse(x, y, 7, 4, -0.4, 10), K, { wob: 0.1 });
+    for (let k = -1; k <= 1; k++) P.stroke([830, 900 + k * 4, 1300, 690 + k * 2], 0.5, [0.3, 0.1, 0.2, 0]);
+    for (const d of [-8, 8]) { P.stroke([1300, 690, 1304 + d, 740], 1.2, INK.red); P.poly(sm([1296 + d, 740, 1312 + d, 740, 1316 + d, 770, 1292 + d, 770]), INK.red, { line: 0.8 }); }
+  }
+  // the near arm, raised: upper arm, forearm, hand
+  arm(P, [[986, 640], [1028, 646], [1048, 680], [1058, 740], [1072, 800], [1082, 838], [1100, 818], [1120, 784], [1140, 754], [1150, 736], [1136, 724], [1112, 752], [1086, 786], [1064, 806], [1046, 770], [1030, 720], [1012, 694]],
+    [[1040, 670], [1054, 730], [1068, 790], [1080, 830], [1092, 818], [1078, 770], [1064, 720], [1050, 676]]);
+  S2(P, [[1060, 808], [1070, 820]], 0.8, LF);   // the inner crease of the elbow
+  S2(P, [[1078, 834], [1086, 842], [1096, 836]], 0.8, LF);   // the point of the elbow
+  S2(P, [[810, 862], [818, 872]], 0.8, LF);
+  S2(P, [[782, 876], [786, 890], [798, 898]], 0.8, LF);
+  // hands
+  P2(P, [[1138, 706], [1160, 698], [1176, 708], [1176, 730], [1160, 744], [1140, 740]], INK.skin, { line: 1.1, li: LF });
+  for (let k = 0; k < 4; k++) finger(P, [1170, 704 + k * 9], [1186, 700 + k * 9], 4.4, 3.4, k === 0);
+  finger(P, [1148, 704], [1166, 688], 5, 3.8, true);
+  P2(P, [[896, 866], [918, 860], [934, 870], [930, 892], [910, 896], [894, 888]], INK.skin, { line: 1.1, li: LF });
+  for (let k = 0; k < 4; k++) finger(P, [928, 864 + k * 8], [946, 868 + k * 8], 4.2, 3.2, true);
+  if (LV === 4) {   // a bouquet of lotus and papyrus held up
+    for (let k = -1; k <= 1; k++) { P.stroke([1170, 712, 1186 + k * 22, 600 - Math.abs(k) * 10], 2.6, INK.green, { taper: false }); const x = 1186 + k * 22, y = 600 - Math.abs(k) * 10; P2(P, [[x - 10, y + 2], [x - 12, y - 18], [x - 4, y - 32], [x, y - 20], [x + 4, y - 32], [x + 12, y - 18], [x + 10, y + 2]], k ? INK.blue : INK.blueL, { line: 1 }); }
+  }
+  if (LV === 5) {   // the sistrum of Hathor, gold, its wires and jingles
+    P.stroke([1168, 760, 1172, 690], 5, INK.gold, { taper: false });
+    P.poly(ellipse(1176, 640, 18, 22, 0, 20), INK.goldS, { line: 1.1 });
+    P.outline(ellipse(1182, 590, 22, 40, 0, 28), 3, INK.gold);
+    for (let k = 0; k < 3; k++) { P.stroke([1162, 570 + k * 16, 1202, 570 + k * 16], 1.4, INK.gold, { taper: false }); P.dot(1172, 570 + k * 16, 2.4, INK.blue); P.dot(1192, 570 + k * 16, 2.4, INK.red); }
+    // and the menat necklace held at her waist
+    P.stroke([920, 880, 930, 940, 926, 1000], 3, INK.blue, { taper: false });
+    P.poly(sm([918, 1000, 934, 1000, 940, 1040, 926, 1060, 912, 1040]), INK.gold, { line: 1 });
+  }
+  // bracelets and armlets: banded faience for the dancer, gold and more of it as the levels rise
+  const bands = (a, b, w, inks) => { const n = [-(b[1] - a[1]), b[0] - a[0]], l = Math.hypot(n[0], n[1]); inks.forEach((ink, k) => { const o = (k - (inks.length - 1) / 2) * w / inks.length; P.stroke([a[0] + n[0] / l * o, a[1] + n[1] / l * o, b[0] + n[0] / l * o, b[1] + n[1] / l * o], w / inks.length, ink, { taper: false, ko: true }); }); };
+  const BI = LV <= 2 ? [INK.blue, INK.linen, INK.red, INK.blue] : LV === 3 ? [INK.gold, INK.blue, INK.gold] : [INK.gold, INK.red, INK.gold, INK.blue, INK.gold];
+  const bw = LV <= 2 ? 12 : LV === 3 ? 13 : 18;
+  bands([1130, 746], [1154, 714], bw, BI);      // near wrist
+  bands([880, 858], [882, 898], bw, BI);        // far wrist
+  bands([1018, 712], [1052, 698], bw, BI);      // near armlet
+  if (LV >= 3) bands([786, 752], [826, 750], bw, BI);
+  // feet: bare for the dancer and the sheer gown, sandals above
+  if (LV >= 3) for (const [a, b] of [[[972, 2144], [1096, 2142]], [[792, 2144], [904, 2140]]]) P.stroke([...a, ...b], 3, LV >= 4 ? INK.gold : [0.1, 0.25, 0.55, 0], { taper: false });
+}
+
+// the front lock of a wig falls behind the jaw and over the collar onto the breast
+function drawLappet(P) {
+  if (LV <= 2) {   // a few loose locks fall in front of the shoulder, over the collar
+    for (let k = 0; k < 6; k++) { const x = 896 + k * 8, pts = []; for (let i = 0; i <= 12; i++) { const u = i / 12; pts.push(x + u * (20 + k * 6) + Math.sin(u * 14 + k) * 3, 466 + u * (220 + k * 8)); } P.stroke(pts, 3.6, INK.hair, { wob: 0.3, tmin: 0.3 }); }
+    return;
+  }
+  const yb = LV === 3 ? 740 : 800;
+  P2(P, [[890, 460], [934, 470], [952, 580], [968, yb - 20], [920, yb], [890, yb - 20], [884, 600]], INK.hair, { wob: 0.4 });
+  braids(P, 894, 950, 480, yb, 5, 10);
+}
+/* ======================================================================
+   THE SHEET: tile pyramid, manual camera
+   ====================================================================== */
+const SW = 1800, SH = 2400;
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d', { alpha: false });
+let W = 0, H = 0, DPR = 1;
+let OPS = [];   // three boil variants of the whole sheet
+
+const TS = 256, MG = 24;
+function mkCanvas(w, h, rf) { const c = document.createElement('canvas'); c.width = w; c.height = h; c.x = c.getContext('2d', rf ? { willReadFrequently: true } : undefined); return c; }
+const SA = mkCanvas(TS + MG * 2, TS + MG * 2, true), SB = mkCanvas(TS + MG * 2, TS + MG * 2, true);
+function mkPath(p) { const path = new Path2D(); path.moveTo(p[0], p[1]); for (let i = 2; i < p.length; i += 2) path.lineTo(p[i], p[i + 1]); path.closePath(); return path; }
+function replay(ops, a, b, x0, y0, x1, y1) {
+  let ma = '', mb = '';
+  for (let i = 0; i < ops.length; i++) {
+    const op = ops[i];
+    if (op.x1 < x0 || op.x0 > x1 || op.y1 < y0 || op.y0 > y1) continue;
+    const path = op.path || (op.path = mkPath(op.p));
+    const m = op.ko ? 'source-over' : 'lighter';
+    if (m !== ma) { a.globalCompositeOperation = m; ma = m; }
+    a.fillStyle = op.a; a.fill(path);
+    if (op.b) { if (m !== mb) { b.globalCompositeOperation = m; mb = m; } b.fillStyle = op.b; b.fill(path); }
+  }
+}
+const LMAX = 7;
+let tiles = new Map();
+const TILESL = {}, OPSL = {};
+let frameNo = 0, MAXT = 700;
+const lvlP = (L) => 0.25 * Math.pow(2, L);
+const tkey = (L, x, y, v) => ((L * 1024 + x) * 1024 + y) * 4 + v;
+function bakeTile(L, tx, ty, v) {
+  const p = lvlP(L), w0 = tx * TS / p, h0 = ty * TS / p, w1 = (tx + 1) * TS / p, h1 = (ty + 1) * TS / p;
+  const m = Math.min(MG, Math.ceil(1.2 * p) + 2), wA = TS + 2 * m;
+  for (const c of [SA, SB]) { const x = c.x; x.setTransform(1, 0, 0, 1, 0, 0); x.globalCompositeOperation = 'source-over'; x.fillStyle = '#000'; x.fillRect(0, 0, wA, wA); x.setTransform(p, 0, 0, p, -w0 * p + m, -h0 * p + m); }
+  const mx = m / p;
+  replay(OPS[v] || OPS[0], SA.x, SB.x, w0 - mx, h0 - mx, w1 + mx, h1 + mx);
+  const A = SA.x.getImageData(0, 0, wA, wA).data, B = SB.x.getImageData(0, 0, wA, wA).data;
+  const c = mkCanvas(TS, TS, false), out = c.x.createImageData(TS, TS);
+  shade(A, B, wA, m, out, TS, TS, w0, h0, p, false, 1);
+  c.x.putImageData(out, 0, 0);
+  tiles.set(tkey(L, tx, ty, v), { c, last: frameNo, L });
+}
+function evict() {
+  if (tiles.size <= MAXT) return;
+  const arr = [];
+  for (const [k, t] of tiles) if (t.L > 1) arr.push([t.last, k]);
+  arr.sort((a, b) => a[0] - b[0]);
+  for (let i = 0; i < arr.length && tiles.size > MAXT * 0.85; i++) tiles.delete(arr[i][1]);
+}
+
+/* ======================================================================
+   CAMERA AND INPUT: manual only. Nothing moves the camera but the viewer.
+   ====================================================================== */
+const cam = { x: SW / 2, y: SH / 2, z: 0.3 };
+let vel = { x: 0, y: 0 }, anim = null, dirty = true, T0 = performance.now(), PRINT0 = -1;
+const now = () => (performance.now() - T0) / 1000;
+const ptrs = new Map();
+let pinchD = 0, pinchM = null, lastMoveT = 0;
+const fitZ = () => Math.min(W / SW, H / SH) * 0.94;
+const minZ = () => fitZ() * 0.6, maxZ = () => 24;
+function resize() {
+  const small = Math.min(screen.width, screen.height) < 620;
+  DPR = Math.min(window.devicePixelRatio || 1, small ? 2 : 3);
+  const first = !W;
+  W = innerWidth; H = innerHeight;
+  cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  MAXT = small ? 340 : 760;
+  if (first) cam.z = fitZ();
+  cam.z = Math.max(minZ(), Math.min(maxZ(), cam.z));
+  dirty = true;
+}
+function clampCam() { cam.x = Math.max(-SW * 0.1, Math.min(SW * 1.1, cam.x)); cam.y = Math.max(-SH * 0.1, Math.min(SH * 1.1, cam.y)); }
+function zoomAt(sx, sy, f) {
+  const z1 = Math.max(minZ(), Math.min(maxZ(), cam.z * f));
+  const wx = (sx - W / 2) / cam.z + cam.x, wy = (sy - H / 2) / cam.z + cam.y;
+  cam.z = z1; cam.x = wx - (sx - W / 2) / z1; cam.y = wy - (sy - H / 2) / z1;
+  clampCam(); dirty = true;
+}
+// a short ease only in answer to a key press; the viewer always starts it
+function ease(to, dur) { anim = { a: { x: cam.x, y: cam.y, z: cam.z }, b: to, t0: now(), d: dur }; }
+cv.addEventListener('pointerdown', (e) => {
+  try { cv.setPointerCapture(e.pointerId); } catch (_) {}
+  ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); anim = null; vel.x = vel.y = 0;
+  if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; pinchD = Math.hypot(a.x - b.x, a.y - b.y); pinchM = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }; }
+});
+cv.addEventListener('pointermove', (e) => {
+  const p = ptrs.get(e.pointerId); if (!p) return;
+  const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
+  const T = now(), dt = Math.max(0.008, T - lastMoveT); lastMoveT = T;
+  if (ptrs.size === 1) {
+    cam.x -= dx / cam.z; cam.y -= dy / cam.z; clampCam();
+    vel.x = vel.x * 0.5 + (dx / dt) * 0.5; vel.y = vel.y * 0.5 + (dy / dt) * 0.5;
+  } else if (ptrs.size === 2) {
+    const [a, b] = [...ptrs.values()], d = Math.hypot(a.x - b.x, a.y - b.y), m = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+    if (pinchD > 0) zoomAt(m.x, m.y, d / pinchD);
+    cam.x -= (m.x - pinchM.x) / cam.z; cam.y -= (m.y - pinchM.y) / cam.z; clampCam();
+    pinchD = d; pinchM = m; vel.x = vel.y = 0;
+  }
+  dirty = true;
+});
+function endPtr(e) {
+  if (!ptrs.delete(e.pointerId)) return;
+  if (now() - lastMoveT > 0.08) vel.x = vel.y = 0;
+  if (ptrs.size === 1) { pinchD = 0; vel.x = vel.y = 0; }
+}
+cv.addEventListener('pointerup', endPtr); cv.addEventListener('pointercancel', endPtr);
+cv.addEventListener('wheel', (e) => {
+  e.preventDefault(); anim = null; vel.x = vel.y = 0;
+  const k = e.deltaMode === 1 ? 0.06 : e.deltaMode === 2 ? 0.5 : 0.0018;
+  zoomAt(e.clientX, e.clientY, Math.exp(-e.deltaY * k * (e.ctrlKey ? 2.5 : 1)));
+}, { passive: false });
+addEventListener('keydown', (e) => {
+  const k = e.key;
+  const pan = (dx, dy) => ease({ x: cam.x + dx * W * 0.2 / cam.z, y: cam.y + dy * H * 0.2 / cam.z, z: cam.z }, 0.3);
+  const zm = (f) => ease({ x: cam.x, y: cam.y, z: Math.max(minZ(), Math.min(maxZ(), cam.z * f)) }, 0.3);
+  if (k === 'ArrowLeft') pan(-1, 0); else if (k === 'ArrowRight') pan(1, 0);
+  else if (k === 'ArrowUp') pan(0, -1); else if (k === 'ArrowDown') pan(0, 1);
+  else if (k === '+' || k === '=') zm(1.5); else if (k === '-' || k === '_') zm(1 / 1.5);
+  else if (k === '0') ease({ x: SW / 2, y: SH / 2, z: fitZ() }, 0.6);
+  else return;
+  e.preventDefault();
+});
+addEventListener('resize', resize);
+
+/* ======================================================================
+   FRAME LOOP
+   ====================================================================== */
+let PAPAT = null, boilLast = -1, lastT = 0;
+const smooth = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+function frame() {
+  requestAnimationFrame(frame);
+  const T = now(), dt = Math.min(0.1, T - lastT); lastT = T; frameNo++;
+  if (!ptrs.size && (Math.abs(vel.x) > 2 || Math.abs(vel.y) > 2)) {
+    cam.x -= vel.x * dt / cam.z; cam.y -= vel.y * dt / cam.z; clampCam();
+    const d = Math.pow(0.04, dt); vel.x *= d; vel.y *= d; dirty = true;
+  } else if (!ptrs.size) vel.x = vel.y = 0;
+  if (anim) {
+    const k = Math.min(1, (T - anim.t0) / anim.d), e = smooth(k);
+    cam.z = Math.exp(Math.log(anim.a.z) + (Math.log(anim.b.z) - Math.log(anim.a.z)) * e);
+    cam.x = anim.a.x + (anim.b.x - anim.a.x) * e; cam.y = anim.a.y + (anim.b.y - anim.a.y) * e;
+    clampCam(); dirty = true; if (k >= 1) anim = null;
+  }
+  const boil = Math.floor(T * 3) % 3;
+  if (boil !== boilLast) { boilLast = boil; dirty = true; }
+  const p = cam.z * DPR;
+  const L = Math.max(0, Math.min(LMAX, Math.ceil(Math.log2(p / 0.25) - 0.3)));
+  const pL = lvlP(L), v = L >= 2 ? boil : 0;
+  const vw = W / cam.z, vh = H / cam.z, vr = [cam.x - vw / 2, cam.y - vh / 2, cam.x + vw / 2, cam.y + vh / 2];
+  const sx0 = Math.max(0, Math.floor(vr[0] * pL / TS)), sy0 = Math.max(0, Math.floor(vr[1] * pL / TS));
+  const sx1 = Math.min(Math.ceil(SW * pL / TS) - 1, Math.floor(vr[2] * pL / TS)), sy1 = Math.min(Math.ceil(SH * pL / TS) - 1, Math.floor(vr[3] * pL / TS));
+  // bake what is visible, nearest the centre first, under a time budget
+  const need = [], ccx = cam.x * pL / TS, ccy = cam.y * pL / TS;
+  for (let ty = sy0; ty <= sy1; ty++) for (let tx = sx0; tx <= sx1; tx++) {
+    const t = tiles.get(tkey(L, tx, ty, v));
+    if (t) t.last = frameNo; else need.push([Math.hypot(tx + 0.5 - ccx, ty + 0.5 - ccy), L, tx, ty, v]);
+  }
+  if (!need.length && L >= 2) for (let ty = sy0; ty <= sy1; ty++) for (let tx = sx0; tx <= sx1; tx++) for (let w = 0; w < 3; w++)
+    if (!tiles.has(tkey(L, tx, ty, w))) need.push([100 + Math.hypot(tx - ccx, ty - ccy), L, tx, ty, w]);
+  need.sort((a, b) => a[0] - b[0]);
+  const t0 = performance.now(), budget = ptrs.size || anim ? 7 : 12;
+  let baked = 0;
+  for (const n of need) { if (performance.now() - t0 > budget && baked) break; bakeTile(n[1], n[2], n[3], n[4]); baked++; dirty = true; }
+  evict();
+  const printing = PRINT0 >= 0 && T - PRINT0 < 2.6;
+  if (!dirty && !printing) return;
+  dirty = false;
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'source-over';
+  ctx.fillStyle = '#2a2622'; ctx.fillRect(0, 0, cv.width, cv.height);
+  const S = cam.z * DPR, ox = W * DPR / 2 - cam.x * S, oy = H * DPR / 2 - cam.y * S;
+  const X = (wx) => Math.round(wx * S + ox), Y = (wy) => Math.round(wy * S + oy);
+  ctx.fillStyle = 'rgba(0,0,0,0.38)'; ctx.fillRect(X(16), Y(22), X(SW + 16) - X(16), Y(SH + 22) - Y(22));
+  if (!PAPAT) {
+    const g = mkCanvas(NS, NS, false), im = g.x.createImageData(NS, NS);
+    for (let i = 0; i < NS * NS; i++) { const pg = 0.955 + 0.045 * NZ[i]; im.data[i * 4] = PAPER[0] * pg; im.data[i * 4 + 1] = PAPER[1] * pg; im.data[i * 4 + 2] = PAPER[2] * pg; im.data[i * 4 + 3] = 255; }
+    g.x.putImageData(im, 0, 0); PAPAT = ctx.createPattern(g, 'repeat');
+  }
+  PAPAT.setTransform(new DOMMatrix([S / 1.9, 0, 0, S / 1.9, ox, oy]));
+  ctx.fillStyle = PAPAT; ctx.fillRect(X(0), Y(0), X(SW) - X(0), Y(SH) - Y(0));
+  ctx.save();
+  ctx.beginPath();
+  if (printing) {   // the sheet comes off the drum once, top to bottom
+    const h = SH * smooth(Math.max(0, Math.min(1, (T - PRINT0) / 2.4)));
+    ctx.moveTo(X(0), Y(0)); ctx.lineTo(X(SW), Y(0));
+    for (let k = 12; k >= 0; k--) ctx.lineTo(X(SW * k / 12), Y(h + Math.sin(k * 1.7) * 10));
+    ctx.closePath();
+  } else ctx.rect(X(0), Y(0), X(SW) - X(0), Y(SH) - Y(0));
+  ctx.clip();
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+  const tsW = TS / pL;
+  for (let ty = sy0; ty <= sy1; ty++) for (let tx = sx0; tx <= sx1; tx++) {
+    const dx0 = X(tx * tsW), dy0 = Y(ty * tsW), dx1 = X((tx + 1) * tsW), dy1 = Y((ty + 1) * tsW);
+    let t = tiles.get(tkey(L, tx, ty, v));
+    if (!t) for (let w = 0; w < 3 && !t; w++) t = tiles.get(tkey(L, tx, ty, w));
+    if (t) { ctx.drawImage(t.c, 0, 0, TS, TS, dx0, dy0, dx1 - dx0, dy1 - dy0); continue; }
+    for (let l = L - 1; l >= 0; l--) {
+      const sh = L - l, px = tx >> sh, py = ty >> sh, pt = tiles.get(tkey(l, px, py, 0)) || tiles.get(tkey(l, px, py, 1)) || tiles.get(tkey(l, px, py, 2));
+      if (pt) { const s = TS >> sh; ctx.drawImage(pt.c, (tx - (px << sh)) * s, (ty - (py << sh)) * s, s, s, dx0, dy0, dx1 - dx0, dy1 - dy0); break; }
+    }
+  }
+  ctx.restore();
+}
+function start() {
+  resize();
+  cam.x = SW / 2; cam.y = SH / 2; cam.z = fitZ();
+  setLevel(3);
+  PRINT0 = now() + 0.3;
+  requestAnimationFrame(frame);
+}
+
+// costume levels: each keeps its own display lists and tile cache, so switching back is instant
+function setLevel(lv) {
+  if (!OPSL[lv]) { LV = lv; OPSL[lv] = [0, 1, 2].map((v) => { const P = new Pen(2718, v, 1); drawSheet(P, mulberry(31)); return P.ops; }); TILESL[lv] = new Map(); }
+  LV = lv; OPS = OPSL[lv]; tiles = TILESL[lv];
+  for (const l of [0, 1]) { const pl = lvlP(l); for (let ty = 0; ty * TS < SH * pl; ty++) for (let tx = 0; tx * TS < SW * pl; tx++) if (!tiles.has(tkey(l, tx, ty, 0))) bakeTile(l, tx, ty, 0); }
+  dirty = true;
+}
+for (const r of document.querySelectorAll('#lv input')) r.addEventListener('change', () => { if (r.checked) setLevel(+r.value); });
+start();
+</script>
+</body>
+</html>

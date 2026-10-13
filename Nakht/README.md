@@ -7,7 +7,7 @@ A figure drawn entirely in code, in the same simulated four-ink risograph print 
 - legs in stride;
 - the long-necked lute of the original.
 
-- **File:** `index.html`, **65330 bytes**. It is a single file with Canvas 2D only: no images, fonts, libraries or network requests beyond the page itself.
+- **File:** `index.html`, **66521 bytes**. It is a single file with Canvas 2D only: no images, fonts, libraries or network requests beyond the page itself.
 - **Controls:** a switch in the top-left corner chooses the costume level. Drag to pan, wheel or pinch to zoom, `+` / `-` to zoom, arrow keys to pan, and `0` to fit the sheet. The camera never moves by itself.
 
 ## Proportions
@@ -26,7 +26,7 @@ The hips and buttocks are fully rounded. The arms have a shoulder, a bent elbow 
 Anatomy is drawn in the tomb painter's few, restrained lines:
 
 - collarbones;
-- the breast in profile with a small nipple mark;
+- the torso turned toward the viewer as at Nakht: the near breast in profile at the front edge and the far breast rounded on the chest, each with a small nipple mark;
 - a hint of the ribcage and the line down the belly;
 - the navel;
 - the hip bone and hip crease;
@@ -36,7 +36,7 @@ Anatomy is drawn in the tomb painter's few, restrained lines:
 
 | Level | Name | What she wears |
 | :--- | :--- | :--- |
-| I | Dancer | As the tomb's young musicians: a girdle of beads with a short bead fringe, a narrow collar, banded faience cuffs and armlets, gold disc earrings, her own hair, almost no makeup, bare feet |
+| I | Dancer | As the tomb's young musicians: a girdle of beads riding low and dipping at the front, with a short bead fringe, a narrow collar, banded faience cuffs and armlets, gold disc earrings, her own long hair to the brow and down the back with fine plaits over the shoulder, almost no makeup, bare feet |
 | II | Sheer | A gown of finest pleated linen, so sheer the body reads through it, as painted at Nakht; a light kohl line and tinted lips; her own hair with a small plaited hairpiece clasped in gold; a linen fillet striped in blue |
 | III | Linen | An opaque linen dress with sash and fringed hem, a braided wig with a fillet, a broad collar, more bracelets and armlets, kohl and malachite, sandals |
 | IV | Festival | A full pleated dress with a shawl and long red sash, a great enveloping wig crowned by a perfume cone and a wreath with a blue lotus, heavy kohl, malachite, red lips and cheeks, a larger collar, long earring drops, gold sandals; she holds a lotus bouquet |

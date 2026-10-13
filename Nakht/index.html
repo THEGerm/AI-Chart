@@ -497,7 +497,7 @@ function drawSheet(P, R) {
 }
 
 /* ---------------------------------------------------------------- body */
-const TORSO = [[870, 600], [812, 650], [812, 740], [830, 830], [846, 900], [838, 950], [810, 986], [784, 1026], [774, 1062], [784, 1096], [830, 1112], [900, 1104], [952, 1098], [992, 1066], [1004, 1012], [998, 950], [984, 900], [998, 836], [1010, 806], [1032, 796], [1040, 768], [1036, 738], [1022, 700], [1020, 664], [990, 640], [960, 616]];
+const TORSO = [[870, 600], [812, 650], [812, 740], [830, 830], [846, 900], [838, 950], [810, 986], [784, 1026], [774, 1062], [784, 1096], [830, 1112], [900, 1104], [952, 1098], [992, 1066], [1004, 1012], [998, 950], [984, 900], [994, 840], [1004, 812], [1026, 806], [1040, 790], [1044, 762], [1036, 732], [1022, 704], [1020, 664], [990, 640], [960, 616]];
 const LEG_F = [[990, 1050], [1012, 1250], [1012, 1420], [1010, 1560], [1004, 1800], [992, 2050], [986, 2082], [1040, 2110], [1094, 2128], [1098, 2144], [972, 2146], [952, 2130], [956, 2080], [952, 1900], [962, 1760], [966, 1580], [938, 1300], [920, 1090]];
 const LEG_B = [[904, 1080], [906, 1300], [890, 1578], [862, 1820], [834, 2058], [886, 2108], [906, 2142], [792, 2146], [774, 2126], [786, 2070], [800, 1830], [822, 1700], [830, 1592], [816, 1300], [796, 1160], [786, 1100]];
 function finger(P, a, b, r0, r1, nail) {
@@ -535,11 +535,14 @@ function drawFigure(P, R) {
   S2(P, [[872, 628], [906, 636], [930, 636]], 0.8, soft);
   P.poly(ellipse(944, 640, 5, 3, 0, 10), [0.0, 0.12, 0.02, 0.05], { ko: false, wob: 0.1 });
   // the breast in profile with its small nipple, as the Nakht painter drew it; the far breast as a single soft line
-  S2(P, [[1022, 704], [1034, 740], [1040, 768], [1032, 794], [1008, 802]], 1.0, LF);
-  S2(P, [[1006, 800], [1020, 806], [1034, 796]], 1.0, LF);
-  P.poly(ellipse(1038, 768, 3, 3.4, 0, 10), [0.15, 0.5, 0.32, 0.02], { wob: 0.1 });
-  S2(P, [[930, 742], [940, 778], [962, 796]], 0.8, soft);
-  P.poly(sm(flat([[1000, 790], [1030, 800], [1006, 812], [984, 806]])), [0.0, 0.1, 0.02, 0.05], { ko: false });
+  // the torso is turned toward us, as the Nakht painter turns it: the near breast in profile at the front edge,
+  // the far breast seen rounded on the chest; each with a small nipple
+  S2(P, [[1000, 810], [1022, 812], [1040, 794]], 1.0, LF);
+  P.poly(ellipse(1042, 772, 3, 3.4, 0, 10), [0.15, 0.48, 0.32, 0.02], { wob: 0.1 });
+  S2(P, [[930, 760], [928, 790], [944, 810], [970, 812], [990, 798]], 1.0, LF);
+  P.poly(ellipse(958, 790, 3, 3.4, 0, 10), [0.15, 0.48, 0.32, 0.02], { wob: 0.1 });
+  P.poly(sm(flat([[934, 796], [960, 812], [988, 802], [970, 818], [944, 816]])), [0.0, 0.1, 0.02, 0.05], { ko: false });
+  P.poly(sm(flat([[1004, 806], [1030, 808], [1040, 794], [1026, 818], [1004, 818]])), [0.0, 0.1, 0.02, 0.05], { ko: false });
   // ribcage, the line down the belly, the navel, the soft curve of the lower belly
   S2(P, [[962, 828], [984, 818], [998, 832]], 0.7, soft);
   S2(P, [[990, 836], [986, 880], [982, 918]], 0.7, soft);
@@ -574,14 +577,15 @@ function drawFigure(P, R) {
 
 /* ---------------------------------------------------------------- costume by level */
 function girdle(P, withFringe) {
-  for (let k = 0; k <= 30; k++) { const t = k / 30, x = 816 + t * 182, y = 1032 + Math.sin(t * Math.PI) * 26 - t * 8; P.dot(x, y, 3.4, k % 3 === 0 ? INK.blue : k % 3 === 1 ? INK.red : INK.gold); }
-  for (let k = 0; k <= 30; k++) { const t = k / 30, x = 816 + t * 182, y = 1044 + Math.sin(t * Math.PI) * 26 - t * 8; P.dot(x, y, 2.6, k % 2 ? INK.goldL : INK.blue); }
-  if (withFringe) {   // a short apron of bead strings hanging from the girdle at the front
-    for (let k = 0; k < 9; k++) {
-      const x = 930 + k * 8.5, y0 = 1058 + Math.sin((x - 816) / 182 * Math.PI) * 8;
-      for (let j = 0; j < 7; j++) P.dot(x + j * 0.6, y0 + j * 6.5, 2.5, (j + k) % 3 === 0 ? INK.blue : (j + k) % 3 === 1 ? INK.red : INK.goldL);
+  // a girdle of beads riding low on the hips and dipping at the front, as the dancers wear it
+  const at = (t, d) => { const x = 806 + t * 196, y = 1040 + Math.sin(t * Math.PI) * 6 + t * t * 34 + d; return [x, y]; };
+  for (let k = 0; k <= 32; k++) { const [x, y] = at(k / 32, 0); P.dot(x, y, 3.6, k % 3 === 0 ? INK.blue : k % 3 === 1 ? INK.red : INK.gold); }
+  for (let k = 0; k <= 32; k++) { const [x, y] = at(k / 32, 10); P.dot(x, y, 2.8, k % 2 ? INK.goldL : INK.blue); }
+  if (withFringe) {   // a short fringe of bead strings at the front, following the curve of the girdle
+    for (let k = 0; k < 6; k++) {
+      const t = 0.7 + k * 0.045, [x, y] = at(t, 14), len = 2 + Math.round(Math.sin((k + 0.5) / 6 * Math.PI) * 2);
+      for (let j = 0; j < len; j++) P.dot(x - j * 1.2, y + j * 6, 2.4, (j + k) % 3 === 0 ? INK.blue : (j + k) % 3 === 1 ? INK.red : INK.goldL);
     }
-    P.poly([928, 1060, 1006, 1046, 1004, 1110, 932, 1112], [0.04, 0.24, 0.3, 0.06], { ko: false, wob: 0.4 });
   }
 }
 function pleats(P, x0, x1, y0, y1, n, ink, w) { for (let i = 0; i <= n; i++) { const t = i / n; P.stroke([x0 + (x1 - x0) * t * 0.9, y0, x0 + (x1 - x0) * t, y1], w || 0.7, ink, { wob: 0.4 }); } }
@@ -702,21 +706,27 @@ function braids(P, x0, x1, ytop, ybot, n, curve) {
 let HAIRPOLY = null;
 function drawHairBack(P, R) {
   if (LV <= 2) {          // her own hair, dark and wavy, to the shoulders
-    HAIRPOLY = sm(flat([[982, 346], [956, 306], [900, 290], [846, 312], [812, 370], [796, 460], [792, 560], [800, 640], [826, 676], [866, 660], [880, 600], [884, 540], [900, 470], [930, 420], [968, 388]]));
+    HAIRPOLY = sm(flat([[996, 372], [978, 300], [900, 282], [834, 304], [804, 362], [790, 460], [786, 600], [790, 740], [806, 812], [840, 826], [866, 760], [876, 640], [882, 560], [902, 470], [930, 428], [968, 404]]));
   } else if (LV === 3) {   // a braided wig to below the shoulders
     HAIRPOLY = sm(flat([[996, 360], [966, 296], [900, 280], [836, 300], [800, 360], [784, 470], [780, 600], [786, 720], [830, 740], [880, 720], [890, 600], [892, 520], [910, 460], [940, 420], [980, 400]]));
   } else {                 // the great festival wig, enveloping and full
     HAIRPOLY = sm(flat([[1006, 362], [976, 284], [900, 262], [820, 284], [776, 356], [756, 480], [750, 640], [758, 780], [820, 806], [890, 780], [896, 640], [898, 540], [912, 470], [946, 424], [990, 404]]));
   }
   P.poly(HAIRPOLY, INK.hair, { wob: 0.6 });
-  if (LV <= 2) waves(P, R, HAIRPOLY, 160, INK.hairL);
+  if (LV <= 2) {   // long locks, loosely plaited, falling from the crown down the back
+    for (let k = 0; k < 12; k++) {
+      const t = k / 11, x0 = 960 - t * 130, y0 = 300 + Math.abs(t - 0.4) * 40, x1 = 800 + t * 60, y1 = 760 + Math.sin(t * Math.PI) * 60;
+      const pts = []; for (let i = 0; i <= 10; i++) { const u = i / 10; pts.push(x0 + (x1 - x0) * u + Math.sin(u * 9 + k) * 4, y0 + (y1 - y0) * u); }
+      P.stroke(pts, 1.4, INK.hairL, { wob: 0.3 });
+    }
+  }
   else braids(P, LV === 3 ? 790 : 762, LV === 3 ? 884 : 892, LV === 3 ? 300 : 280, LV === 3 ? 732 : 796, LV === 3 ? 10 : 13, 40);
 }
 function drawHairFront(P, R) {
   // the hair line over the forehead and in front of the ear
   if (LV <= 2) {
-    P2(P, [[990, 360], [962, 310], [900, 296], [880, 330], [904, 360], [930, 380], [962, 384], [984, 380]], INK.hair, { wob: 0.4 });
-    for (let k = 0; k < 6; k++) S2(P, [[976 - k * 12, 372], [960 - k * 12, 340], [940 - k * 12, 316]], 1.2, INK.hairL);
+    P2(P, [[1000, 368], [972, 300], [900, 282], [850, 330], [880, 440], [904, 452], [912, 418], [950, 404], [988, 400], [998, 392]], INK.hair, { wob: 0.4 });
+    for (let k = 0; k < 7; k++) S2(P, [[996 - k * 14, 384], [984 - k * 14, 336], [964 - k * 14, 302]], 1.2, INK.hairL);
     if (LV === 2) {   // a small hairpiece: three plaited locks clasped in gold at the temple
       for (let k = 0; k < 3; k++) { const x = 900 + k * 9; P.stroke([x, 390, x - 2, 470, x + 2, 540], 6, INK.hair, { taper: false }); for (let y = 400; y < 535; y += 11) P.stroke([x - 5, y, x + 3, y + 5], 0.9, INK.hairL, { taper: false }); }
       P.poly([890, 470, 928, 470, 928, 484, 890, 484], INK.gold, { line: 0.8 });
@@ -811,7 +821,10 @@ function drawProps(P, R) {
 
 // the front lock of a wig falls behind the jaw and over the collar onto the breast
 function drawLappet(P) {
-  if (LV <= 2) return;
+  if (LV <= 2) {   // a few loose locks fall in front of the shoulder, over the collar
+    for (let k = 0; k < 6; k++) { const x = 896 + k * 8, pts = []; for (let i = 0; i <= 12; i++) { const u = i / 12; pts.push(x + u * (20 + k * 6) + Math.sin(u * 14 + k) * 3, 466 + u * (220 + k * 8)); } P.stroke(pts, 3.6, INK.hair, { wob: 0.3, tmin: 0.3 }); }
+    return;
+  }
   const yb = LV === 3 ? 740 : 800;
   P2(P, [[890, 460], [934, 470], [952, 580], [968, yb - 20], [920, yb], [890, yb - 20], [884, 600]], INK.hair, { wob: 0.4 });
   braids(P, 894, 950, 480, yb, 5, 10);

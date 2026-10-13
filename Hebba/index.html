@@ -398,7 +398,16 @@ const INK = {
 const ov = (i) => i;   // readability: overprint inks are passed with { ko: false }
 let LV = 3;   // costume level: 2 everyday, 3 court, 4 regalia
 const HS = 0.42;
-const F = (x, y) => [897 + (x - 822) * HS, 662 + (y - 930) * HS];
+// head pose, as in the photograph: rolled toward her left shoulder and pitched a little down.
+// The roll pivots at the neck and fades out below the chin; the pitch foreshortens the face below the eyes.
+const ROLL = 6 * D2R, PITCH = 0.93;
+function headWarp(x, y) {
+  const yy = y > 625 ? 625 + (y - 625) * PITCH : y;
+  const w = y < 930 ? 1 : y > 1000 ? 0 : (1000 - y) / 70, a = ROLL * w;
+  const dx = x - 822, dy = yy - 960;
+  return [822 + dx * Math.cos(a) - dy * Math.sin(a), 960 + dx * Math.sin(a) + dy * Math.cos(a)];
+}
+const F = (x, y) => { const q = headWarp(x, y); return [897 + (q[0] - 822) * HS, 662 + (q[1] - 930) * HS]; };
 const fp = (L) => { const o = []; for (const [x, y] of L) { const p = F(x, y); o.push(p[0], p[1]); } return o; };
 const flat = (L) => { const o = []; for (const p of L) o.push(p[0], p[1]); return o; };
 function inside(P, x, y) { let c = false; for (let i = 0, j = P.length / 2 - 1; i < P.length / 2; j = i++) { const xi = P[i * 2], yi = P[i * 2 + 1], xj = P[j * 2], yj = P[j * 2 + 1]; if (((yi > y) !== (yj > y)) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; }
@@ -749,13 +758,17 @@ function drawFace(P, R) {
   fs(P, [[946, 630], [958, 638], [966, 650]], 0.8, [0.4, 0.3, 0, 0]); fs(P, [[944, 636], [952, 650]], 0.7, [0.4, 0.3, 0, 0]);
   fs(P, [[680, 626], [670, 636]], 0.7, [0.4, 0.3, 0, 0]);
   // nose: bridge, the round tip, wings and nostrils
-  fs(P, [[794, 640], [788, 690], [780, 728]], 0.8, [0.3, 0.3, 0.05, 0.05]);
+  fs(P, [[796, 636], [790, 690], [782, 732]], 0.9, [0.3, 0.3, 0.05, 0.05]);
+  fs(P, [[828, 640], [834, 690], [846, 730]], 0.6, [0.2, 0.25, 0.05, 0.04]);
   fs(P, [[772, 730], [758, 748], [764, 766], [782, 774]], 1.4, LF);
   fs(P, [[856, 724], [870, 742], [864, 762], [846, 770]], 1.4, LF);
-  fs(P, [[790, 772], [812, 780], [834, 770]], 1.1, LF);
-  P.poly(ellipse(...F(792, 767), 4.6, 2.2, 0.2, 12), [0.55, 0.6, 0.15, 0], { wob: 0.1 });
-  P.poly(ellipse(...F(836, 764), 4.6, 2.2, -0.2, 12), [0.55, 0.6, 0.15, 0], { wob: 0.1 });
-  fs(P, [[796, 742], [812, 752], [830, 744]], 0.9, [0.25, 0.3, 0.05, 0.05]);
+  fs(P, [[786, 776], [812, 788], [838, 774]], 1.2, LF);
+  fl(P, [[796, 650], [826, 650], [834, 720], [826, 760], [800, 760], [790, 720]], [0, 0.0, 0.0, 0.0], { ko: false });
+  fl(P, [[826, 660], [840, 700], [846, 744], [834, 764], [830, 720]], [0.0, 0.08, 0.0, 0.05], { ko: false });
+  fl(P, [[786, 762], [812, 776], [840, 762], [830, 784], [812, 790], [794, 784]], [0.0, 0.1, 0.02, 0.04], { ko: false });
+  P.poly(ellipse(...F(793, 771), 3.4, 1.4, 0.25, 12), [0.5, 0.6, 0.15, 0], { wob: 0.1 });
+  P.poly(ellipse(...F(833, 768), 3.4, 1.4, -0.15, 12), [0.5, 0.6, 0.15, 0], { wob: 0.1 });
+  fs(P, [[798, 752], [814, 762], [832, 754]], 0.8, [0.22, 0.28, 0.05, 0.04]);
   // the smile: lips, the upper teeth, the dark of the mouth
   const LIP = LV === 2 ? [0, 0.44, 0.3, 0.04] : LV === 4 ? [0, 0.84, 0.22, 0.05] : INK.lip;
   fl(P, [[722, 790], [768, 834], [820, 849], [878, 838], [912, 798], [884, 826], [820, 842], [764, 828]], LIP, { line: 0.8, li: LF });

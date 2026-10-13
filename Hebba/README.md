@@ -2,7 +2,7 @@
 
 A portrait drawn entirely in code, in the same simulated risograph technique as `Egypt/`. It shows Hebba as a princess of the New Kingdom (c. 1550 to 1069 BCE), seated on a gilded throne inside a finished Egyptian frame.
 
-- **File:** `index.html`, **62343 bytes**. It is a single file with Canvas 2D only: no images, fonts, libraries or network requests beyond the page itself.
+- **File:** `index.html`, **64087 bytes**. It is a single file with Canvas 2D only: no images, fonts, libraries or network requests beyond the page itself.
 - **No background:** only the paper stock shows behind the figure and throne.
 - **Controls:** manual only. Drag to pan (with inertia), wheel or pinch to zoom, `+` / `-` to zoom, arrow keys to pan, and `0` to fit the sheet. The camera never moves by itself.
 

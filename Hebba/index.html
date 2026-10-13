@@ -371,6 +371,7 @@ function capsule(a, b, ra, rb, rm) {
   return P;
 }
 const add = (a, v, s) => [a[0] + v[0] * s, a[1] + v[1] * s];
+const lp = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
 const INK = {
   skin: [0.02, 0.25, 0.36, 0.05], skinS: [0.04, 0.36, 0.4, 0.08],
   hair: [0.9, 0.1, 0, 0.3], hairSheen: [0.42, 0.04, 0, 0.42],
@@ -555,8 +556,10 @@ function limbC(P, a, b, ra, rb, ink, side) {
 function drawBody(P, R) {
   // the far edge of the hair mass that falls over her left shoulder is already printed; now the figure
   // ---- the gown below the waist: sheer pleated linen over the lap, falling to the ankles
-  const skirt = sm([818, 1000, 795, 1060, 772, 1118, 764, 1170, 786, 1206, 800, 1300, 790, 1450, 772, 1582, 900, 1592, 1028, 1582, 1010, 1450, 1000, 1300, 1014, 1206, 1036, 1170, 1028, 1118, 1005, 1060, 982, 1000]);
+  const skirt = sm([818, 1000, 776, 1052, 742, 1108, 738, 1166, 774, 1210, 798, 1300, 790, 1450, 772, 1582, 900, 1592, 1028, 1582, 1010, 1450, 1002, 1300, 1026, 1210, 1062, 1166, 1058, 1108, 1024, 1052, 982, 1000]);
   P.poly(skirt, INK.linen, { line: 1.5 });
+  P.stroke([812, 1012, 768, 1060, 748, 1112, 750, 1160], 1.1, [0.12, 0.25, 0.12, 0.05]);
+  P.stroke([988, 1012, 1032, 1060, 1052, 1112, 1050, 1160], 1.1, [0.12, 0.25, 0.12, 0.05]);
   // the lap: thighs on the seat, the linen pulled over the knees and sagging between them
   for (const kx of [842, 958]) {
     P.stroke([kx - 66, 1172, kx - 40, 1150, kx, 1144, kx + 40, 1150, kx + 66, 1172], 1.4, [0.25, 0.2, 0.1, 0.1]);
@@ -564,7 +567,7 @@ function drawBody(P, R) {
   }
   for (let k = 0; k < 4; k++) P.stroke([852, 1170 + k * 8, 900, 1214 + k * 12, 948, 1170 + k * 8], 0.9, [0.45, 0.06, 0, 0.12]);
   P.poly(sm([786, 1206, 900, 1236, 1014, 1206, 1004, 1250, 900, 1262, 796, 1250]), [0.02, 0.08, 0.06, 0.03], { ko: false, wob: 0.5 });
-  for (let i = 0; i < 12; i++) { const t = i / 11; P.stroke([812 + t * 176, 1004, 784 + t * 232, 1080, 772 + t * 256, 1150], 0.7, [0.5, 0.05, 0, 0.1]); }
+  for (let i = 0; i < 14; i++) { const t = i / 13; P.stroke([812 + t * 176, 1004, 772 + t * 256, 1080, 752 + t * 296, 1150], 0.7, [0.5, 0.05, 0, 0.1]); }
   // the shins under the fall of pleats
   for (const kx of [846, 954]) { P.stroke([kx - 30, 1250, kx - 26, 1420, kx - 20, 1570], 1, [0.04, 0.16, 0.1, 0.04]); P.stroke([kx + 30, 1250, kx + 26, 1420, kx + 20, 1570], 1, [0.04, 0.16, 0.1, 0.04]); }
   for (let i = 0; i < 24; i++) { const t = i / 23, xa = 798 + t * 204, xb = 776 + t * 248; P.stroke([xa, 1214 + Math.sin(t * Math.PI) * 22, (xa + xb) / 2 + (R() - 0.5) * 3, 1410, xb, 1580 + Math.sin(t * Math.PI) * 8], 0.8, [0.5, 0.05, 0, 0.1]); }
@@ -592,14 +595,29 @@ function drawBody(P, R) {
   limbC(P, [700, 980], [800, 948], 26, 19, INK.skin, 1);
   limbC(P, [1084, 790], [1104, 984], 34, 27, INK.skin, 1);
   limbC(P, [1104, 984], [1126, 1062], 26, 21, INK.skin, 1);
-  // hands
-  P.poly(sm([794, 930, 812, 916, 832, 922, 840, 940, 834, 962, 814, 970, 796, 964]), INK.skin, { line: 1.3 });
-  for (let k = 0; k < 3; k++) P.stroke([818 + k * 5, 928 + k * 9, 836, 934 + k * 9], 0.9, K);
-  P.stroke([812, 918, 806, 906, 816, 900], 1.2, K);
-  P.poly(sm([1104, 1050, 1146, 1052, 1154, 1080, 1150, 1112, 1140, 1124, 1112, 1122, 1102, 1094]), INK.skin, { line: 1.3 });
-  for (let k = 0; k < 4; k++) P.stroke([1112 + k * 10, 1094, 1114 + k * 10, 1122], 0.9, K);
+  // hands, with separate fingers
+  const finger = (a, b, r0, r1, nail) => {
+    P.poly(capsule(a, b, r0, r1, (r0 + r1) / 2), INK.skin, { line: 1.0, wob: 0.15 });
+    const m = lp(a, b, 0.5), d = [b[0] - a[0], b[1] - a[1]], l = Math.hypot(d[0], d[1]), n = [-d[1] / l, d[0] / l];
+    P.stroke([m[0] + n[0] * r0 * 0.7, m[1] + n[1] * r0 * 0.7, m[0] - n[0] * r0 * 0.5, m[1] - n[1] * r0 * 0.5], 0.6, [0.4, 0.3, 0.05, 0.05]);
+    if (nail) { const t = lp(a, b, 0.86); P.poly(ellipse(t[0], t[1], r1 * 0.62, r1 * 0.48, Math.atan2(d[1], d[0]), 10), [0, 0.16, 0.12, 0], { line: 0.5, wob: 0.05 }); }
+  };
+  // her right hand closes round the lotus stem: back of the hand, four curled fingers, the thumb over the top
+  P.stroke([834, 978, 834, 900, 812, 868, 800, 846], 3, INK.green, { taper: false });
+  P.poly(sm([794, 934, 810, 926, 826, 928, 832, 946, 830, 964, 812, 970, 796, 962]), INK.skin, { line: 1.2 });
+  P.poly(sm([800, 950, 820, 946, 826, 962, 806, 966]), [0.02, 0.12, 0.0, 0.06], { ko: false, wob: 0.2 });
+  for (let k = 0; k < 4; k++) finger([826, 932 + k * 9.5], [845 - Math.abs(k - 1) * 1.5, 934 + k * 9.5], 5, 4.4, false);
+  for (let k = 0; k < 4; k++) P.stroke([830, 929 + k * 9.5, 829, 937 + k * 9.5], 0.6, [0.4, 0.3, 0.05, 0.05]);
+  finger([810, 932], [830, 920], 5.6, 4.2, true);
+  // her left hand rests on the lion: fingers falling over the front of the armrest
+  P.poly(sm([1104, 1050, 1128, 1046, 1150, 1052, 1154, 1074, 1148, 1090, 1112, 1092, 1102, 1072]), INK.skin, { line: 1.2 });
+  P.poly(sm([1132, 1054, 1150, 1056, 1150, 1086, 1136, 1088]), [0.02, 0.12, 0.0, 0.06], { ko: false, wob: 0.2 });
+  for (const [x, len, r] of [[1112, 24, 4.6], [1123, 30, 4.8], [1134, 28, 4.7], [1145, 22, 4.3]]) finger([x, 1086], [x + 1, 1086 + len], r, r * 0.7, true);
+  finger([1108, 1066], [1096, 1094], 5.4, 4.4, true);
+  for (const x of [1112, 1123, 1134, 1145]) P.stroke([x - 4, 1088, x, 1085, x + 4, 1088], 0.7, [0.4, 0.3, 0.05, 0.05]);
+  P.stroke([1119, 1100, 1128, 1100], 3, INK.gold, { taper: false }); P.dot(1123.5, 1100, 2, INK.blue);
   // gold bracelets and armlets with blue inlay
-  for (const [a, b] of [[[782, 934], [790, 966]], [[1102, 1046], [1146, 1046]]]) { P.stroke([...a, ...b], 7, INK.gold, { taper: false }); P.stroke([...a, ...b], 2.4, INK.blue, { taper: false }); }
+  for (const [a, b] of [[[788, 932], [792, 966]], [[1104, 1046], [1150, 1048]]]) { P.stroke([...a, ...b], 7, INK.gold, { taper: false }); P.stroke([...a, ...b], 2.4, INK.blue, { taper: false }); }
   for (const [a, b] of [[[684, 892], [740, 896]], [[1062, 896], [1120, 892]]]) { P.stroke([...a, ...b], 9, INK.gold, { taper: false }); P.stroke([a[0], a[1] - 2, b[0], b[1] - 2], 2.2, INK.red, { taper: false }); }
   // short pleated cape sleeves over the shoulders
   for (const s of [-1, 1]) {
@@ -608,7 +626,6 @@ function drawBody(P, R) {
     for (let k = 0; k < 7; k++) { const t = k / 6; P.stroke([c + s * (150 + t * 40), 716 + t * 10, c + s * (180 + t * 74), 870 - Math.abs(t - 0.5) * 6], 0.7, [0.5, 0.05, 0, 0.1]); }
   }
   // ---- the blue lotus she holds
-  P.stroke([818, 924, 812, 880, 800, 846], 3, INK.green, { taper: false });
   const lx = 798, ly = 840;
   for (let k = -3; k <= 3; k++) { const t = k * 0.28; P.poly(sm([lx, ly, lx + Math.sin(t) * 12 - 6, ly - Math.cos(t) * 20, lx + Math.sin(t) * 30, ly - Math.cos(t) * 46, lx + Math.sin(t) * 12 + 6, ly - Math.cos(t) * 20]), Math.abs(k) % 2 ? INK.blue : INK.blueL, { line: 0.9 }); }
   P.poly(sm([lx - 12, ly - 2, lx, ly - 14, lx + 12, ly - 2, lx, ly + 6]), INK.green, { line: 0.9 });

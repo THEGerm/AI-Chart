@@ -435,7 +435,7 @@ function drawFigure(P, R) {
   drawFace(P, R);
   hairCurls(P, R, hairPoly);
   drawEarrings(P);
-  if (LV >= 3) drawDiadem(P, R);
+  if (LV >= 3) drawDiadem(P, R); else drawFillet(P);
   if (LV >= 4) drawCrown(P, R);
 }
 
@@ -600,13 +600,13 @@ function drawBody(P, R) {
   for (let i = 0; i < 24; i++) { const t = i / 23, xa = 798 + t * 204, xb = 776 + t * 248, jr = R(); if (LV === 2 && i % 5) continue; P.stroke([xa, 1214 + Math.sin(t * Math.PI) * 22, (xa + xb) / 2 + (jr - 0.5) * 3, 1410, xb, 1580 + Math.sin(t * Math.PI) * 8], 0.8, PL); }
   if (LV === 4) for (let x = 778; x < 1026; x += 12) P.dot(x, 1572, 2.4, INK.gold);
   P.stroke([770, 1582, 835, 1590, 900, 1594, 965, 1590, 1030, 1582], 1.6, K);
+  if (LV === 2) for (let x = 776; x < 1026; x += 7) P.stroke([x, 1586 + Math.sin((x - 770) / 260 * Math.PI) * 10, x + 1, 1598 + Math.sin((x - 770) / 260 * Math.PI) * 10], 0.8, [0.3, 0.1, 0.2, 0]);
   // feet in gold sandals on the footstool
   for (const [fx, s] of [[858, -1], [942, 1]]) {
     P.poly(sm([fx - 22, 1580, fx - 26, 1596, fx - 18, 1612, fx, 1616, fx + 18, 1612, fx + 26, 1596, fx + 22, 1580]), INK.skin, { line: 1.2 });
     for (let k = -2; k <= 2; k++) P.dot(fx + k * 7 + s, 1611 - Math.abs(k) * 1.5, 2.6, [0, 0.3, 0.3, 0.02]);
     const SI = LV === 2 ? [0.1, 0.25, 0.55, 0] : INK.gold;
-    P.stroke([fx - 26, 1612, fx + 26, 1612], 2.4, SI, { taper: false });
-    P.stroke([fx, 1590, fx - 2, 1608], 1.6, SI, { taper: false });
+    if (LV >= 3) { P.stroke([fx - 26, 1612, fx + 26, 1612], 2.4, SI, { taper: false }); P.stroke([fx, 1590, fx - 2, 1608], 1.6, SI, { taper: false }); }
     if (LV === 4) P.dot(fx - 1, 1592, 3, INK.red);
   }
   // ---- torso: the bodice of fine linen, a shawl knotted under the bust
@@ -614,9 +614,14 @@ function drawBody(P, R) {
   P.poly(torso, LV === 2 ? [0, 0.02, 0.09, 0] : INK.linen, { line: 1.5 });
   P.stroke([800, 860, 830, 900, 880, 905], 1.2, [0.15, 0.3, 0.15, 0.05]); P.stroke([920, 905, 970, 900, 1000, 860], 1.2, [0.15, 0.3, 0.15, 0.05]);
   for (let i = 0; i < 18; i += np) { const t = i / 17; P.stroke([790 + t * 220, 918 + Math.sin(t * Math.PI) * 8, 812 + t * 176, 1000], 0.7, PL); }
-  if (LV === 2) {   // a plain linen tie at the waist
-    P.stroke([814, 1000, 900, 1012, 986, 1000], 4, [0.06, 0.12, 0.3, 0], { taper: false });
-    P.stroke([898, 1012, 892, 1060, 896, 1100], 2.4, [0.06, 0.12, 0.3, 0]); P.stroke([904, 1012, 912, 1058, 908, 1094], 2.4, [0.06, 0.12, 0.3, 0]);
+  if (LV === 2) {
+    // a fringed linen shawl over her left shoulder, knotted at the right hip, as the banquet women wear it
+    P.poly(sm([1000, 708, 1070, 724, 1060, 800, 980, 900, 880, 990, 830, 1020, 812, 996, 860, 940, 950, 820]), [0, 0.03, 0.12, 0.01], { line: 1.3 });
+    for (let k = 0; k < 7; k++) { const t = k / 6; P.stroke([1000 + t * 60, 714 + t * 10, 900 - t * 50 + t * 60, 970 - t * 60 + t * 40], 0.7, [0.45, 0.05, 0.02, 0.08]); }
+    for (let k = 0; k < 18; k++) { const t = k / 17, x = 980 - t * 160, y = 900 + t * 110; P.stroke([x, y, x - 4, y + 10], 0.8, [0.3, 0.1, 0.2, 0]); }
+    P.poly(ellipse(820, 1012, 12, 9, 0.4, 16), [0, 0.03, 0.12, 0.01], { line: 1 });
+    // a girdle of red and blue beads at the waist
+    for (let k = 0; k <= 28; k++) { const t = k / 28, x = 814 + t * 172, y = 1002 + Math.sin(t * Math.PI) * 10; P.dot(x, y, 3, k % 3 === 0 ? INK.blue : k % 3 === 1 ? INK.red : INK.goldL); }
   } else {
     if (LV === 4) drawWings(P);
     // the red sash, tied in a knot, its ends falling over the lap
@@ -653,7 +658,10 @@ function drawBody(P, R) {
   for (const x of [1112, 1123, 1134, 1145]) P.stroke([x - 4, 1088, x, 1085, x + 4, 1088], 0.7, [0.4, 0.3, 0.05, 0.05]);
   if (LV >= 3) { P.stroke([1119, 1100, 1128, 1100], 3, INK.gold, { taper: false }); P.dot(1123.5, 1100, 2, INK.blue); }
   // gold bracelets and armlets with blue inlay
-  if (LV === 2) { for (const [a, b] of [[[788, 932], [792, 966]], [[1104, 1046], [1150, 1048]]]) for (let k = 0; k <= 6; k++) P.dot(a[0] + (b[0] - a[0]) * k / 6, a[1] + (b[1] - a[1]) * k / 6, 2.6, k % 2 ? INK.blue : INK.blueL); }
+  if (LV === 2) {   // striped bead cuffs and armlets, blue, red and white
+    const band = (a, b, w) => { const n = [-(b[1] - a[1]), b[0] - a[0]], l = Math.hypot(n[0], n[1]); for (let k = 0; k < 4; k++) { const o = (k - 1.5) * w / 4; P.stroke([a[0] + n[0] / l * o, a[1] + n[1] / l * o, b[0] + n[0] / l * o, b[1] + n[1] / l * o], w / 4, [INK.blue, INK.linen, INK.red, INK.blue][k], { taper: false, ko: true }); } };
+    band([786, 930], [792, 968], 12); band([1104, 1044], [1150, 1046], 12); band([684, 892], [740, 896], 10); band([1062, 896], [1120, 892], 10);
+  }
   else {
     const bw = LV === 4 ? 12 : 7;
     for (const [a, b] of [[[788, 932], [792, 966]], [[1104, 1046], [1150, 1048]]]) { P.stroke([...a, ...b], bw, INK.gold, { taper: false }); P.stroke([...a, ...b], 2.4, INK.blue, { taper: false }); if (LV === 4) P.stroke([a[0] + 4, a[1] + 3, b[0] + 4, b[1] + 3], 1.6, INK.red, { taper: false }); }
@@ -678,8 +686,9 @@ function drawBody(P, R) {
   P.poly(sm(fp([[740, 905], [820, 950], [910, 905], [918, 960], [820, 990], [732, 960]])), [0.03, 0.2, 0.02, 0.1], { ko: false, wob: 0.4 });
   const cx = 900, cy = 674;
   if (LV === 2) {   // an everyday string of faience beads
-    for (let i = 0; i <= 30; i++) { const a = Math.PI * (0.05 + 0.9 * i / 30); P.dot(cx - Math.cos(a) * 70, cy + Math.sin(a) * 70 * 1.6 - 4, 3.2, i % 3 ? INK.blue : INK.goldL); }
-    P.stroke([cx, 782, cx, 806], 1.2, INK.gold, { taper: false });
+    // several strands of small beads close at the throat, carnelian, faience and gold
+    for (let r = 0; r < 5; r++) { const rr = 58 + r * 9, n = 34 + r * 5; for (let i = 0; i <= n; i++) { const a = Math.PI * (0.06 + 0.88 * i / n); P.dot(cx - Math.cos(a) * rr, cy + 4 + Math.sin(a) * rr * 0.72, 2.6, [INK.red, INK.blue, INK.goldL, INK.red, INK.blue][(i + r) % 5]); } }
+    P.stroke([cx, 772, cx, 806], 1.2, INK.gold, { taper: false });
   } else {
     // ---- the broad collar (wesekh): gold, lapis, carnelian, beads and drop pendants
     const ring = (r0, r1, ink, n) => {
@@ -749,6 +758,7 @@ function drawFace(P, R) {
     P.poly(ellipse(...F(E.c[0] + 3.5, E.c[1] - 3.5), 1.5, 1.5, 0, 10), [0, 0, 0, 0], { wob: 0 });
     P.poly(ellipse(...F(E.c[0] - 3, E.c[1] + 3), 0.8, 0.8, 0, 8), [0, 0, 0, 0], { wob: 0 });
     fs(P, E.up, LV === 2 ? 1.8 : LV === 4 ? 3.2 : 2.6, K, { tmin: 0.5 });
+    if (LV === 2) fs(P, [E.up[0], E.wing[1]], 1.5, K, { tmin: 0.2 });
     if (LV >= 3) { const w = E.wing.slice(1); if (LV === 4) { const l = w[w.length - 1], q = w[w.length - 2]; w.push([l[0] + (l[0] - q[0]) * 1.4, l[1] + (l[1] - q[1]) * 1.4]); } fs(P, [E.up[0], ...w], LV === 4 ? 3 : 2.2, K, { tmin: 0.2 }); }
     fs(P, [E.up[E.up.length - 1], ...E.lo, E.up[0]], LV === 2 ? 0.9 : LV === 4 ? 2 : 1.3, K, { tmin: 0.3 });
     fs(P, E.crease, 0.9, LF);
@@ -902,7 +912,7 @@ function drawEarrings(P) {
   // earrings: large gold discs with blue and red, as worn at court
   for (const [ex, ey] of [[652, 722], [1004, 732]]) {
     const c = F(ex, ey);
-    if (LV === 2) { P.outline(ellipse(c[0], c[1] - 6, 6, 7, 0, 18), 1.8, INK.gold); continue; }
+    if (LV === 2) { P.stroke([c[0], c[1] - 18, c[0], c[1] - 10], 2, INK.gold, { taper: false }); P.poly(ellipse(c[0], c[1], 13, 13, 0, 28), INK.gold, { line: 1.1 }); P.poly(ellipse(c[0], c[1], 5, 5, 0, 16), INK.goldS, { line: 0.6 }); continue; }
     P.stroke([c[0], c[1] - 18, c[0], c[1] - 8], 2, INK.gold, { taper: false });
     P.poly(ellipse(c[0], c[1], 14, 14, 0, 28), INK.gold, { line: 1.1 });
     P.poly(ellipse(c[0], c[1], 9, 9, 0, 24), INK.red, { line: 0.6 });
@@ -910,6 +920,20 @@ function drawEarrings(P) {
     const dl = LV === 4 ? 40 : 26;
     for (let k = -2; k <= 2; k++) { P.stroke([c[0] + k * 5, c[1] + 12, c[0] + k * 6, c[1] + dl], 1.2, INK.gold, { taper: false }); P.dot(c[0] + k * 6, c[1] + dl + 2, LV === 4 ? 3 : 2.2, k % 2 ? INK.blue : INK.red); }
   }
+}
+
+/* ---------------------------------------------------------------- everyday fillet (level II) */
+function drawFillet(P) {
+  // a band of white linen striped in blue, tied at the back, a blue lotus bud tucked in at the temple
+  const band = [[626, 452], [682, 404], [746, 374], [820, 362], [894, 370], [958, 396], [1012, 444]];
+  const top = spline(fp(band), false, 6), bot = spline(fp(band.map(([x, y]) => [x, y + 20])), false, 6);
+  const pts = top.slice(); for (let i = bot.length - 2; i >= 0; i -= 2) pts.push(bot[i], bot[i + 1]);
+  P.poly(pts, INK.linen, { line: 1.2 });
+  for (const f of [0.3, 0.5, 0.7]) P.stroke(spline(fp(band.map(([x, y]) => [x, y + 20 * f])), false, 6), 1.3, INK.blue, { taper: false });
+  const c = F(640, 470);
+  P.stroke([c[0] + 6, c[1] - 6, c[0] - 2, c[1] + 14, c[0] - 6, c[1] + 34], 2.2, INK.green, { taper: false });
+  P.poly(sm([c[0] - 12, c[1] + 34, c[0] - 14, c[1] + 54, c[0] - 6, c[1] + 70, c[0], c[1] + 56, c[0] + 4, c[1] + 70, c[0] + 8, c[1] + 54, c[0] + 2, c[1] + 34]), INK.blue, { line: 1 });
+  P.poly(sm([c[0] - 13, c[1] + 34, c[0] - 6, c[1] + 26, c[0] + 3, c[1] + 34, c[0] - 5, c[1] + 40]), INK.green, { line: 0.8 });
 }
 /* ======================================================================
    THE SHEET: tile pyramid, manual camera

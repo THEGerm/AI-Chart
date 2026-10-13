@@ -7,7 +7,7 @@ A figure drawn entirely in code, in the same simulated four-ink risograph print 
 - legs in stride;
 - the long-necked lute of the original.
 
-- **File:** `index.html`, **63327 bytes**. It is a single file with Canvas 2D only: no images, fonts, libraries or network requests beyond the page itself.
+- **File:** `index.html`, **65330 bytes**. It is a single file with Canvas 2D only: no images, fonts, libraries or network requests beyond the page itself.
 - **Controls:** a switch in the top-left corner chooses the costume level. Drag to pan, wheel or pinch to zoom, `+` / `-` to zoom, arrow keys to pan, and `0` to fit the sheet. The camera never moves by itself.
 
 ## Proportions
@@ -22,6 +22,15 @@ The figure follows the canon of about 7.5 heads used in figure drawing. Measured
 - soles at 7.5.
 
 The hips and buttocks are fully rounded. The arms have a shoulder, a bent elbow and tapering forearms.
+
+Anatomy is drawn in the tomb painter's few, restrained lines:
+
+- collarbones;
+- the breast in profile with a small nipple mark;
+- a hint of the ribcage and the line down the belly;
+- the navel;
+- the hip bone and hip crease;
+- kneecaps, shins, ankle bones and the points of the elbows.
 
 ## Costume levels
 

@@ -243,7 +243,7 @@
         body: JSON.stringify(body),
       });
       const id = photo.photoId && photo.photoId.id;
-      log(`Created photo ${id}. Google now processes it; it can take minutes to hours to appear on Maps.`);
+      log(`Created photo (ID: ${id}). Google now processes it; it can take minutes to hours to appear on Maps.`);
       if (id) pollStatus(id);
     } catch (e) {
       log("Error: " + e.message);
@@ -253,22 +253,39 @@
     }
   });
 
-  // Checks processing status a few times so the share link shows when ready.
+  // Checks processing status so the share link shows when ready.
+  // A new photo returns 404 (or 503) until Google finishes indexing it; that is expected, not a failure.
+  const POLL_MS = 15000;
+  const POLL_MAX = 60; // about 15 minutes
+  let lastStatusMsg = "";
+
+  function logOnce(msg) {
+    if (msg !== lastStatusMsg) log(msg);
+    lastStatusMsg = msg;
+  }
+
   async function pollStatus(id, attempt = 0) {
+    if (attempt === 0) lastStatusMsg = "";
     try {
       const p = await api(`/photo/${encodeURIComponent(id)}?view=BASIC`, { method: "GET" });
-      const status = p.mapsPublishStatus || "UNSPECIFIED";
-      log(`Status: ${status}${p.transferStatus ? " / " + p.transferStatus : ""}`);
+      if (p.mapsPublishStatus && p.mapsPublishStatus !== "UNSPECIFIED_MAPS_PUBLISH_STATUS") {
+        logOnce(`Status: ${p.mapsPublishStatus}`);
+      }
       if (p.shareLink) {
-        log(`Share link: <a href="${encodeURI(p.shareLink)}" target="_blank" rel="noopener">${p.shareLink.replace(/</g, "&lt;")}</a>`, true);
+        log(`Live on Google Maps: <a href="${encodeURI(p.shareLink)}" target="_blank" rel="noopener">open share link</a>`, true);
         return;
       }
-      if (status === "REJECTED_UNKNOWN") return;
+      if (p.mapsPublishStatus === "REJECTED_UNKNOWN") {
+        log("Google rejected this photo. Check it meets the 360 photo requirements and try again.");
+        return;
+      }
+      logOnce("Still processing...");
     } catch (e) {
-      log("Status check failed: " + e.message);
+      if (/^(404|503):/.test(e.message)) logOnce("Still processing...");
+      else logOnce("Status check failed: " + e.message);
     }
-    if (attempt < 11) setTimeout(() => pollStatus(id, attempt + 1), 10000);
-    else log("Still processing. Check the Contribute tab in the Google Maps app later.");
+    if (attempt < POLL_MAX) setTimeout(() => pollStatus(id, attempt + 1), POLL_MS);
+    else log("Still processing after 15 minutes. Check Google Maps > You > Contributions > Photos later.");
   }
 
   initMap();

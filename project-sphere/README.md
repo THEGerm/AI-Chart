@@ -23,6 +23,8 @@ It runs entirely in the browser. No server. It talks straight to the Google Stre
    - `https://<your-github-user>.github.io` (if you host it on GitHub Pages)
 5. Copy the Client ID. Paste it into the app in step 1. The app remembers it in this browser.
 
+The app ships with this project's Client ID already filled in (`DEFAULT_CLIENT_ID` in `app.js`). Only replace it if you use your own Google Cloud project.
+
 ## Run it
 
 ```bash
@@ -33,6 +35,13 @@ python3 -m http.server 8080
 Open http://localhost:8080. It must be served over http(s); opening `index.html` as a file will not work with Google sign-in.
 
 To use it from your phone, host the folder on GitHub Pages (or any static host) and add that origin in step 4.
+
+### GitHub Pages
+
+1. In the AI-Chart repo: **Settings > Pages**.
+2. **Source:** Deploy from a branch. **Branch:** `main`, folder `/ (root)`. Save.
+3. Wait 1 to 2 minutes, then open https://thegerm.github.io/AI-Chart/project-sphere/ (the path is case-sensitive).
+4. In Google Cloud, the OAuth client's **Authorized JavaScript origins** must include `https://thegerm.github.io` (no path, no trailing slash).
 
 ## Getting the right file from your Insta360
 

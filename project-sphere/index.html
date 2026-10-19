@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Sphere</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Project Sphere</h1>
+    <p>Upload an Insta360 360 photo and publish it to Google Street View.</p>
+  </header>
+
+  <main>
+    <!-- Step 1: Google account -->
+    <section class="card" id="auth-card">
+      <h2>1. Google account</h2>
+      <label for="client-id">OAuth Client ID</label>
+      <input id="client-id" type="text" placeholder="1234-abc.apps.googleusercontent.com" autocomplete="off">
+      <div class="row">
+        <button id="sign-in" type="button">Sign in with Google</button>
+        <span id="auth-status" class="muted">Not signed in</span>
+      </div>
+    </section>
+
+    <!-- Step 2: Photo -->
+    <section class="card">
+      <h2>2. Photo</h2>
+      <label class="drop" id="drop">
+        <input id="file" type="file" accept="image/jpeg,.jpg,.jpeg,.insp">
+        <span>Drop a 360 JPG here or click to choose</span>
+      </label>
+      <ul id="checks" class="checks"></ul>
+      <div id="pano" class="pano" hidden></div>
+    </section>
+
+    <!-- Step 3: Location -->
+    <section class="card">
+      <h2>3. Location</h2>
+      <p class="muted">Filled from the photo's GPS when available. Click the map to set or move it.</p>
+      <div id="map" class="map"></div>
+      <div class="grid">
+        <div>
+          <label for="lat">Latitude</label>
+          <input id="lat" type="number" step="any">
+        </div>
+        <div>
+          <label for="lng">Longitude</label>
+          <input id="lng" type="number" step="any">
+        </div>
+        <div>
+          <label for="heading">Heading (deg, optional)</label>
+          <input id="heading" type="number" step="any" min="0" max="360" placeholder="0 = north">
+        </div>
+        <div>
+          <label for="capture">Capture time</label>
+          <input id="capture" type="datetime-local" step="1">
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 4: Publish -->
+    <section class="card">
+      <h2>4. Publish</h2>
+      <button id="publish" type="button" disabled>Publish to Street View</button>
+      <pre id="log" class="log"></pre>
+    </section>
+  </main>
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="xmp.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

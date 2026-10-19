@@ -3,6 +3,8 @@
 (function () {
   const API = "https://streetviewpublish.googleapis.com/v1";
   const SCOPE = "https://www.googleapis.com/auth/streetviewpublish";
+  // Public OAuth client for this app. Override in the field to use a different Google Cloud project.
+  const DEFAULT_CLIENT_ID = "104859418898-n2ioo3c347boutonqbs4llc40v8ac8j5.apps.googleusercontent.com";
   const MIN_W = 3840;
   const MIN_H = 1920;
   const MAX_BYTES = 75 * 1024 * 1024;
@@ -35,7 +37,8 @@
   }
 
   // ---------- Auth ----------
-  try { $("client-id").value = localStorage.getItem("sphere.clientId") || ""; } catch (e) { /* storage blocked */ }
+  $("client-id").value = DEFAULT_CLIENT_ID;
+  try { $("client-id").value = localStorage.getItem("sphere.clientId") || DEFAULT_CLIENT_ID; } catch (e) { /* storage blocked */ }
 
   $("sign-in").addEventListener("click", () => {
     const clientId = $("client-id").value.trim();

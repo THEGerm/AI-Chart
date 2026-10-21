@@ -1,0 +1,23 @@
+{
+ "id": "SH14-47",
+ "kind": "existing_stc",
+ "title": "Eagle 407HP: installation of Honeywell HTS900-2-1D engine",
+ "holder": "Eagle Copters Maintenance Ltd., Calgary",
+ "issue": "1",
+ "approval_date": "2014-12-09",
+ "tcds": "H-92",
+ "base_model": "407",
+ "eligible_serials": "53000-53138, 53140-53279, 53281-53470, 53472-53900, 53911-54299 (not eligible for the 407GX)",
+ "source": "TCCA STC SH14-47 Issue 1, continuation sheet (Basis of Certification)",
+ "basis": [
+  {"use_model": "407", "label": "Per Bell 407 Basis of Certification as listed in TCDS H-92"},
+  {"type": "esf", "rulebook": "14cfr-27", "sections": ["27.917"], "level": "27-11", "title": "Equivalent Level of Safety, freewheeling unit as part of the HTS900 engine"},
+  {"type": "esf", "rulebook": "14cfr-27", "sections": ["27.923"], "level": "27-29", "title": "Equivalent Level of Safety, freewheeling unit as part of the HTS900 engine"},
+  {"type": "esf", "rulebook": "14cfr-27", "sections": ["27.927"], "level": "27-23", "title": "Equivalent Level of Safety, freewheeling unit as part of the HTS900 engine"},
+  {"type": "esf", "rulebook": "14cfr-27", "sections": ["27.571"], "level": "27-26", "title": "Equivalent Level of Safety, freewheeling unit as part of the HTS900 engine"},
+  {"type": "sections", "rulebook": "14cfr-27", "label": "Compliance demonstrated for 27.1195 at amendment 27-5 (n/a in the 407 basis)",
+   "items": [{"sections": ["27.1195"], "level": "27-5"}]}
+ ],
+ "notes": ["Bell Kit 407-706-020 (5250 lb internal gross weight) is a pre-requisite.",
+           "Honeywell SB HTS900-73-10-0002 is a pre-requisite."]
+}

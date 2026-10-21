@@ -98,3 +98,22 @@ test("Markdown export lists the basis with sources", () => {
   assert.match(md, /Initial \(27-0\)/);
   assert.match(md, /Source: https:\/\/drs\.faa\.gov/);
 });
+
+test("every CAR 6 section and level named in H-92 exists in car-6", () => {
+  const car6 = books["car-6"];
+  assert.ok(car6, "car-6.json loaded");
+  const problems = [];
+  const walk = (blocks, where) => {
+    for (const b of blocks) {
+      if (b.rulebook !== "car-6") continue;
+      for (const it of b.items || []) for (const s of it.sections) if (!CB.versionAt(car6, s, it.level)) problems.push(`${where}: ${s} at ${it.level}`);
+      for (const o of b.overrides || []) for (const s of o.sections) if (!CB.versionAt(car6, s, o.level)) problems.push(`${where}: ${s} at ${o.level}`);
+    }
+  };
+  walk(h92.shared_blocks.car6_base, "car6_base");
+  for (const m of h92.models) walk(m.basis, `H-92 ${m.id}`);
+  assert.deepEqual(problems, []);
+  const rows = CB.expandModel(h92, "206L", books);
+  assert.ok(rows.filter((r) => r.rulebook === "car-6" && r.kind === "basis").length > 150);
+  assert.equal(rows.find((r) => r.section === "6.637").level, "6-5");
+});

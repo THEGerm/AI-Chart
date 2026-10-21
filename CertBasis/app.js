@@ -35,7 +35,7 @@
     if (Array.isArray(kid)) { kid.forEach((k) => add(el, k)); return; }
     el.appendChild(kid instanceof Node ? kid : document.createTextNode(String(kid)));
   }
-  function setMain() { main.replaceChildren(...[].slice.call(arguments).flat().filter(Boolean)); }
+  function setMain() { main.replaceChildren(...[].slice.call(arguments).flat(Infinity).filter(Boolean)); }
   function loading(msg) { return h("p", { class: "loading", role: "status" }, msg); }
   function tag(kind, text) { return h("span", { class: `tag k-${kind}` }, text || KIND_LABEL[kind] || kind); }
   function wrapTable(table) { return h("div", { class: "table-wrap" }, table); }
@@ -803,7 +803,7 @@
       h("p", { class: "small muted" }, [stc.applicant, stc.certification_plan ? `Certification plan ${stc.certification_plan}` : null, `TCDS ${stc.tcds}`].filter(Boolean).join(". ") + "."),
       stc.notes ? h("ul", { class: "small" }, stc.notes.map((n) => h("li", null, n))) : null,
       cache.missing.size ? h("p", { class: "notice small" }, `Not loaded yet: ${[...cache.missing].map(bookLabel).join(", ")}.`) : null,
-      h("p", { class: "small muted" }, storeGet("__probe__") === null && !storeSet(`${KEY}.probe`, 1) ? "This browser does not keep changes: use Export JSON." : "Changes are kept in this browser. Use Export JSON to keep a copy."),
+      h("p", { class: "small muted" }, save() ? "Changes are kept in this browser. Use Export JSON to keep a copy." : "This browser does not keep changes: use Export JSON."),
 
       h("h2", null, "Applicability"),
       h("p", null, "Main model: ", h("strong", { id: "main-model" }, stc.main.label), "."),

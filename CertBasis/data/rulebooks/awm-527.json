@@ -3356,6 +3356,11 @@
       "Change 527-4"
      ]
     }
+   ],
+   "history_notes": [
+    "Paragraph (b)(1)(ii) and (iii) are Canadian variations (Change 527-1, 1989; 527-2, 1992).",
+    "Change 527-4 (published 2002-06-01) amended (b)(1)(iii) to correct the terminology (NPA 2000-99). The wording in force at Change 527-3 differs from the current text and is not loaded.",
+    "No change to this section from 527-5 to 527-14 that affects (b): the current (b) wording is the wording at Change 527-8."
    ]
   },
   "527.1121": {
@@ -3718,6 +3723,10 @@
       "amended 2004/12/01"
      ]
     }
+   ],
+   "history_notes": [
+    "Canadian requirement (FAR: no equivalent text). Amended 2004-12-01: the wording at Change 527-3 differs from the current text and is not loaded.",
+    "Unchanged from 2004-12-01 through Change 527-8: the current text is the wording at Change 527-8."
    ]
   },
   "527.1303": {
@@ -4835,6 +4844,9 @@
      "guid": null,
      "change_markers": []
     }
+   ],
+   "history_notes": [
+    "Paragraph (c)(3) (fuel and oil capacity in litres) is a First Edition (1986) Canadian variation with no later change: the current (c)(3) is the wording at Change 527-3 and 527-8."
    ]
   },
   "527.1559": {
@@ -4913,6 +4925,10 @@
       "Change 527-4"
      ]
     }
+   ],
+   "history_notes": [
+    "Paragraph (e) (use of metric units) and (f) (reference to operating rules) were First Edition (1986) Canadian variations, parallel to AWM 525.1581(e).",
+    "Change 527-4 (published 2002-06-01) cancelled (e)(2), (e)(3) and (f) (NPA 2000-100) and (e)(1) (NPA 2001-014). The (e) wording at Change 527-3 is not loaded; it needs an archived or paper copy of AWM 527 before June 2002."
    ]
   },
   "527.1583": {
@@ -4932,6 +4948,9 @@
      "guid": null,
      "change_markers": []
     }
+   ],
+   "history_notes": [
+    "Paragraph (h) (ambient temperature limitations) is a First Edition (1986) Canadian variation with no later change: the current (h) is the wording at Change 527-3 and 527-8."
    ]
   },
   "527.1585": {
@@ -4993,5 +5012,6 @@
     }
    ]
   }
- }
+ },
+ "history_source": "AWM 527 preamble (Changes 527-1 to 527-14), tc.canada.ca, read 2026-10-21"
 }

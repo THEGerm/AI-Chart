@@ -92,7 +92,18 @@ def build(part, docs):
             "source": d.get("documentURL"), "guid": d.get("documentGuid"),
         })
     for s in sections.values():
-        s["versions"].sort(key=lambda v: v["seq"])
+        # Same amendment twice = an FAA correction published later. Keep both, oldest
+        # first, so the corrected text is the one in force at that level; drop exact copies.
+        s["versions"].sort(key=lambda v: (v["seq"], v["effective"] or ""))
+        kept = []
+        for v in s["versions"]:
+            prev = kept[-1] if kept else None
+            if prev and prev["amendment"] == v["amendment"]:
+                if prev["sha256"] == v["sha256"]:
+                    continue
+                v["correction"] = "corrected text, effective %s" % v["effective"]
+            kept.append(v)
+        s["versions"] = kept
         live = [v for v in s["versions"] if v["status"] == "in_force"]
         s["heading"] = (live or s["versions"])[-1]["heading"]
     return {

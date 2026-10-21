@@ -1,0 +1,13 @@
+{
+ "rulebooks": [
+  {"id": "14cfr-27", "file": "rulebooks/14cfr-27.json", "label": "14 CFR Part 27 (FAA)"},
+  {"id": "14cfr-36", "file": "rulebooks/14cfr-36.json", "label": "14 CFR Part 36 (FAA)"},
+  {"id": "car-6", "file": "rulebooks/car-6.json", "label": "CAR 6, 1956 (CAB/FAA)"},
+  {"id": "awm-527", "file": "rulebooks/awm-527.json", "label": "AWM 527 (TCCA, current text only)"}
+ ],
+ "tcds": [{"id": "H-92", "file": "tcds/H-92.json"}],
+ "stc": [
+  {"id": "SH14-47", "file": "stc/SH14-47.json"},
+  {"id": "B206-407-BASKET", "file": "stc/B206-407-BASKET.json"}
+ ]
+}

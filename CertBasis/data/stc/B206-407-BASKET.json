@@ -1,0 +1,32 @@
+{
+ "id": "B206-407-BASKET",
+ "kind": "project",
+ "title": "Boost basket and step: Bell 206L series and Bell 407 (Eagle 407HP test aircraft)",
+ "applicant": "Boost Human External Cargo / Quantum Helicopters",
+ "certification_plan": "GCP-B407-1019-1 (rev A in work)",
+ "tcds": "H-92",
+ "main": {"label": "Eagle 407HP (Bell 407 + STC SH14-47)", "model": "407", "stc": "SH14-47"},
+ "selectable": [
+  {"label": "Bell 407 (no SH14-47)", "model": "407"},
+  {"label": "Bell 206L", "model": "206L"},
+  {"label": "Bell 206L-1", "model": "206L-1"},
+  {"label": "Bell 206L-1 with 250-C30P", "model": "206L-1-C30P"},
+  {"label": "Bell 206L-3", "model": "206L-3"},
+  {"label": "Bell 206L-1+ / 206L-3+", "model": "206L-1+-3+"},
+  {"label": "Bell 206L-4", "model": "206L-4"}
+ ],
+ "applicable_sections": {
+  "status": "draft: seeded from the project record (GCP section 3, Germ's 13 Oct GCP note, FTP rev C); not confirmed",
+  "rulebook": "14cfr-27",
+  "sections": ["27.21", "27.25", "27.51", "27.71", "27.73", "27.75", "27.79", "27.141", "27.143", "27.171", "27.173", "27.175", "27.177", "27.241", "27.1301", "27.1323", "27.1325", "27.1503", "27.1505", "27.1581"]
+ },
+ "elections": [],
+ "exceptions": [],
+ "special_conditions": [],
+ "exemptions": [],
+ "additional_regulations": [],
+ "notes": [
+  "Germ, 2026-10-21: if the slope of longitudinal stability is negative in level flight, the applicant may elect to an earlier amendment for that section.",
+  "The GCP basis is the H-92 Model 407 basis for both models: FAR 27 initial issue with Amdt 27-1 to 27-30, 27.173 and 27.175 at the initial issue (project record, GCP section 3)."
+ ]
+}

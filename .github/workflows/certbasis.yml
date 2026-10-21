@@ -1,0 +1,36 @@
+name: CertBasis tests
+
+on:
+  push:
+    paths:
+      - 'CertBasis/**'
+      - '.github/workflows/certbasis.yml'
+  pull_request:
+    paths:
+      - 'CertBasis/**'
+      - '.github/workflows/certbasis.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Resolver tests (Node)
+        run: node --test CertBasis/tests/*.test.js
+      - name: Fetch script tests (Python)
+        run: python -m unittest discover -s CertBasis/tests -p 'test_*.py'
+      - name: Data files are valid JSON
+        run: |
+          for f in CertBasis/data/*.json CertBasis/data/*/*.json; do
+            python -c "import json,sys; json.load(open(sys.argv[1]))" "$f" || exit 1
+          done

@@ -225,7 +225,7 @@
       h("ul", { class: "ladder", id: "ladder" }, s.versions.map((x) =>
         h("li", { "data-amendment": x.amendment },
           h("a", { href: libHref(book.id, id, x.amendment, ctx), "aria-current": v && v.amendment === x.amendment ? "true" : null },
-            lvl(book, x.amendment), x.status !== "in_force" ? ` (${x.status})` : "",
+            lvl(book, x.amendment), x.status !== "in_force" ? ` (${x.status})` : "", x.correction ? ` (${x.correction})` : "",
             h("span", { class: "eff" }, x.effective || "date not recorded"))))));
 
     // pick any level

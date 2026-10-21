@@ -576,7 +576,8 @@
      "text": "(a) Maximum weight. The maximum weight (the highest weight at which compliance with each applicable requirement of this Part is shown) must be established so that it is--\n(1) Not more than--\n(i) The highest weight selected by the applicant;\n(ii) The design maximum weight (the highest weight at which compliance with each applicable structural loading condition of this Part is shown);\n(iii) The highest weight at which compliance with each applicable flight requirement of this Part is shown; or\n[(iv) The highest weight in which the provisions of Sec. Sec.  27.87 or 27.143(c)(1), or combinations thereof, are demonstrated if the weights and operating conditions (altitude and temperature) prescribed by those requirements cannot be met; and]\n(2) Not less than the sum of--\n(i) The empty weight determined under Sec. 27.29;\n(ii) The weight of usable fuel appropriate to the intended operation with full payload;\n(iii) The weight of full oil capacity; and\n(iv) For each seat, an occupant weight of 170 pounds or any lower weight for which certification is requested.\n(b) Minimum weight. The minimum weight (the lowest weight at which compliance with each applicable requirement of this Part is shown) must be established so that it is--\n(1) Not more than the sum of--\n(i) The empty weight determined under Sec. 27.29; and\n(ii) The weight of the minimum crew necessary to operate the rotorcraft, assuming for each crewmember a weight no more than 170 pounds, or any lower weight selected by the applicant or included in the loading instructions; and\n(2) Not less than--\n(i) The lowest weight selected by the applicant;\n(ii) The design minimum weight (the lowest weight at which compliance with each applicable structural loading condition of this Part is shown); or\n(iii) The lowest weight at which compliance with each applicable flight requirement of this Part is shown.\n(c) Total weight with jettisonable external load.  A total weight for the rotorcraft with a jettisonable external load attached that is greater than the maximum weight established under paragraph (a) of this section may be established for any rotorcraft-load combination if--\n(1) The rotorcraft-load combination does not include human external cargo,\n(2) Structural component approval for external load operations under either Sec. 27.865 or under equivalent operational standards is obtained,\n(3) The portion of the total weight that is greater than the maximum weight established under paragraph (a) of this section is made up only of the weight of all or part of the jettisonable external load,\n(4) Structural components of the rotorcraft are shown to comply with the applicable structural requirements of this part under the increased loads and stresses caused by the weight increase over that established under paragraph (a) of this section, and\n(5) Operation of the rotorcraftat a total weight greater than the maximum certificated weight established under paragraph (a) of this section is limited by appropriate operating limitations under Sec. 27.865(a) and (d) of this part.",
      "sha256": "e4aafc083f1c5215e543630688c9a60571537fc56d20225c92ac6b6bd2d77127",
      "source": "https://drs.faa.gov/browse/excelExternalWindow/8DB4DFB49A67BA108625746A004B734E.0001",
-     "guid": "8DB4DFB49A67BA108625746A004B734E"
+     "guid": "8DB4DFB49A67BA108625746A004B734E",
+     "correction": "corrected text, effective 2008-06-16"
     }
    ],
    "heading": "Weight limits."
@@ -1994,18 +1995,6 @@
      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
      "source": "https://drs.faa.gov/browse/excelExternalWindow/CFR_19901022_0027_C_27-401_00000.0001",
      "guid": "CFR_19901022_0027_C_27-401_00000"
-    },
-    {
-     "amendment": "27-27",
-     "seq": 270,
-     "effective": "1990-10-22",
-     "heading": "Removed.",
-     "status": "removed",
-     "drs_status": "Historical",
-     "text": "",
-     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-     "source": "https://drs.faa.gov/browse/excelExternalWindow/AC1EC69A30BF66EB852565F6006C3813.0001",
-     "guid": "AC1EC69A30BF66EB852565F6006C3813"
     }
    ],
    "heading": "Auxiliary rotor assemblies."
@@ -2037,18 +2026,6 @@
      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
      "source": "https://drs.faa.gov/browse/excelExternalWindow/CFR_19901022_0027_C_27-403_00000.0001",
      "guid": "CFR_19901022_0027_C_27-403_00000"
-    },
-    {
-     "amendment": "27-27",
-     "seq": 270,
-     "effective": "1990-10-22",
-     "heading": "Removed.",
-     "status": "removed",
-     "drs_status": "Historical",
-     "text": "",
-     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-     "source": "https://drs.faa.gov/browse/excelExternalWindow/9C97AE4CFC91E1DE852565F6006C4C75.0001",
-     "guid": "9C97AE4CFC91E1DE852565F6006C4C75"
     }
    ],
    "heading": "Auxiliary rotor attachment structure."
@@ -2099,18 +2076,6 @@
      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
      "source": "https://drs.faa.gov/browse/excelExternalWindow/CFR_19901022_0027_C_27-413_00000.0001",
      "guid": "CFR_19901022_0027_C_27-413_00000"
-    },
-    {
-     "amendment": "27-27",
-     "seq": 270,
-     "effective": "1990-10-22",
-     "heading": "Removed.",
-     "status": "removed",
-     "drs_status": "Historical",
-     "text": "",
-     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-     "source": "https://drs.faa.gov/browse/excelExternalWindow/FD2DA5D9104736A3852565F6006C4B71.0001",
-     "guid": "FD2DA5D9104736A3852565F6006C4B71"
     }
    ],
    "heading": "Stablilizing and control surfaces."
@@ -7611,7 +7576,8 @@
      "text": "(a) Each cockpit voice recorder required by the operating rules of this chapter must be approved, and must be installed so that it will record the following:\n(1) Voice communications transmitted from or received in the rotorcraft by radio.\n(2) Voice communications of flight crewmembers on the flight deck.\n(3) Voice communications of flight crewmembers on the flight deck, using the rotorcraft's interphone system.\n(4) Voice or audio signals identifying navigation or approach aids introduced into a headset or speaker.\n(5) Voice communications of flight crewmembers using the passenger loudspeaker system, if there is such a system, and if the fourth channel is available in accordance with the requirements of paragraph (c)(4)(ii) of this section.\n(6) If datalink communication equipment is installed, all datalink communications, using an approved data message set. Datalink messages must be recorded as the output signal from the communications unit that translates the signal into usabledata.\n(b) The recording requirements of paragraph (a)(2) of this section may be met:\n(1) By installing a cockpit-mounted area microphone located in the best position for recording voice communications originating at the first and second pilot stations and voice communications of other crewmembers on the flight deck when directed to those stations; or\n(2) By installing a continually energized or voice-actuated lip microphone at the first and second pilot stations. The microphone specified in this paragraph must be so located and, if necessary, the preamplifiers and filters of the recorder must be adjusted or supplemented so that the recorded communications are intelligible when recorded under flight cockpit noise conditions and played back. The level of intelligibility must be approved by the Administrator. Repeated aural or visual playback of the record may be used in evaluating intelligibility.\n(c) Each cockpit voice recorder must be installed so that the part of the communicationor audio signals specified in paragraph (a) of this section obtained from each of the following sources is recorded on a separate channel:\n(1) For the first channel, from each microphone, headset, or speaker used at the first pilot station.\n(2) For the second channel, from each microphone, headset, or speaker used at the second pilot station.\n(3) For the third channel, from the cockpit-mounted area microphone, or the continually energized or voice-actuated lip microphone at the first and second pilot stations.\n(4) For the fourth channel, from:\n(i) Each microphone, headset, or speaker used at the stations for the third and fourth crewmembers; or\n(ii) If the stations specified in paragraph (c)(4)(i) of this section are not required or if the signal at such a station is picked up by another channel, each microphone on the flight deck that is used with the passenger loudspeaker system if its signals are not picked up by another channel.\n(iii) Each microphone on the flight deck thatis used with the rotorcraft's loudspeaker system if its signals are not picked up by another channel.\n(d) Each cockpit voice recorder must be installed so that:\n[(1)(i) It receives its electrical power from the bus that provides the maximum reliability for operation of the cockpit voice recorder without jeopardizing service to essential or emergency loads.\n(ii) It remains powered for as long as possible without jeopardizing emergency operation of the airplane.]\n(2) There is an automatic means to simultaneously stop the recorder and prevent each erasure feature from functioning, within 10 minutes after crash impact;\n(3) There is an aural or visual means for preflight checking of the recorder for proper operation;\n(4) Whether the cockpit voice recorder and digital flight data recorder are installed in separate boxes or in a combination unit, no single electrical failure external to the recorder may disable both the cockpit voice recorder and the digital flight data recorder; and(5) It has an independent power source--\n(i) That provides 10  1 minutes of electrical power to operate both the cockpit voice recorder and cockpit-mounted area microphone;\n(ii) That is located as close as practicable to the cockpit voice recorder; and\n(iii) To which the cockpit voice recorder and cockpit-mounted area microphone are switched automatically in the event that all other power to the cockpit voice recorder is interrupted either by normal shutdown or by any other loss of power to the electrical power bus.\n(e) The record container must be located and mounted to minimize the probability of rupture of the container as a result of crash impact and consequent heat damage to the record from fire.\n(f) If the cockpit voice recorder has a bulk erasure device, the installation must be designed to minimize the probability of inadvertent operation and actuation of the device during crash impact.\n(g) Each recorder container must be either bright orange or bright yellow.\n(h) Whenboth a cockpit voice recorder and a flight data recorder are required by the operating rules, one combination unit may be installed, provided that all other requirements of this section and the requirements for flight data recorders under this part are met.",
      "sha256": "b21b2cc23e83b2b374368499d6a5dbc5efb81b38546426c173baa087dd034711",
      "source": "https://drs.faa.gov/browse/excelExternalWindow/FE3F7C8AB66DF53B86257853004EC557.0001",
-     "guid": "FE3F7C8AB66DF53B86257853004EC557"
+     "guid": "FE3F7C8AB66DF53B86257853004EC557",
+     "correction": "corrected text, effective 2009-07-09"
     },
     {
      "amendment": "27-45",
@@ -8683,7 +8649,8 @@
      "text": "[(a) The Rotorcraft Flight Manual must contain the following information, determined in accordance with Sec. Sec.  27.49 through 27.87 and 27.143(c) and (d):]\n\n(1) Enough information to determine the limiting height-speed envelope.\n(2) Information relative to--\n(i) The steady rates of climb and descent, in-ground effect and out-of-ground effect hovering ceilings, together with the corresponding airspeeds and other pertinent information including the calculated effects of altitude and temperatures;\n(ii) The maximum weight for each altitude and temperature condition at which the rotorcraft can safely hover in-ground effect and out-of-ground effect in winds of not less than 17 knots from all azimuths.\nThese data must be clearly referenced to the appropriate hover charts.\nIn addition, if there are other combinations of weight, altitude and temperature for which performance information is provided and at which the rotorcraft cannot land and take off safely with themaximum wind value, those portions of the operating envelope and the appropriate safe wind conditions must be stated in the Rotorcraft Flight Manual;\n(iii) For reciprocating engine-powered rotorcraft, the maximum atmospheric temperature at which compliance with the cooling provisions of Secs. 27.1041 through 27.1045 is shown; and\n(iv) Glide distance as a function of altitude when autorotating at the speeds and conditions for minimum rate of descent and best glide as determined in Sec. 27.71.\n(b) The Rotorcraft Flight Manual must contain--\n(1) In its performance information section any pertinent information concerning the takeoff weights and altitudes used in compliance with Sec. 27.51; and\n(2) The horizontal takeoff distance determined in accordance with Sec. 27.65 (a)(2)(i).",
      "sha256": "405dbfa19c726cb71981ab7baac9a61fb0c861631f8d950b0a9bbb9eebf9a25e",
      "source": "https://drs.faa.gov/browse/excelExternalWindow/970058023F769A608625746A004B72EA.0001",
-     "guid": "970058023F769A608625746A004B72EA"
+     "guid": "970058023F769A608625746A004B72EA",
+     "correction": "corrected text, effective 2008-06-16"
     },
     {
      "amendment": "27-51",

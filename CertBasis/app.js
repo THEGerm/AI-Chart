@@ -254,6 +254,8 @@
     put(el, meta);
     if (!t.exact) put(el, h("p", { class: "notice", id: "inexact" }, `Current text shown; the text at Change ${lvl(book, at)} is not loaded.`));
     if (v.change_markers && v.change_markers.length) put(el, h("p", { class: "small muted" }, `Change markers in this text: ${v.change_markers.join(", ")}.`));
+    const hist = book.sections[id] && book.sections[id].history_notes;
+    if (hist && hist.length) put(el, h("div", { class: "notice", id: "history-notes" }, h("strong", null, "Change history"), h("ul", null, hist.map((n) => h("li", null, n))), book.history_source ? h("p", { class: "small muted" }, book.history_source) : null));
     put(el, h("pre", { class: "regtext", id: "regtext" }, t.text || "(no text)"));
   }
 

@@ -200,3 +200,4 @@ textarea.md { width: 100%; min-height: 160px; font-family: var(--mono); font-siz
   .diff { grid-template-columns: minmax(0, 1fr); }
   h1 { font-size: 18px; }
 }
+.row > label.field.grow input { width: 100%; }

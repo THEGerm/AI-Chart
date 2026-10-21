@@ -35,6 +35,7 @@
     if (Array.isArray(kid)) { kid.forEach((k) => add(el, k)); return; }
     el.appendChild(kid instanceof Node ? kid : document.createTextNode(String(kid)));
   }
+  function put(el) { add(el, [].slice.call(arguments, 1)); return el; }
   function setMain() { main.replaceChildren(...[].slice.call(arguments).flat(Infinity).filter(Boolean)); }
   function loading(msg) { return h("p", { class: "loading", role: "status" }, msg); }
   function tag(kind, text) { return h("span", { class: `tag k-${kind}` }, text || KIND_LABEL[kind] || kind); }
@@ -170,7 +171,7 @@
     }
     document.title = sectionId ? `${sectionId}: CertBasis` : `${book.rulebook}: CertBasis`;
     const ids = Object.keys(book.sections).filter((id) => /^\d/.test(id) && id !== "0.0").sort(CB.sectionOrder);
-    const filter = h("input", { type: "search", id: "sec-filter", placeholder: "Number or words in the heading", "aria-label": "Filter sections", value: libFilter[bookId] || "" });
+    const filter = h("input", { type: "search", id: "sec-filter", placeholder: "Number or heading", "aria-label": "Filter sections", value: libFilter[bookId] || "" });
     const items = ids.map((id) => {
       const s = book.sections[id];
       const last = s.versions[s.versions.length - 1];
@@ -193,7 +194,7 @@
     const list = h("div", { class: "lib-list" }, h("label", { for: "sec-filter", class: "small muted" }, "Find a section"), filter, count, h("ul", { id: "sec-list" }, items));
     const detail = h("div", { class: "lib-detail" });
     if (sectionId) sectionDetail(detail, book, sectionId, q);
-    else detail.append(h("p", { class: "muted" }, `${book.title || book.rulebook}. ${ids.length} sections. Pick a section to see its amendment ladder and text.`),
+    else put(detail, h("p", { class: "muted" }, `${book.title || book.rulebook}. ${ids.length} sections. Pick a section to see its amendment ladder and text.`),
       book.note ? h("p", { class: "notice" }, book.note) : null,
       h("p", { class: "small" }, "Source: ", sourceLink(book.source, book.source) || book.source || "not recorded"));
     setMain(h("h1", null, "Library"), head, h("div", { class: `lib${sectionId ? " has-section" : ""}` }, list, detail));
@@ -206,20 +207,20 @@
   function sectionDetail(el, book, id, q) {
     const s = book.sections[id];
     const back = h("a", { class: "btn lib-back", href: href(["library", book.id]) }, "All sections");
-    if (!s) { el.append(back, h("p", { class: "notice" }, `Section ${id} is not in ${book.rulebook}.`)); return; }
+    if (!s) { put(el, back, h("p", { class: "notice" }, `Section ${id} is not in ${book.rulebook}.`)); return; }
     const latest = s.versions[s.versions.length - 1];
     const at = q.get("at") || (latest.seq == null ? "current" : latest.amendment);
     const ctx = q.get("ctx");
     let t;
     try { t = CB.textAt(book, id, at); } catch (e) { t = CB.textAt(book, id, "current"); }
     const v = t.version;
-    el.append(back,
+    put(el, back,
       h("h2", { class: "sec-title" }, `${book.rulebook} ${id} ${s.heading || ""}`),
       s.subpart ? h("p", { class: "small muted" }, s.subpart) : null,
       ctx ? h("p", { class: "info" }, ctx) : null);
 
     // ladder
-    el.append(h("h3", null, "Amendment ladder"),
+    put(el, h("h3", null, "Amendment ladder"),
       h("p", { class: "small muted" }, "Each entry is a version of the text. A level between two entries uses the earlier one."),
       h("ul", { class: "ladder", id: "ladder" }, s.versions.map((x) =>
         h("li", { "data-amendment": x.amendment },
@@ -234,15 +235,15 @@
       levels.map((o) => h("option", { value: o.id, selected: o.id === at }, o.text)));
     const vIds = s.versions.map((x) => x.amendment);
     const curIdx = v ? vIds.indexOf(v.amendment) : vIds.length - 1;
-    const selA = h("select", { id: "cmp-a", "aria-label": "Left level" }, vIds.map((a, i) => h("option", { value: a, selected: i === Math.max(0, curIdx - 1) }, lvl(book, a))));
-    const selB = h("select", { id: "cmp-b", "aria-label": "Right level" }, vIds.map((a, i) => h("option", { value: a, selected: i === Math.max(0, curIdx) }, lvl(book, a))));
-    el.append(h("div", { class: "row" }, h("label", { for: "at-pick" }, "Show text at level"), atSel),
+    const selA = h("select", { id: "cmp-a", "aria-label": "Left level" }, vIds.map((a, i) => h("option", { value: a, selected: i === (curIdx > 0 ? curIdx - 1 : 0) }, lvl(book, a))));
+    const selB = h("select", { id: "cmp-b", "aria-label": "Right level" }, vIds.map((a, i) => h("option", { value: a, selected: i === (curIdx > 0 ? curIdx : Math.min(1, vIds.length - 1)) }, lvl(book, a))));
+    put(el, h("div", { class: "row" }, h("label", { for: "at-pick" }, "Show text at level"), atSel),
       vIds.length > 1 ? h("div", { class: "row" }, h("span", null, "Compare"), selA, h("span", null, "with"), selB,
         h("button", { type: "button", id: "cmp-go", onclick: () => { location.hash = diffHref(book.id, id, selA.value, selB.value, ctx); } }, "Side by side")) : null);
 
     // text
     if (!v) {
-      el.append(h("p", { class: "notice" }, `${id} was not in force at ${lvl(book, at)}. It first appears at ${lvl(book, s.versions[0].amendment)}.`));
+      put(el, h("p", { class: "notice" }, `${id} was not in force at ${lvl(book, at)}. It first appears at ${lvl(book, s.versions[0].amendment)}.`));
       return;
     }
     const meta = h("p", { class: "textmeta" },
@@ -250,10 +251,10 @@
       at !== v.amendment ? ` (level asked: ${lvl(book, at)})` : "",
       v.status !== "in_force" ? [" ", tag("deleted", v.status)] : "",
       ". ", sourceLink(v.source, "Source"), v.sha256 ? h("span", { class: "small muted" }, ` sha256 ${v.sha256.slice(0, 12)}`) : null);
-    el.append(meta);
-    if (!t.exact) el.append(h("p", { class: "notice", id: "inexact" }, `Current text shown; the text at Change ${lvl(book, at)} is not loaded.`));
-    if (v.change_markers && v.change_markers.length) el.append(h("p", { class: "small muted" }, `Change markers in this text: ${v.change_markers.join(", ")}.`));
-    el.append(h("pre", { class: "regtext", id: "regtext" }, t.text || "(no text)"));
+    put(el, meta);
+    if (!t.exact) put(el, h("p", { class: "notice", id: "inexact" }, `Current text shown; the text at Change ${lvl(book, at)} is not loaded.`));
+    if (v.change_markers && v.change_markers.length) put(el, h("p", { class: "small muted" }, `Change markers in this text: ${v.change_markers.join(", ")}.`));
+    put(el, h("pre", { class: "regtext", id: "regtext" }, t.text || "(no text)"));
   }
 
   // ---------- diff ----------
@@ -395,7 +396,7 @@
     return groups;
   }
   function filterBox(container, id) {
-    const input = h("input", { type: "search", id, placeholder: "Number or words in the heading", "aria-label": "Filter sections" });
+    const input = h("input", { type: "search", id, placeholder: "Number or heading", "aria-label": "Filter sections" });
     const out = h("span", { class: "small muted", "aria-live": "polite" });
     input.addEventListener("input", () => {
       const t = input.value.trim().toLowerCase();
@@ -577,8 +578,8 @@
     function renderCompare() {
       const keys = st.applicable.length ? st.applicable : [];
       cmpBox.replaceChildren();
-      if (!st.selected.length) { cmpBox.append(h("p", { class: "muted" }, "Tick one or more models to compare them with the main model.")); return; }
-      if (!keys.length) { cmpBox.append(h("p", { class: "muted" }, "Check applicable sections below to compare levels.")); return; }
+      if (!st.selected.length) { put(cmpBox, h("p", { class: "muted" }, "Tick one or more models to compare them with the main model.")); return; }
+      if (!keys.length) { put(cmpBox, h("p", { class: "muted" }, "Check applicable sections below to compare levels.")); return; }
       const main = projRows();
       const cols = st.selected.map((m) => ({ m, label: (stc.selectable.find((x) => x.model === m) || {}).label || m, cmp: CB.compareRows(main, rowsOfModel(m), keys) }));
       const summary = cols.map((c) => `${c.label}: ${c.cmp.filter((x) => x.differs).length} of ${keys.length} sections differ`).join(". ");
@@ -595,7 +596,7 @@
           cols.map((c) => h("td", { class: `lvl${c.cmp[i].differs ? " differs" : ""}`, "data-model": c.m }, fmtLevels(c.cmp[i].levelB), c.cmp[i].differs ? h("span", { class: "small" }, " (differs)") : null)));
       }));
       const anyMissing = st.selected.some((m) => rowsOfModel(m).some((r) => r.missingBook));
-      cmpBox.append(h("p", { class: "small", id: "cmp-summary" }, summary + "."),
+      put(cmpBox, h("p", { class: "small", id: "cmp-summary" }, summary + "."),
         anyMissing ? h("p", { class: "notice small" }, "CAR 6 is not loaded yet, so sections covered by CAR 6 show as not in basis for the 206L models.") : null,
         wrapTable(h("table", { id: "cmp-table" },
           h("thead", null, h("tr", null, h("th", { scope: "col" }, "Section"), h("th", { scope: "col" }, "Heading"), h("th", { scope: "col" }, stc.main.label),
@@ -603,7 +604,7 @@
     }
 
     // applicable sections picker
-    const pickFilter = h("input", { type: "search", id: "pick-filter", placeholder: "Number or words in the heading", "aria-label": "Filter the main model's sections" });
+    const pickFilter = h("input", { type: "search", id: "pick-filter", placeholder: "Number or heading", "aria-label": "Filter the main model's sections" });
     const onlyChecked = h("input", { type: "checkbox", id: "pick-only" });
     const picker = h("div", { class: "picker", id: "picker" });
     function renderPicker() {
@@ -655,7 +656,7 @@
       const rows = scopedRows();
       const regs = rows.filter(isReg);
       const others = rows.filter((r) => NON_REG.includes(r.kind));
-      basisBox.replaceChildren(
+      basisBox.replaceChildren(); put(basisBox,
         h("p", { class: "small muted" }, st.applicable.length ? `${regs.length} applicable sections of the main model basis, at the project level. Elected rows show the new level and the original struck through.` : "No sections checked: the whole main model basis is shown."),
         regTable(regs, owner, actions),
         others.length ? [h("h3", null, "Special conditions, ESFs and references of the main model"), otherTable(others)] : null);
@@ -664,7 +665,7 @@
     // elections
     const elSec = h("select", { id: "el-section", "aria-label": "Section" });
     const elLvl = h("select", { id: "el-level", "aria-label": "Elected level" });
-    const elReason = h("input", { type: "text", id: "el-reason", class: "grow", placeholder: "for example: slope of longitudinal stability negative in level flight, elect to an earlier amendment" });
+    const elReason = h("input", { type: "text", id: "el-reason", placeholder: "for example: slope of longitudinal stability negative in level flight, elect to an earlier amendment" });
     const elMsg = h("span", { class: "small muted", role: "status" });
     function fillLevels() {
       const [rb, sec] = elSec.value.split("|");

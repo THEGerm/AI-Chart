@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amira - The Ex-Wife</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* Importing commanding, elegant fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Montserrat:wght@300;400&display=swap');
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f0ec;
+            color: #333333;
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 4px;
+            box-shadow: 0 8px 30px rgba(74, 14, 78, 0.1);
+            border-top: 6px solid #4a0e4e; /* Rich plum */
+        }
+        /* Part 1: Banner style */
+        .banner {
+            width: 100%;
+            height: auto;
+            border-bottom: 2px solid #c5a059; /* Muted gold */
+            margin-bottom: 25px;
+            filter: contrast(105%) brightness(95%);
+        }
+        /* Part 2: Generic text style */
+        .intro-section {
+            padding: 20px;
+            background-color: #fbfaf9;
+            margin-bottom: 25px;
+            border-left: 3px solid #c5a059;
+        }
+        .intro-section p, .intro-section li {
+            font-size: 15px;
+            color: #555555;
+        }
+        .intro-section ol {
+            padding-left: 20px;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .intro-section li {
+            margin-bottom: 12px;
+        }
+        /* Part 3: Character section style */
+        .character-section {
+            margin-bottom: 35px;
+            padding: 30px 25px;
+            background-color: #ffffff;
+            border: 1px solid #eaeaea;
+            box-shadow: inset 0 0 20px rgba(197, 160, 89, 0.05);
+        }
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            color: #4a0e4e;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 15px;
+            margin-top: 0;
+            font-size: 2em;
+            text-align: center;
+        }
+        .item-title {
+            font-family: 'Cormorant Garamond', serif;
+            color: #4a0e4e;
+            margin-top: 25px;
+            margin-bottom: 5px;
+            display: block;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+        p {
+            margin-top: 5px;
+        }
+        /* Bottom: Private letter style */
+        .private-letter-notice {
+            background-color: #310a34;
+            border: 2px solid #c5a059;
+            padding: 25px;
+            text-align: center;
+            color: #f4f0ec;
+            border-radius: 2px;
+        }
+        .private-letter-notice h2 {
+            color: #c5a059;
+            border-bottom: none;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-bottom: 0;
+            font-size: 1.8em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <img src="1771807162225.png" alt="The International Artisan Bread Championship Murder Mystery" class="banner">
+
+    <div id="intro-content" class="intro-section">
+        <p><i>Compiling legal discovery...</i></p>
+    </div>
+
+    <div class="character-section">
+        <h2>Amira The Ex-Wife (Played by Hebba)</h2>
+        
+        <span class="item-title">1. Your Background.</span>
+        <p>You are Amira, the brilliant business mind who co-founded the Crust Bakery empire forty years ago. While Bartholomew was covered in flour playing with water temperatures, you were the one negotiating distribution deals, managing the finances, and turning his hobby into a global phenomenon. You gave him the lifestyle he enjoys today, and you know every single one of his weaknesses.</p>
+        
+        <span class="item-title">2. The Conflict.</span>
+        <p>A decade ago, Bartholomew forced you out of the company through a series of underhanded legal maneuvers. Worse, he took sole custody of the prized 40-year-old Elrond starter—an asset you helped cultivate. You have spent the last ten years plotting your revenge and assembling an ironclad legal case to seize back your half of the business and repossess the 1:1 ratio levain that is rightfully yours.</p>
+
+        <span class="item-title">3. The Clue.</span>
+        <p>You crashed this championship tonight completely uninvited, armed with a fresh stack of court orders. Several witnesses spotted you hovering near Bartholomew's heavy doux-feux Dutch ovens and the baking stations just moments before he let out his fatal scream.</p>
+
+        <span class="item-title">4. Costume Ideas.</span>
+        <p>A sharp, intimidating power suit or dramatic, wealthy mourning attire—as if you were ready for his funeral before he even died. Accessorize with large diamond (or faux-diamond) jewelry, designer heels, and a sleek leather folder or briefcase containing your "legal documents."</p>
+    </div>
+
+    <div class="private-letter-notice">
+        <h2>STRICTLY CONFIDENTIAL: PRIVATE LETTER</h2>
+        <p>Your private letter containing your secret motives, objectives, and clues is bound by a non-disclosure agreement.</p>
+        <p>It will be handed to you in a sealed envelope upon everyone's arrival at 113 Shinny Avenue, Stittsville.</p>
+        <p>Do not discuss your private instructions with anyone until the proceedings officially commence.</p>
+    </div>
+
+</div>
+
+<script>
+    fetch('intro.md')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Legal Error: Could not load intro.md');
+            }
+            return response.text();
+        })
+        .then(text => {
+            document.getElementById('intro-content').innerHTML = marked.parse(text);
+        })
+        .catch(error => {
+            document.getElementById('intro-content').innerHTML = '<p style="color:#4a0e4e;">Error: Introduction text not found in the archives.</p>';
+            console.error('Error fetching intro.md:', error);
+        });
+</script>
+
+</body>
+          </html>
+  

@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boulanger's Console v5.0</title>
+
+<!--
+  ================================================================
+  BOULANGER.EXE v5.0 — Single-file bread calculator
+  ================================================================
+
+  ARCHITECTURE OVERVIEW
+  ---------------------
+  This is one self-contained HTML file. There is no build step, no
+  framework, no external libraries. Everything is plain HTML, CSS,
+  and vanilla JavaScript.
+
+  Three layers, in order:
+    1. <style>  : visual design, all colors and layout
+    2. <body>   : DOM structure with placeholder containers
+    3. <script> : data, math, rendering, persistence, event handlers
+
+  DATA FLOW
+  ---------
+  The application has a single source of truth: the global `state`
+  object. Every input field reads from and writes to `state`.
+
+  When `state` changes:
+    1. saveCookie()  : persists state as a JSON cookie
+    2. compute()     : derives all calculated values
+    3. render()      : updates DOM to reflect the new computed values
+
+  PERSISTENCE
+  -----------
+  State lives in a cookie named "bread_state_v5". On page load we
+  try to read it; if it exists, we parse it as JSON. Otherwise we
+  fall back to the #68 default recipe.
+
+  WHY COOKIES (NOT localStorage)?
+  -------------------------------
+  The user explicitly asked for cookies. Cookies are sent to the
+  server with every request, but for a static page like this
+  there is no server, so the practical effect is identical to
+  localStorage.
+-->
+
+<style>
+  /* ================================================================
+     COLOR PALETTE — Soft Cyberpunk
+     ----------------------------------------------------------------
+     CSS custom properties (variables) make it easy to retune the
+     theme. Edit values here and the whole app updates.
+
+     The new palette is muted: dusky purple base, soft teal/lavender
+     accents. Less neon, more "midnight study". Easier on the eyes
+     for long baking sessions.
+     ================================================================ */
+  :root {
+    /* Background layers */
+    --bg-deep: #1a1825;        /* page background, deepest */
+    --bg-mid:  #252436;        /* panel base color */
+    --bg-soft: #2f2d42;        /* panel hover / inputs */
+
+    /* Text colors, ranked from primary to subtle */
+    --text-primary:   #e8e4f0; /* main body text */
+    --text-secondary: #a8a4c0; /* labels, captions */
+    --text-dim:       #6b6883; /* footnotes, hints */
+
+    /* Accent colors, used sparingly for highlights and meaning */
+    --accent-teal:    #7dd3c0; /* primary highlight, hydration */
+    --accent-lavender:#b4a7d6; /* preferments, secondary */
+    --accent-rose:    #d4a5b8; /* salt, warnings */
+    --accent-gold:    #d4c178; /* attention, warnings */
+    --accent-sage:    #a3c9a8; /* nutrition, success */
+    --accent-coral:   #d4928a; /* errors, alerts */
+
+    /* Borders and dividers */
+    --border-soft:   rgba(180,167,214,0.18);
+    --border-medium: rgba(180,167,214,0.32);
+  }
+
+  /* Reset and base typography */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    /* Subtle gradient background, no harsh patterns */
+    background:
+      radial-gradient(ellipse at top, var(--bg-mid) 0%, var(--bg-deep) 70%);
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    color: var(--text-primary);
+    padding: 24px 16px;
+    line-height: 1.5;
+  }
+
+  /* Centered container, max width caps it on big screens */
+  .container { max-width: 1400px; margin: 0 auto; }
+
+  /* ============================================================
+     HEADER
+     The retro tag and main title, rendered with a gentle glow
+     instead of harsh neon shadows.
+     ============================================================ */
+  header { text-align: center; margin-bottom: 24px; }
+
+  .badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border: 1px solid var(--accent-lavender);
+    color: var(--accent-lavender);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    margin-bottom: 12px;
+    border-radius: 2px;
+  }
+
+  h1 {
+    font-size: clamp(28px, 5vw, 44px);
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--text-primary);
+    /* Two-stage glow: tight inner glow + soft outer glow */
+    text-shadow:
+      0 0 8px rgba(125,211,192,0.3),
+      0 0 16px rgba(125,211,192,0.15);
+  }
+
+  .subtitle {
+    margin: 8px 0 0;
+    color: var(--accent-teal);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
+     PANELS — generic card container used throughout
+     ============================================================ */
+  .panel {
+    background: var(--bg-mid);
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    padding: 18px;
+    /* Inset shadow for depth, no aggressive outer glow */
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.03),
+      0 4px 12px rgba(0,0,0,0.25);
+  }
+
+  .panel h2 {
+    margin: 0 0 14px;
+    font-size: 13px;
+    color: var(--accent-teal);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-medium);
+    padding-bottom: 8px;
+    font-weight: 600;
+  }
+
+  /* Section headings inside panels (for grouped inputs) */
+  .section-title {
+    font-size: 10px;
+    color: var(--accent-lavender);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin: 16px 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px dashed var(--border-soft);
+    font-weight: 500;
+  }
+
+  /* ============================================================
+     INPUTS — number fields with right-side suffix
+     ============================================================ */
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .input-group label {
+    font-size: 9.5px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+  }
+
+  .input-wrap {
+    position: relative;
+  }
+
+  input[type="number"] {
+    width: 100%;
+    padding: 8px 28px 8px 10px;
+    background: var(--bg-deep);
+    border: 1px solid var(--border-soft);
+    border-radius: 3px;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  input[type="number"]:focus {
+    border-color: var(--accent-teal);
+    /* Soft focus ring instead of harsh neon */
+    box-shadow: 0 0 0 2px rgba(125,211,192,0.15);
+  }
+
+  /* Suffix label inside input ("g") */
+  .suffix {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px;
+    color: var(--text-dim);
+    pointer-events: none;
+  }
+
+  /* The auto-split hint that appears under preferment inputs */
+  .split-hint {
+    font-size: 10px;
+    color: var(--accent-lavender);
+    margin-top: 4px;
+    opacity: 0.75;
+  }
+
+  /* Two-column input grid */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  /* Single-column for preferments (longer labels) */
+  .grid-1 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* ============================================================
+     BUTTONS — soft outlined style
+     ============================================================ */
+  button {
+    padding: 8px 14px;
+    background: transparent;
+    color: var(--accent-teal);
+    border: 1px solid var(--accent-teal);
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  button:hover {
+    background: rgba(125,211,192,0.08);
+    box-shadow: 0 0 0 1px var(--accent-teal);
+  }
+
+  /* Active preset button shows filled state */
+  button.active {
+    background: var(--accent-teal);
+    color: var(--bg-deep);
+  }
+
+  /* Color variants for special buttons */
+  button.btn-rose    { color: var(--accent-rose);     border-color: var(--accent-rose); }
+  button.btn-rose:hover { background: rgba(212,165,184,0.08); }
+
+  button.btn-sage    { color: var(--accent-sage);     border-color: var(--accent-sage); }
+  button.btn-sage:hover { background: rgba(163,201,168,0.08); }
+
+  button.btn-gold    { color: var(--accent-gold);     border-color: var(--accent-gold); }
+  button.btn-gold:hover { background: rgba(212,193,120,0.08); }
+
+  /* Button row layout */
+  .button-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .button-section-title {
+    font-size: 10px;
+    color: var(--text-secondary);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  /* ============================================================
+     MAIN GRID — 3 columns at full width, stacks on small screens
+     ============================================================ */
+  .main-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 18px;
+  }
+
+  /* ============================================================
+     NAME CARD — the loaf's identity, color shifts with mood
+     ============================================================ */
+  .name-card {
+    text-align: center;
+    padding: 24px 20px;
+    position: relative;
+    /* The mood color is set inline by JavaScript via CSS variables */
+    border-color: var(--mood-color, var(--accent-teal));
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.03),
+      0 4px 16px rgba(0,0,0,0.3),
+      0 0 24px var(--mood-glow, rgba(125,211,192,0.15));
+  }
+
+  .name-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+  }
+
+  .name-text {
+    margin: 0;
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--mood-color, var(--accent-teal));
+    text-shadow: 0 0 10px var(--mood-glow, rgba(125,211,192,0.3));
+  }
+
+  .name-tag {
+    margin: 10px 0 0;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    letter-spacing: 0.03em;
+  }
+
+  /* Corner brackets framing the name card (purely decorative) */
+  .corner {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-color: var(--mood-color, var(--accent-teal));
+    border-style: solid;
+    border-width: 0;
+    opacity: 0.7;
+  }
+  .corner.tl { top: 8px; left: 8px;  border-top-width: 2px; border-left-width: 2px; }
+  .corner.tr { top: 8px; right: 8px; border-top-width: 2px; border-right-width: 2px; }
+  .corner.bl { bottom: 8px; left: 8px;  border-bottom-width: 2px; border-left-width: 2px; }
+  .corner.br { bottom: 8px; right: 8px; border-bottom-width: 2px; border-right-width: 2px; }
+
+  /* ============================================================
+     LEAVENING PANEL — dual metric with horizontal bars
+     ============================================================ */
+  .profile-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background: var(--bg-soft);
+    border: 1px solid currentColor;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    border-radius: 2px;
+  }
+
+  .metric-row { margin-bottom: 14px; }
+  .metric-row:last-child { margin-bottom: 0; }
+
+  .metric-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+  }
+
+  .metric-label-block .metric-label {
+    font-size: 10px;
+    color: var(--text-secondary);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .metric-formula {
+    font-size: 9px;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-top: 2px;
+  }
+
+  .metric-value {
+    font-size: 19px;
+    font-weight: 700;
+  }
+
+  /* Horizontal bar with gradient fill */
+  .bar-track {
+    height: 6px;
+    background: var(--bg-deep);
+    border: 1px solid var(--border-soft);
+    border-radius: 1px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .bar-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+  }
+
+  .metric-reference {
+    font-size: 9px;
+    color: var(--text-dim);
+    margin-top: 3px;
+    letter-spacing: 0.08em;
+  }
+
+  .leavening-breakdown {
+    margin-top: 14px;
+    padding: 10px 12px;
+    background: var(--bg-deep);
+    border-left: 2px solid var(--accent-teal);
+    border-radius: 2px;
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  .leavening-breakdown-title {
+    color: var(--accent-teal);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  /* ============================================================
+     DOUGH METRICS — grid of numeric stats
+     ============================================================ */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 18px;
+  }
+
+  .metric .metric-tiny-label {
+    font-size: 9px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .metric .metric-tiny-value {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--accent-rose);
+    margin-top: 2px;
+  }
+
+  .metric.highlight .metric-tiny-value {
+    color: var(--accent-teal);
+  }
+
+  /* ============================================================
+     NUTRITION LABEL — Canadian bilingual style
+     ============================================================ */
+  .nutrition-label {
+    background: var(--bg-deep);
+    border: 1.5px solid var(--accent-sage);
+    border-radius: 4px;
+    padding: 18px 20px;
+    align-self: start;
+    box-shadow: 0 0 16px rgba(163,201,168,0.18);
+  }
+
+  .nutr-title {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--accent-sage);
+    letter-spacing: 0.02em;
+  }
+
+  .nutr-subtitle {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 6px;
+    color: var(--accent-sage);
+    opacity: 0.85;
+  }
+
+  .nutr-serving {
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  .nutr-bar-thick {
+    height: 4px;
+    background: var(--accent-sage);
+    margin: 8px 0 4px;
+    box-shadow: 0 0 6px rgba(163,201,168,0.4);
+  }
+
+  .nutr-bar-thin {
+    height: 2px;
+    background: rgba(163,201,168,0.5);
+    margin: 4px 0 0;
+  }
+
+  .nutr-calories-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .nutr-calories {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent-sage);
+  }
+
+  .nutr-dv-header {
+    font-size: 10px;
+    text-align: right;
+    color: var(--text-secondary);
+  }
+
+  .nutr-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+    font-size: 12px;
+    color: var(--text-primary);
+  }
+
+  .nutr-row.top {
+    padding-top: 6px;
+    border-top: 1px solid rgba(163,201,168,0.3);
+  }
+
+  .nutr-row.bold span:first-child { font-weight: 700; }
+  .nutr-row.indent { padding-left: 14px; }
+  .nutr-row strong { color: var(--accent-rose); }
+  .nutr-row .dv { color: var(--accent-gold); }
+
+  .nutr-footnote {
+    font-size: 9px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    margin-top: 6px;
+  }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  footer {
+    text-align: center;
+    margin-top: 26px;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+
+<body>
+<div class="container">
+
+  <!-- ============================================================
+       HEADER
+       Just plain text. The actual recipe label is updated by JS.
+       ============================================================ -->
+  <header>
+    <div class="badge">BOULANGER.EXE // v5.0 // PERSISTENT</div>
+    <h1>The Boulanger's Console</h1>
+    <p class="subtitle">&gt; <span id="recipe-label">Loading…</span> &lt;</p>
+  </header>
+
+  <!-- ============================================================
+       CONTROL PANEL: presets + auto-fix buttons
+       Buttons are generated by JavaScript so the preset list stays
+       in one place.
+       ============================================================ -->
+  <div class="panel" style="margin-bottom: 18px;">
+    <div class="button-section-title">&gt; LOAD_PRESET</div>
+    <div class="button-row" id="preset-buttons"></div>
+
+    <div class="button-section-title" style="margin-top: 14px;">&gt; AUTO_FIX</div>
+    <div class="button-row">
+      <button class="btn-sage" id="fix-salt">Fix My Salt! (2%)</button>
+      <button class="btn-gold" id="fix-hydration">Fix My Hydration! (68%)</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MAIN GRID: 3 columns
+       Column 1: ingredient inputs
+       Column 2: name card + leavening panel + dough metrics
+       Column 3: nutrition label
+       ============================================================ -->
+  <div class="main-grid">
+
+    <!-- ============================================================
+         COLUMN 1 — INGREDIENT INPUTS
+         All number inputs have an id like "input-bakerFlour" so JS
+         can wire them up in one loop.
+         ============================================================ -->
+    <section class="panel">
+      <h2>:: Ingredients</h2>
+
+      <div class="section-title">&gt; Flours</div>
+      <div class="grid-2">
+        <div class="input-group">
+          <label for="input-bakerFlour">Baker Flour</label>
+          <div class="input-wrap">
+            <input type="number" id="input-bakerFlour" min="0" step="1" value="0">
+            <span class="suffix">g</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="input-ryeFlour">Rye Flour</label>
+          <div class="input-wrap">
+            <input type="number" id="input-ryeFlour" min="0" step="1" value="0">
+            <span class="suffix">g</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="input-wholeWheat">Whole Wheat</label>
+          <div class="input-wrap">
+            <input type="number" id="input-wholeWheat" min="0" step="1" value="0">
+            <span class="suffix">g</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="input-spelt">Spelt</label>
+          <div class="input-wrap">
+            <input type="number" id="input-spelt" min="0" step="1" value="0">
+            <span class="suffix">g</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="input-apFlour">All-Purpose</label>
+          <div class="input-wrap">
+            <input type="number" id="input-apFlour" min="0" step="1" value="0">
+            <span class="suffix">g</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="input-gluten">Vital Gluten</label>
+          <div class="input-wrap">
+            <input type="number" id="input-gluten" min="0" step="1" value="0">
+            <span class="suffix">g</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">&gt; Water &amp; Seasoning</div>
+      <div class="grid-2">
+        <div class="input-group">
+          <label for="input-water">Water</label>
+          <div class="input-wrap">
+            <input type="number" id="input-water" min="0" step="1" value="0">
+            <span class="suffix">g</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="input-salt">Salt</label>
+          <div class="input-wrap">
+            <input type="number" id="input-salt" min="0" step="0.5" value="0">
+            <span class="suffix">g</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="input-yeast">Dry Yeast</label>
+          <div class="input-wrap">
+            <input type="number" id="input-yeast" min="0" step="0.5" value="0">
+            <span class="suffix">g</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="input-oliveOil">Olive Oil</label>
+          <div class="input-wrap">
+            <input type="number" id="input-oliveOil" min="0" step="1" value="0">
+            <span class="suffix">g</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">&gt; Pre-Ferments (auto-split)</div>
+      <div class="grid-1">
+        <div class="input-group">
+          <label for="input-levain">Liquid Levain (Elrond / Mithril, 100% hyd.)</label>
+          <div class="input-wrap">
+            <input type="number" id="input-levain" min="0" step="1" value="0">
+            <span class="suffix">g</span>
+          </div>
+          <!-- The split hint is updated dynamically by JS -->
+          <div class="split-hint" id="hint-levain"></div>
+        </div>
+        <div class="input-group">
+          <label for="input-stiffLevain">Stiff Levain (Moria, 50% hyd.)</label>
+          <div class="input-wrap">
+            <input type="number" id="input-stiffLevain" min="0" step="1" value="0">
+            <span class="suffix">g</span>
+          </div>
+          <div class="split-hint" id="hint-stiffLevain"></div>
+        </div>
+        <div class="input-group">
+          <label for="input-poolish">Poolish (100% hyd.)</label>
+          <div class="input-wrap">
+            <input type="number" id="input-poolish" min="0" step="1" value="0">
+            <span class="suffix">g</span>
+          </div>
+          <div class="split-hint" id="hint-poolish"></div>
+        </div>
+      </div>
+
+      <div class="section-title">&gt; Inclusions</div>
+      <div class="grid-2">
+        <div class="input-group">
+          <label for="input-olives">Olives</label>
+          <div class="input-wrap">
+            <input type="number" id="input-olives" min="0" step="1" value="0">
+            <span class="suffix">g</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="input-pancetta">Pancetta</label>
+          <div class="input-wrap">
+            <input type="number" id="input-pancetta" min="0" step="1" value="0">
+            <span class="suffix">g</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="input-sunflower">Sunflower</label>
+          <div class="input-wrap">
+            <input type="number" id="input-sunflower" min="0" step="1" value="0">
+            <span class="suffix">g</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="input-flax">Flax</label>
+          <div class="input-wrap">
+            <input type="number" id="input-flax" min="0" step="1" value="0">
+            <span class="suffix">g</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="input-oats">Oats</label>
+          <div class="input-wrap">
+            <input type="number" id="input-oats" min="0" step="1" value="0">
+            <span class="suffix">g</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="input-sesame">Sesame</label>
+          <div class="input-wrap">
+            <input type="number" id="input-sesame" min="0" step="1" value="0">
+            <span class="suffix">g</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         COLUMN 2 — NAME, LEAVENING, METRICS (3 stacked panels)
+         Most content here is generated by JS.
+         ============================================================ -->
+    <section style="display: flex; flex-direction: column; gap: 18px;">
+
+      <!-- Name card. The mood color flows in via inline CSS variables. -->
+      <div class="panel name-card" id="name-card">
+        <span class="corner tl"></span>
+        <span class="corner tr"></span>
+        <span class="corner bl"></span>
+        <span class="corner br"></span>
+        <div class="name-label">// THIS LOAF SHALL BE CALLED //</div>
+        <h2 class="name-text" id="name-text" style="border: none; padding: 0; margin: 0;">…</h2>
+        <p class="name-tag" id="name-tag">…</p>
+      </div>
+
+      <!-- Leavening panel: yeast bar + preferment flour bar -->
+      <div class="panel">
+        <h2>:: Leavening Profile</h2>
+        <span class="profile-badge" id="profile-badge">…</span>
+
+        <div class="metric-row">
+          <div class="metric-header">
+            <div class="metric-label-block">
+              <div class="metric-label">Commercial Yeast %</div>
+              <div class="metric-formula">= (dry yeast / total flour) × 100</div>
+            </div>
+            <div class="metric-value" id="yeast-pct" style="color: var(--accent-gold);">0.00%</div>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" id="yeast-bar"
+                 style="background: linear-gradient(90deg, var(--accent-gold) 0%, var(--accent-gold) 100%); width: 0%;"></div>
+          </div>
+          <div class="metric-reference">Typical: 0.5–2.0%</div>
+        </div>
+
+        <div class="metric-row">
+          <div class="metric-header">
+            <div class="metric-label-block">
+              <div class="metric-label">Prefermented Flour %</div>
+              <div class="metric-formula">= (flour in levain+poolish / total flour) × 100</div>
+            </div>
+            <div class="metric-value" id="pref-pct" style="color: var(--accent-rose);">0.00%</div>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" id="pref-bar"
+                 style="background: linear-gradient(90deg, var(--accent-rose) 0%, var(--accent-rose) 100%); width: 0%;"></div>
+          </div>
+          <div class="metric-reference">Typical: 15–40%</div>
+        </div>
+
+        <div class="leavening-breakdown">
+          <div class="leavening-breakdown-title">// Breakdown</div>
+          <div id="leaven-breakdown">…</div>
+        </div>
+      </div>
+
+      <!-- Dough metrics grid -->
+      <div class="panel">
+        <h2>:: Dough Metrics</h2>
+        <div class="metrics-grid" id="metrics-grid"></div>
+      </div>
+
+    </section>
+
+    <!-- ============================================================
+         COLUMN 3 — NUTRITION LABEL
+         Bilingual Canadian style, mostly statically structured here
+         and filled in by JS at render time.
+         ============================================================ -->
+    <section class="panel nutrition-label">
+      <div class="nutr-title">NUTRITION FACTS</div>
+      <div class="nutr-subtitle">Valeur nutritive</div>
+      <div class="nutr-serving">Per 1 slice (50 g) / Pour 1 tranche (50 g)</div>
+
+      <div class="nutr-bar-thick"></div>
+
+      <div class="nutr-calories-row">
+        <div class="nutr-calories">Calories <span id="nutr-cal">0</span></div>
+        <div class="nutr-dv-header">
+          <div>% Daily Value*</div>
+          <div>% valeur quotidienne*</div>
+        </div>
+      </div>
+      <div class="nutr-bar-thin"></div>
+
+      <div class="nutr-row top bold"><span>Fat / Lipides <strong id="nutr-fat">0 g</strong></span><span class="dv" id="nutr-fat-dv">0%</span></div>
+      <div class="nutr-row indent"><span>Saturated / saturés <strong id="nutr-sat">0 g</strong></span><span class="dv" id="nutr-sat-dv">0%</span></div>
+      <div class="nutr-row indent"><span>+ Trans / trans <strong>0 g</strong></span></div>
+
+      <div class="nutr-row top bold"><span>Carbohydrate / Glucides <strong id="nutr-carbs">0 g</strong></span><span class="dv" id="nutr-carbs-dv">0%</span></div>
+      <div class="nutr-row indent"><span>Fibre / Fibres <strong id="nutr-fibre">0 g</strong></span><span class="dv" id="nutr-fibre-dv">0%</span></div>
+      <div class="nutr-row indent"><span>Sugars / Sucres <strong id="nutr-sugar">0 g</strong></span><span class="dv" id="nutr-sugar-dv">0%</span></div>
+
+      <div class="nutr-row top bold"><span>Protein / Protéines <strong id="nutr-protein">0 g</strong></span></div>
+      <div class="nutr-row top bold"><span>Cholesterol / Cholestérol <strong>0 mg</strong></span></div>
+      <div class="nutr-row top bold"><span>Sodium <strong id="nutr-sodium">0 mg</strong></span><span class="dv" id="nutr-sodium-dv">0%</span></div>
+
+      <div class="nutr-bar-thick"></div>
+
+      <div class="nutr-row"><span>Potassium <strong id="nutr-k">0 mg</strong></span><span class="dv" id="nutr-k-dv">0%</span></div>
+      <div class="nutr-row"><span>Calcium <strong id="nutr-ca">0 mg</strong></span><span class="dv" id="nutr-ca-dv">0%</span></div>
+      <div class="nutr-row"><span>Iron / Fer <strong id="nutr-fe">0 mg</strong></span><span class="dv" id="nutr-fe-dv">0%</span></div>
+
+      <div class="nutr-bar-thin"></div>
+
+      <div class="nutr-footnote">
+        * 5% or less is a little, 15% or more is a lot.<br>
+        * 5% ou moins c'est peu, 15% ou plus c'est beaucoup.
+      </div>
+    </section>
+
+  </div><!-- /main-grid -->
+
+  <footer>
+    &gt; 50g SLICE // 15% BAKE LOSS // STATE_PERSISTED_AS_COOKIE &lt;
+  </footer>
+</div>
+
+<!-- ============================================================
+     SCRIPT — all logic lives here
+     ============================================================ -->
+<script>
+/* ================================================================
+   STEP 1: NUTRITION REFERENCE DATA
+   ----------------------------------------------------------------
+   Per-100g values for every ingredient, sourced from product labels
+   and standard reference tables. These are constants; they don't
+   change at runtime.
+   ================================================================ */
+const NUTRIENTS_PER_100G = {
+  bakerFlour: { cal: 362, fat: 2.3, sat: 0.41, carbs: 70.1, fibre: 3.0, sugar: 0.6, protein: 13.2, sodium: 0, potassium: 125.9, calcium: 18.3, iron: 4.4 },
+  ryeFlour:   { cal: 666.7, fat: 3.33, sat: 0, carbs: 70.0, fibre: 13.3, sugar: 0, protein: 10.0, sodium: 0, potassium: 250, calcium: 33.3, iron: 2.5 },
+  wholeWheat: { cal: 369, fat: 3.2, sat: 0.52, carbs: 69.3, fibre: 8.9, sugar: 1.0, protein: 13.8, sodium: 1.0, potassium: 291.9, calcium: 26.8, iron: 3.4 },
+  spelt:      { cal: 338, fat: 2.4, sat: 0.4, carbs: 70.2, fibre: 10.7, sugar: 6.8, protein: 14.6, sodium: 8, potassium: 388, calcium: 27, iron: 4.4 },
+  apFlour:    { cal: 364, fat: 1.0, sat: 0.15, carbs: 76.3, fibre: 2.7, sugar: 0.3, protein: 10.3, sodium: 2, potassium: 107, calcium: 15, iron: 4.6 },
+  gluten:     { cal: 375, fat: 0, sat: 0, carbs: 12.5, fibre: 0, sugar: 0, protein: 75, sodium: 0, potassium: 0, calcium: 0, iron: 0 },
+  yeast:      { cal: 325, fat: 7.6, sat: 1.1, carbs: 41, fibre: 26.9, sugar: 0, protein: 40, sodium: 51, potassium: 955, calcium: 30, iron: 2.2 },
+  salt:       { cal: 0, fat: 0, sat: 0, carbs: 0, fibre: 0, sugar: 0, protein: 0, sodium: 42000, potassium: 0, calcium: 0, iron: 0 },
+  oliveOil:   { cal: 884, fat: 100, sat: 13.8, carbs: 0, fibre: 0, sugar: 0, protein: 0, sodium: 2, potassium: 1, calcium: 1, iron: 0.56 },
+  olives:     { cal: 145, fat: 15.3, sat: 2.0, carbs: 3.8, fibre: 3.3, sugar: 0.5, protein: 1.0, sodium: 1556, potassium: 42, calcium: 52, iron: 0.49 },
+  pancetta:   { cal: 392, fat: 30, sat: 11.0, carbs: 1.4, fibre: 0, sugar: 0, protein: 28, sodium: 1833, potassium: 332, calcium: 14, iron: 1.2 },
+  sunflower:  { cal: 584, fat: 51.5, sat: 4.5, carbs: 20, fibre: 8.6, sugar: 2.6, protein: 20.8, sodium: 9, potassium: 645, calcium: 78, iron: 5.25 },
+  flax:       { cal: 534, fat: 42.2, sat: 3.7, carbs: 28.9, fibre: 27.3, sugar: 1.6, protein: 18.3, sodium: 30, potassium: 813, calcium: 255, iron: 5.7 },
+  oats:       { cal: 379, fat: 6.5, sat: 1.1, carbs: 67.7, fibre: 10.1, sugar: 1.0, protein: 13.2, sodium: 6, potassium: 362, calcium: 52, iron: 4.3 },
+  sesame:     { cal: 573, fat: 49.7, sat: 7.0, carbs: 23.5, fibre: 11.8, sugar: 0.3, protein: 17.7, sodium: 11, potassium: 468, calcium: 975, iron: 14.6 },
+};
+
+/* Daily value reference, used to compute "% DV" on the nutrition label.
+   These are Canadian regulatory values for an adult diet. */
+const DV = {
+  fat: 75, sat: 20, carbs: 275, fibre: 28, sugar: 100,
+  sodium: 2300, potassium: 3400, calcium: 1300, iron: 18,
+};
+
+/* ================================================================
+   STEP 2: PRE-FERMENT MATH
+   ----------------------------------------------------------------
+   The user enters one number per pre-ferment (the total weight).
+   We split it into flour and water based on hydration ratio.
+
+   100% hydration: flour = water, so each is half the weight.
+   50% hydration:  2 parts flour to 1 part water (Moria style).
+   ================================================================ */
+function levainSplit(totalWeight) {
+  return { flour: totalWeight / 2, water: totalWeight / 2 };
+}
+function stiffLevainSplit(totalWeight) {
+  return { flour: (totalWeight * 2) / 3, water: totalWeight / 3 };
+}
+
+/* ================================================================
+   STEP 3: STATE — the single source of truth
+   ----------------------------------------------------------------
+   Every input field reads from and writes to this object.
+   Every computed value derives from this object.
+   We persist this object in a cookie.
+   ================================================================ */
+const EMPTY_STATE = {
+  bakerFlour: 0, ryeFlour: 0, wholeWheat: 0, spelt: 0, apFlour: 0, gluten: 0,
+  water: 0,
+  levain: 0, stiffLevain: 0, poolish: 0,
+  salt: 0, yeast: 0, oliveOil: 0,
+  olives: 0, pancetta: 0,
+  sunflower: 0, flax: 0, oats: 0, sesame: 0,
+  label: "Custom",
+  presetName: null,  // null means "use dynamic naming"; otherwise locks the name
+};
+
+/* The list of input fields. Used to wire up event listeners and
+   to know which keys are user-editable numbers. */
+const INPUT_KEYS = [
+  "bakerFlour", "ryeFlour", "wholeWheat", "spelt", "apFlour", "gluten",
+  "water", "salt", "yeast", "oliveOil",
+  "levain", "stiffLevain", "poolish",
+  "olives", "pancetta", "sunflower", "flax", "oats", "sesame",
+];
+
+/* ================================================================
+   STEP 4: PRESETS
+   ----------------------------------------------------------------
+   Each preset is a partial state object. We spread EMPTY_STATE
+   underneath so every key has a value (no undefined surprises).
+
+   The presetName field locks the bread name when a preset is
+   loaded; any manual edit clears it so dynamic naming resumes.
+   ================================================================ */
+const RECIPE_PRESETS = {
+  "42": {
+    ...EMPTY_STATE, label: "Recipe 42",
+    presetName: { name: "Recipe 42", tag: "Recipe #42. Whole-wheat kissed, yeast-free, 75% hyd.", mood: "rustic" },
+    bakerFlour: 290, wholeWheat: 70, water: 263, levain: 65, salt: 9,
+  },
+  "67": {
+    ...EMPTY_STATE, label: "Rye Sourdough #67",
+    presetName: { name: "Rye Sourdough #67", tag: "Recipe #67. Tested, trusted, rye-kissed.", mood: "rustic" },
+    bakerFlour: 315, ryeFlour: 60, water: 231, levain: 100, salt: 11, yeast: 5,
+  },
+  "68": {
+    ...EMPTY_STATE, label: "Sourdough #68",
+    presetName: { name: "Sourdough #68", tag: "Recipe #68. The baseline. The control group.", mood: "classic" },
+    bakerFlour: 375, water: 231, levain: 150, salt: 11, yeast: 2,
+  },
+  "70": {
+    ...EMPTY_STATE, label: "Rye Sourdough #70",
+    presetName: { name: "Rye Sourdough #70", tag: "Recipe #70. Gluten-boosted, dual-levain rye.", mood: "deep" },
+    bakerFlour: 315, ryeFlour: 60, water: 216, gluten: 15,
+    levain: 100, stiffLevain: 50, salt: 10, yeast: 2,
+  },
+  fougasse: {
+    ...EMPTY_STATE, label: "Fougasse Olives & Pancetta",
+    presetName: { name: "Fougasse du Midi", tag: "Provence in dough form. Olives, pancetta, olive oil.", mood: "rustic" },
+    bakerFlour: 400, ryeFlour: 60, water: 260,
+    poolish: 200, levain: 75, salt: 4, yeast: 2,
+    oliveOil: 25, olives: 50, pancetta: 50,
+  },
+  painRustique: {
+    ...EMPTY_STATE, label: "Pain Rustique Classique",
+    presetName: { name: "Tartine Wannabe", tag: "École Internationale de Boulangerie, 70% hyd. poolish + levain.", mood: "wet" },
+    bakerFlour: 400, water: 280, poolish: 200, levain: 100, salt: 10,
+  },
+  oldFashioned: {
+    ...EMPTY_STATE, label: "Old Fashioned Slab",
+    presetName: { name: "Old Fashioned Slab", tag: "Cordon Bleu classic. Five flours, Moria, seeds, patience.", mood: "deep" },
+    bakerFlour: 200, wholeWheat: 100, spelt: 100, ryeFlour: 50, apFlour: 50,
+    stiffLevain: 300, water: 480, salt: 15, yeast: 3,
+    sunflower: 100, flax: 100,
+  },
+  artisanLoaf: {
+    ...EMPTY_STATE, label: "Artisan Loaf",
+    presetName: { name: "Artisan Loaf", tag: "Germ's hybrid. Poolish + rye levain + flax soaker.", mood: "rustic" },
+    bakerFlour: 250, ryeFlour: 100, water: 290,
+    poolish: 200, levain: 50, salt: 7, flax: 30,
+  },
+  painCampagne: {
+    ...EMPTY_STATE, label: "Pain de Campagne (Reinhart)",
+    presetName: { name: "Pain au Seigle Léger", tag: "Reinhart's country loaf. Rye + whole wheat + baker.", mood: "rustic" },
+    bakerFlour: 485, ryeFlour: 150, wholeWheat: 100, water: 500,
+    levain: 100, salt: 15, yeast: 2.5,
+  },
+};
+
+/* The order presets appear as buttons. Separate from the data so
+   we can reorder without touching the recipes themselves. */
+const PRESET_ORDER = [
+  { id: "42", label: "#42" },
+  { id: "67", label: "#67" },
+  { id: "68", label: "#68" },
+  { id: "70", label: "#70" },
+  { id: "fougasse", label: "Fougasse" },
+  { id: "painRustique", label: "Pain Rustique" },
+  { id: "oldFashioned", label: "Old Fashioned" },
+  { id: "artisanLoaf", label: "Artisan Loaf" },
+  { id: "painCampagne", label: "Campagne" },
+];
+
+/* ================================================================
+   STEP 5: CORE COMPUTATION
+   ----------------------------------------------------------------
+   Takes the current state and returns every derived metric.
+   This is a pure function: no DOM, no side effects.
+   ================================================================ */
+function compute(s) {
+  // Split each pre-ferment into its flour/water components
+  const liq = levainSplit(s.levain);
+  const stiff = stiffLevainSplit(s.stiffLevain);
+  const pool = levainSplit(s.poolish);
+
+  // Total flour comes from direct flours + the flour inside pre-ferments
+  const directFlour = s.bakerFlour + s.ryeFlour + s.wholeWheat + s.spelt + s.apFlour + s.gluten;
+  const prefermentFlour = liq.flour + stiff.flour + pool.flour;
+  const totalFlour = directFlour + prefermentFlour;
+
+  // Total water similarly aggregates direct water and pre-ferment water
+  const totalWater = s.water + liq.water + stiff.water + pool.water;
+  const hydration = totalFlour > 0 ? (totalWater / totalFlour) * 100 : 0;
+
+  // For nutrition, we assume pre-ferment flour is baker flour
+  // (since that's how the user maintains them in practice)
+  const bakerTotal = s.bakerFlour + liq.flour + stiff.flour + pool.flour;
+
+  // Various baker's percentages (everything is a fraction of total flour)
+  const ryePct = totalFlour > 0 ? (s.ryeFlour / totalFlour) * 100 : 0;
+  const glutenPct = totalFlour > 0 ? (s.gluten / totalFlour) * 100 : 0;
+  const saltPct = totalFlour > 0 ? (s.salt / totalFlour) * 100 : 0;
+  const yeastPct = totalFlour > 0 ? (s.yeast / totalFlour) * 100 : 0;
+  const prefermentedFlourPct = totalFlour > 0 ? (prefermentFlour / totalFlour) * 100 : 0;
+  const oilPct = totalFlour > 0 ? (s.oliveOil / totalFlour) * 100 : 0;
+  const inclusionsTotal = s.olives + s.pancetta + s.sunflower + s.flax + s.oats + s.sesame;
+  const inclusionsPct = totalFlour > 0 ? (inclusionsTotal / totalFlour) * 100 : 0;
+  const wholeGrainPct = totalFlour > 0 ? ((s.wholeWheat + s.spelt + s.ryeFlour) / totalFlour) * 100 : 0;
+
+  // Dough mass and yield. 15% bake loss is a typical estimate.
+  const rawDough = totalFlour + totalWater + s.salt + s.yeast + s.oliveOil + inclusionsTotal;
+  const bakedLoaf = rawDough * 0.85;
+  const slices = Math.max(1, Math.round(bakedLoaf / 50));
+
+  // Sum nutrition contributions from every ingredient
+  const parts = [
+    [bakerTotal, NUTRIENTS_PER_100G.bakerFlour],
+    [s.ryeFlour, NUTRIENTS_PER_100G.ryeFlour],
+    [s.wholeWheat, NUTRIENTS_PER_100G.wholeWheat],
+    [s.spelt, NUTRIENTS_PER_100G.spelt],
+    [s.apFlour, NUTRIENTS_PER_100G.apFlour],
+    [s.gluten, NUTRIENTS_PER_100G.gluten],
+    [s.yeast, NUTRIENTS_PER_100G.yeast],
+    [s.salt, NUTRIENTS_PER_100G.salt],
+    [s.oliveOil, NUTRIENTS_PER_100G.oliveOil],
+    [s.olives, NUTRIENTS_PER_100G.olives],
+    [s.pancetta, NUTRIENTS_PER_100G.pancetta],
+    [s.sunflower, NUTRIENTS_PER_100G.sunflower],
+    [s.flax, NUTRIENTS_PER_100G.flax],
+    [s.oats, NUTRIENTS_PER_100G.oats],
+    [s.sesame, NUTRIENTS_PER_100G.sesame],
+  ];
+  const totals = { cal: 0, fat: 0, sat: 0, carbs: 0, fibre: 0, sugar: 0, protein: 0, sodium: 0, potassium: 0, calcium: 0, iron: 0 };
+  for (const [grams, profile] of parts) {
+    const mult = grams / 100;
+    for (const k in totals) totals[k] += profile[k] * mult;
+  }
+
+  // Per-slice values for the nutrition label
+  const perSlice = {};
+  for (const k in totals) perSlice[k] = totals[k] / slices;
+
+  return {
+    totalFlour, prefermentFlour, totalWater, hydration,
+    ryePct, glutenPct, saltPct, yeastPct, prefermentedFlourPct,
+    oilPct, inclusionsPct, wholeGrainPct,
+    rawDough, bakedLoaf, slices, totals, perSlice,
+    liqFlour: liq.flour, liqWater: liq.water,
+    stiffFlour: stiff.flour, stiffWater: stiff.water,
+    poolFlour: pool.flour, poolWater: pool.water,
+  };
+}
+
+/* ================================================================
+   STEP 6: NAME GENERATOR
+   ----------------------------------------------------------------
+   If the user loaded a preset, the preset's locked name wins.
+   Otherwise we cascade through screw-ups, then specialty patterns,
+   then style ladders (rye %, whole grain %, hydration).
+   ================================================================ */
+function chooseBreadName(s, m) {
+  if (s.presetName) return s.presetName;
+
+  const { hydration, ryePct, glutenPct, saltPct, yeastPct, totalFlour, oilPct, inclusionsPct, wholeGrainPct } = m;
+  const hasOlivesPancetta = s.olives > 0 && s.pancetta > 0;
+  const hasSeeds = s.sunflower + s.flax + s.sesame > 0;
+  const hasOats = s.oats > 0;
+
+  if (totalFlour === 0) return { name: "Le Néant", tag: "No flour, no bread. Just vibes.", mood: "void" };
+
+  // Screw-up detection runs first
+  if (saltPct > 3.5) return { name: "Lot's Wife", tag: `Salt at ${saltPct.toFixed(1)}% of flour. Inedible brick incoming.`, mood: "danger" };
+  if (saltPct < 1.0 && saltPct > 0) return { name: "Bland Sufferance", tag: `Salt at ${saltPct.toFixed(1)}%. Tastes like cardboard memories.`, mood: "warn" };
+  if (saltPct === 0) return { name: "Tuscan Penance", tag: "Zero salt. Historically accurate, personally tragic.", mood: "warn" };
+  if (yeastPct > 3) return { name: "Chernobyl Puff", tag: `Yeast at ${yeastPct.toFixed(1)}%. This loaf will fight you.`, mood: "danger" };
+  if (hydration > 110) return { name: "Soup du Jour", tag: `${hydration.toFixed(0)}% hydration. That's batter, chef.`, mood: "danger" };
+  if (hydration < 45 && hydration > 0) return { name: "The Brick of Shame", tag: `${hydration.toFixed(0)}% hydration. Door stop energy.`, mood: "danger" };
+  if (glutenPct > 8) return { name: "Seitan Incarnate", tag: `Gluten at ${glutenPct.toFixed(1)}%. This is meat now.`, mood: "warn" };
+  if (oilPct > 15) return { name: "Focaccia Non Grata", tag: `Olive oil at ${oilPct.toFixed(1)}% of flour. Swimming, not baking.`, mood: "warn" };
+  if (inclusionsPct > 80) return { name: "Fruitcake Truther", tag: `Inclusions at ${inclusionsPct.toFixed(0)}% of flour. Bread is a suggestion here.`, mood: "warn" };
+
+  // Specialty inclusions
+  if (hasOlivesPancetta) {
+    if (s.oliveOil >= 20) return { name: "Fougasse du Midi", tag: "Olives, pancetta, olive oil. Provence in dough form.", mood: "rustic" };
+    return { name: "Mediterranean Pact", tag: "Olives and pancetta, no oil. Bold minimalist play.", mood: "rustic" };
+  }
+  if (s.pancetta > 0 && s.olives === 0) return { name: "Bacon Apostasy", tag: "Pork in a loaf, no olives to balance. A meat bread.", mood: "warn" };
+  if (s.olives > 0 && s.pancetta === 0) return { name: "Pain aux Olives", tag: `${s.olives}g olives. Salty, briny, classic.`, mood: "rustic" };
+
+  if (s.sunflower > 0 && s.flax > 0 && (s.sunflower + s.flax) >= 150) return { name: "Old Fashioned Slab", tag: "Sunflower and flax soaker. The Cordon Bleu classic.", mood: "deep" };
+  if (hasSeeds && wholeGrainPct >= 30) return { name: "Hippie's Revenge", tag: `Seeds plus ${wholeGrainPct.toFixed(0)}% whole grain. Earthy and proud.`, mood: "deep" };
+  if (hasOats && hydration >= 70) return { name: "Porridge Bread", tag: "Oats and high hydration. Soft, moist, comforting.", mood: "wet" };
+  if (s.flax > 0 && s.sunflower === 0 && s.sesame === 0) return { name: "Flax of Futurity", tag: `${s.flax}g flax. Omega-3 enlightenment loaf.`, mood: "rustic" };
+  if (s.sesame > 0) return { name: "Open Sesame", tag: "Sesame seeds. Simple, nutty, ancient.", mood: "rustic" };
+
+  if (s.spelt > 0 && s.wholeWheat > 0) return { name: "Grain Polyglot", tag: "Spelt and whole wheat side by side. Heritage blend.", mood: "deep" };
+  if (s.spelt > 0) return { name: "Spelt Supremacy", tag: `${s.spelt}g spelt. Nutty, complex, underrated.`, mood: "rustic" };
+
+  // Rye dominance ladder
+  if (ryePct >= 80) return { name: "Baltic Gravestone", tag: `${ryePct.toFixed(0)}% rye. Dense, dark, needs 48 h.`, mood: "deep" };
+  if (ryePct >= 50) return { name: "Roggenbrot der Opa", tag: `${ryePct.toFixed(0)}% rye. Grandfather-grade German loaf.`, mood: "deep" };
+  if (ryePct >= 25) return { name: "Seigle du Terroir", tag: `${ryePct.toFixed(0)}% rye. Proper country sour.`, mood: "rustic" };
+  if (ryePct >= 10) return { name: "Pain au Seigle Léger", tag: `${ryePct.toFixed(0)}% rye. Nuanced, earthy, restrained.`, mood: "rustic" };
+  if (wholeGrainPct >= 30 && ryePct < 10) return { name: "Farmer's Field", tag: `${wholeGrainPct.toFixed(0)}% whole grain. Hearty but still bread.`, mood: "rustic" };
+  if (ryePct >= 3) return { name: "Whisper of Rye", tag: `${ryePct.toFixed(0)}% rye. Just a rumor in the crumb.`, mood: "rustic" };
+
+  // Hydration ladder for white-ish loaves
+  if (hydration >= 85) return { name: "Ciabatta del Coraggio", tag: `${hydration.toFixed(0)}% hydration. Wet dough, brave baker.`, mood: "wet" };
+  if (hydration >= 75) return { name: "Tartine Wannabe", tag: `${hydration.toFixed(0)}% hydration. Open crumb territory.`, mood: "wet" };
+  if (hydration >= 68) return { name: "Pain de Campagne", tag: `${hydration.toFixed(0)}% hydration. Classic, confident, golden.`, mood: "classic" };
+  if (hydration >= 60) return { name: "Honest Boulanger", tag: `${hydration.toFixed(0)}% hydration. Forgiving and fine.`, mood: "classic" };
+  if (hydration >= 50) return { name: "Bagel's Cousin", tag: `${hydration.toFixed(0)}% hydration. Chewy, tight, satisfying.`, mood: "tight" };
+  return { name: "Hardtack Revival", tag: `${hydration.toFixed(0)}% hydration. Bring water.`, mood: "tight" };
+}
+
+/* Mood-to-color lookup. The "color" is the loud accent and "glow"
+   is its translucent shadow halo. */
+const MOOD_COLORS = {
+  void:    { color: "#7a7a8a", glow: "rgba(122,122,138,0.25)" },
+  danger:  { color: "#d4928a", glow: "rgba(212,146,138,0.25)" },
+  warn:    { color: "#d4c178", glow: "rgba(212,193,120,0.25)" },
+  deep:    { color: "#b4a7d6", glow: "rgba(180,167,214,0.3)" },
+  rustic:  { color: "#d4a5b8", glow: "rgba(212,165,184,0.3)" },
+  classic: { color: "#7dd3c0", glow: "rgba(125,211,192,0.3)" },
+  wet:     { color: "#a3c9a8", glow: "rgba(163,201,168,0.3)" },
+  tight:   { color: "#d4c178", glow: "rgba(212,193,120,0.25)" },
+};
+
+/* Profile classifier for the leavening panel. */
+function leaveningProfile(m) {
+  const { yeastPct, prefermentedFlourPct } = m;
+  if (yeastPct === 0 && prefermentedFlourPct === 0) return { label: "Unleavened", color: "#7a7a8a" };
+  if (yeastPct === 0) return { label: "Pure sourdough", color: "#b4a7d6" };
+  if (prefermentedFlourPct === 0) return { label: "Straight yeast", color: "#d4c178" };
+  if (prefermentedFlourPct > yeastPct * 15) return { label: "Sourdough-led hybrid", color: "#d4a5b8" };
+  if (yeastPct > 1.5) return { label: "Yeast-led hybrid", color: "#d4c178" };
+  return { label: "Balanced hybrid", color: "#7dd3c0" };
+}
+
+/* ================================================================
+   STEP 7: COOKIE PERSISTENCE
+   ----------------------------------------------------------------
+   We serialize the state as JSON, then encode it for safe cookie
+   storage. The cookie expires in 365 days; SameSite=Lax keeps it
+   sane across normal browsing.
+   ================================================================ */
+const COOKIE_NAME = "bread_state_v5";
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year in seconds
+
+function saveCookie(s) {
+  try {
+    // Strip down to just the user-edited values + label/presetName.
+    // We don't need to persist computed values; they re-derive instantly.
+    const json = JSON.stringify(s);
+    document.cookie =
+      `${COOKIE_NAME}=${encodeURIComponent(json)}` +
+      `; max-age=${COOKIE_MAX_AGE}` +
+      `; path=/` +
+      `; SameSite=Lax`;
+  } catch (e) {
+    // If serialization fails, log but don't crash the app
+    console.warn("Could not save state to cookie:", e);
+  }
+}
+
+function loadCookie() {
+  // document.cookie is a single string of the form "name1=val1; name2=val2"
+  // Walk it, split on '=' to find our cookie.
+  const cookies = document.cookie.split(";").map((c) => c.trim());
+  for (const c of cookies) {
+    const eq = c.indexOf("=");
+    if (eq === -1) continue;
+    const name = c.slice(0, eq);
+    if (name !== COOKIE_NAME) continue;
+    const value = c.slice(eq + 1);
+    try {
+      const parsed = JSON.parse(decodeURIComponent(value));
+      // Merge with EMPTY_STATE so any new keys added in future versions
+      // get sensible defaults instead of undefined.
+      return { ...EMPTY_STATE, ...parsed };
+    } catch (e) {
+      console.warn("Could not parse cookie state:", e);
+      return null;
+    }
+  }
+  return null;
+}
+
+/* ================================================================
+   STEP 8: STATE INITIALIZATION
+   ----------------------------------------------------------------
+   Try cookie first; if missing or invalid, fall back to #68 preset.
+   ================================================================ */
+let state = loadCookie() || { ...RECIPE_PRESETS["68"] };
+
+/* ================================================================
+   STEP 9: RENDER
+   ----------------------------------------------------------------
+   Pulls the current state through compute(), then writes everything
+   into the DOM. Called every time state changes.
+   ================================================================ */
+function render() {
+  const m = compute(state);
+
+  // ---- Header label ----
+  document.getElementById("recipe-label").textContent = state.label || "Custom";
+
+  // ---- Bread name card ----
+  const name = chooseBreadName(state, m);
+  const moodColors = MOOD_COLORS[name.mood] || MOOD_COLORS.classic;
+
+  // CSS variables let us drive multiple style props from JS in one shot
+  const card = document.getElementById("name-card");
+  card.style.setProperty("--mood-color", moodColors.color);
+  card.style.setProperty("--mood-glow", moodColors.glow);
+  document.getElementById("name-text").textContent = name.name;
+  document.getElementById("name-tag").textContent = name.tag;
+
+  // ---- Preset button active states ----
+  for (const p of PRESET_ORDER) {
+    const btn = document.getElementById(`preset-${p.id}`);
+    if (!btn) continue;
+    const isActive = state.label === RECIPE_PRESETS[p.id].label;
+    btn.classList.toggle("active", isActive);
+  }
+
+  // ---- Pre-ferment split hints ----
+  document.getElementById("hint-levain").textContent =
+    state.levain > 0 ? `→ ${m.liqFlour.toFixed(1)}g flour + ${m.liqWater.toFixed(1)}g water` : "";
+  document.getElementById("hint-stiffLevain").textContent =
+    state.stiffLevain > 0 ? `→ ${m.stiffFlour.toFixed(1)}g flour + ${m.stiffWater.toFixed(1)}g water` : "";
+  document.getElementById("hint-poolish").textContent =
+    state.poolish > 0 ? `→ ${m.poolFlour.toFixed(1)}g flour + ${m.poolWater.toFixed(1)}g water` : "";
+
+  // ---- Leavening panel ----
+  const profile = leaveningProfile(m);
+  const badge = document.getElementById("profile-badge");
+  badge.textContent = profile.label;
+  badge.style.color = profile.color;
+
+  // Yeast bar: cap visualization at 3% (anything beyond fills bar fully)
+  document.getElementById("yeast-pct").textContent = m.yeastPct.toFixed(2) + "%";
+  document.getElementById("yeast-bar").style.width =
+    Math.min(100, (m.yeastPct / 3.0) * 100) + "%";
+
+  // Preferment bar: cap visualization at 50%
+  document.getElementById("pref-pct").textContent = m.prefermentedFlourPct.toFixed(2) + "%";
+  document.getElementById("pref-bar").style.width =
+    Math.min(100, (m.prefermentedFlourPct / 50.0) * 100) + "%";
+
+  // Breakdown text in the leavening panel footer
+  document.getElementById("leaven-breakdown").innerHTML =
+    `Yeast: <strong style="color: var(--accent-gold);">${state.yeast.toFixed(1)}g</strong>` +
+    ` · Prefermented flour: <strong style="color: var(--accent-rose);">${m.prefermentFlour.toFixed(1)}g</strong>` +
+    ` / Total flour: <strong style="color: var(--accent-teal);">${m.totalFlour.toFixed(0)}g</strong>`;
+
+  // ---- Dough metrics grid ----
+  // Built dynamically each render so we can tweak the metric list easily
+  const fmt = (v, d = 1) => isFinite(v) ? v.toFixed(d) : "0";
+  const metrics = [
+    ["Hydration", `${fmt(m.hydration, 1)}%`, true],
+    ["Total flour", `${fmt(m.totalFlour, 0)} g`, false],
+    ["Total water", `${fmt(m.totalWater, 0)} g`, false],
+    ["Salt (baker's)", `${fmt(m.saltPct, 2)}%`, false],
+    ["Rye %", `${fmt(m.ryePct, 1)}%`, false],
+    ["Whole grain %", `${fmt(m.wholeGrainPct, 1)}%`, false],
+    ["Gluten %", `${fmt(m.glutenPct, 1)}%`, false],
+    ["Oil %", `${fmt(m.oilPct, 1)}%`, false],
+    ["Inclusions %", `${fmt(m.inclusionsPct, 1)}%`, false],
+    ["Raw dough", `${fmt(m.rawDough, 0)} g`, false],
+    ["Baked loaf", `${fmt(m.bakedLoaf, 0)} g`, false],
+    ["Slices (50g)", `${m.slices}`, false],
+  ];
+  const grid = document.getElementById("metrics-grid");
+  grid.innerHTML = metrics.map(([label, value, highlight]) => `
+    <div class="metric ${highlight ? "highlight" : ""}">
+      <div class="metric-tiny-label">${label}</div>
+      <div class="metric-tiny-value">${value}</div>
+    </div>
+  `).join("");
+
+  // ---- Nutrition label ----
+  // Helper to compute "% Daily Value", rounded to whole number
+  const dv = (v, ref) => Math.round((v / ref) * 100);
+  const ps = m.perSlice;
+
+  document.getElementById("nutr-cal").textContent = Math.round(ps.cal);
+  document.getElementById("nutr-fat").textContent = `${fmt(ps.fat, 1)} g`;
+  document.getElementById("nutr-fat-dv").textContent = `${dv(ps.fat, DV.fat)}%`;
+  document.getElementById("nutr-sat").textContent = `${fmt(ps.sat, 2)} g`;
+  document.getElementById("nutr-sat-dv").textContent = `${dv(ps.sat, DV.sat)}%`;
+  document.getElementById("nutr-carbs").textContent = `${fmt(ps.carbs, 1)} g`;
+  document.getElementById("nutr-carbs-dv").textContent = `${dv(ps.carbs, DV.carbs)}%`;
+  document.getElementById("nutr-fibre").textContent = `${fmt(ps.fibre, 1)} g`;
+  document.getElementById("nutr-fibre-dv").textContent = `${dv(ps.fibre, DV.fibre)}%`;
+  document.getElementById("nutr-sugar").textContent = `${fmt(ps.sugar, 1)} g`;
+  document.getElementById("nutr-sugar-dv").textContent = `${dv(ps.sugar, DV.sugar)}%`;
+  document.getElementById("nutr-protein").textContent = `${fmt(ps.protein, 1)} g`;
+  document.getElementById("nutr-sodium").textContent = `${Math.round(ps.sodium)} mg`;
+  document.getElementById("nutr-sodium-dv").textContent = `${dv(ps.sodium, DV.sodium)}%`;
+  document.getElementById("nutr-k").textContent = `${Math.round(ps.potassium)} mg`;
+  document.getElementById("nutr-k-dv").textContent = `${dv(ps.potassium, DV.potassium)}%`;
+  document.getElementById("nutr-ca").textContent = `${Math.round(ps.calcium)} mg`;
+  document.getElementById("nutr-ca-dv").textContent = `${dv(ps.calcium, DV.calcium)}%`;
+  document.getElementById("nutr-fe").textContent = `${fmt(ps.iron, 1)} mg`;
+  document.getElementById("nutr-fe-dv").textContent = `${dv(ps.iron, DV.iron)}%`;
+
+  // ---- Sync each input field to current state value ----
+  // We set .value here so loading a preset visually updates the inputs.
+  for (const key of INPUT_KEYS) {
+    const el = document.getElementById(`input-${key}`);
+    if (el && document.activeElement !== el) {
+      // Don't overwrite the field if it's currently focused (user is typing)
+      el.value = state[key];
+    }
+  }
+}
+
+/* ================================================================
+   STEP 10: STATE MUTATION HELPERS
+   ----------------------------------------------------------------
+   Single chokepoint for any change. Persist + render after every
+   mutation. Manual edits clear presetName so dynamic naming kicks in.
+   ================================================================ */
+function setState(patch, preserveLock = false) {
+  state = { ...state, ...patch };
+  if (!preserveLock) {
+    state.presetName = null;
+    state.label = "Custom";
+  }
+  saveCookie(state);
+  render();
+}
+
+function loadPreset(id) {
+  // Replace state entirely with the preset definition (including locked name)
+  state = { ...RECIPE_PRESETS[id] };
+  saveCookie(state);
+  render();
+}
+
+function clearAll() {
+  state = { ...EMPTY_STATE };
+  saveCookie(state);
+  render();
+}
+
+/* ================================================================
+   STEP 11: AUTO-FIX HELPERS
+   ----------------------------------------------------------------
+   These compute the right values to set, given the current state,
+   to satisfy a target ratio.
+   ================================================================ */
+function fixSalt() {
+  const m = compute(state);
+  if (m.totalFlour === 0) return;
+  // Target 2% baker's salt, rounded to 0.1g for practical scale precision
+  const newSalt = Math.round(m.totalFlour * 0.02 * 10) / 10;
+  setState({ salt: newSalt });
+}
+
+function fixHydration() {
+  const m = compute(state);
+  if (m.totalFlour === 0) return;
+  // Target 68% total hydration
+  const liq = levainSplit(state.levain);
+  const stiff = stiffLevainSplit(state.stiffLevain);
+  const pool = levainSplit(state.poolish);
+  const preFermentWater = liq.water + stiff.water + pool.water;
+  const targetWater = m.totalFlour * 0.68;
+  // Direct water = target - what's already in pre-ferments. Don't go negative.
+  const newDirectWater = Math.max(0, Math.round((targetWater - preFermentWater) * 10) / 10);
+  setState({ water: newDirectWater });
+}
+
+/* ================================================================
+   STEP 12: WIRE UP THE DOM
+   ----------------------------------------------------------------
+   Generate preset buttons, attach all input listeners, then render
+   for the first time.
+   ================================================================ */
+
+// Preset buttons row: build by iterating PRESET_ORDER
+const presetContainer = document.getElementById("preset-buttons");
+for (const p of PRESET_ORDER) {
+  const btn = document.createElement("button");
+  btn.id = `preset-${p.id}`;
+  btn.textContent = p.label;
+  btn.addEventListener("click", () => loadPreset(p.id));
+  presetContainer.appendChild(btn);
+}
+// Add a Clear button at the end with a different color
+const clearBtn = document.createElement("button");
+clearBtn.textContent = "Clear";
+clearBtn.classList.add("btn-rose");
+clearBtn.addEventListener("click", clearAll);
+presetContainer.appendChild(clearBtn);
+
+// Auto-fix buttons
+document.getElementById("fix-salt").addEventListener("click", fixSalt);
+document.getElementById("fix-hydration").addEventListener("click", fixHydration);
+
+// Wire up every numeric input. On every change, parse the value
+// and update state. This will also clear any preset lock.
+for (const key of INPUT_KEYS) {
+  const el = document.getElementById(`input-${key}`);
+  if (!el) continue;
+  el.addEventListener("input", (e) => {
+    const v = Math.max(0, parseFloat(e.target.value) || 0);
+    setState({ [key]: v });
+  });
+}
+
+// First render with whatever state we've loaded (cookie or default)
+render();
+</script>
+</body>
+</html>

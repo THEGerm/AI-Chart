@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Béatrice - The Bitter Rival</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* Importing rustic, classic bakery fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Cabin:wght@400&display=swap');
+
+        body {
+            font-family: 'Cabin', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4ece1; /* Warm dough color */
+            color: #3e2723; /* Deep dark brown */
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fffdfa;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 6px 15px rgba(62, 39, 35, 0.08);
+            border: 1px solid #d7ccc8;
+            border-top: 8px solid #8d6e63; /* Rustic brown border */
+        }
+        /* Part 1: Banner style */
+        .banner {
+            width: 100%;
+            height: auto;
+            border-bottom: 2px solid #8d6e63;
+            margin-bottom: 25px;
+            border-radius: 4px;
+            /* Warmer tone for the image */
+            filter: sepia(30%) brightness(95%);
+        }
+        /* Part 2: Generic text style */
+        .intro-section {
+            padding: 20px;
+            background-color: #faf5ee;
+            margin-bottom: 25px;
+            border-left: 4px solid #a1887f;
+            border-radius: 4px;
+        }
+        .intro-section p, .intro-section li {
+            font-size: 16px;
+            color: #4e342e;
+        }
+        .intro-section ol {
+            padding-left: 20px;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .intro-section li {
+            margin-bottom: 12px;
+        }
+        /* Part 3: Character section style */
+        .character-section {
+            margin-bottom: 35px;
+            padding: 30px 25px;
+            background-color: #ffffff;
+            border: 2px dashed #d7ccc8; /* Recipe card feel */
+            border-radius: 4px;
+        }
+        h2 {
+            font-family: 'Lora', serif;
+            color: #5d4037;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #d7ccc8;
+            padding-bottom: 15px;
+            margin-top: 0;
+            font-size: 2em;
+            text-align: center;
+        }
+        .item-title {
+            font-family: 'Lora', serif;
+            color: #6d4c41;
+            margin-top: 25px;
+            margin-bottom: 5px;
+            display: block;
+            font-size: 1.3em;
+        }
+        p {
+            margin-top: 5px;
+        }
+        /* Bottom: Private letter style */
+        .private-letter-notice {
+            background-color: #fff3e0;
+            border: 2px solid #e65100; /* Burnt orange warning */
+            padding: 25px;
+            text-align: center;
+            color: #e65100;
+            border-radius: 6px;
+        }
+        .private-letter-notice h2 {
+            color: #e65100;
+            border-bottom: none;
+            margin-bottom: 10px;
+            padding-bottom: 0;
+            font-size: 1.6em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <img src="1771807162225.png" alt="The International Artisan Bread Championship Murder Mystery" class="banner">
+
+    <div id="intro-content" class="intro-section">
+        <p><i>Fetching old-world recipes...</i></p>
+    </div>
+
+    <div class="character-section">
+        <h2>Béatrice The Bitter Rival (Played by Janick)</h2>
+        
+        <span class="item-title">1. Your Background.</span>
+        <p>You are Béatrice, a strict traditionalist and a fierce defender of old-world baking techniques. To you, true artisanal bread requires sweat, discipline, and patience. Your absolute pride and joy is your 30-year-old stiff levain, named Moria, which you meticulously maintain at a highly demanding 1:2 water-to-flour ratio. You view anything else as a lazy shortcut, little better than store-bought commercial yeast.</p>
+        
+        <span class="item-title">2. The Conflict.</span>
+        <p>For years, Bartholomew Crust has been the thorn in your side. He popularized the easy 1:1 liquid starter—his famous Elrond—and aggressively marketed his modern, warm-water sink-fermentation method. In recent trade magazines, he even referred to your beloved stiff levain techniques as archaic and unnecessarily difficult. You entered this championship with one goal: to humiliate him on the grand stage and prove that Moria's traditional crust and crumb are vastly superior to his watered-down methods.</p>
+
+        <span class="item-title">3. The Clue.</span>
+        <p>Bartholomew’s entire process hinges on a perfectly balanced temperature: a 21.5C ambient kitchen environment mixed with exactly 15C water and 20C flour. During the competition, you were caught suspiciously lurking near the kitchen's main thermostat, right before the ambient room temperature plummeted. With Bartholomew now dead and his fermentation ruined, everyone is pointing fingers at the traditionalist who despised his modern environment.</p>
+
+        <span class="item-title">4. Costume Ideas.</span>
+        <p>Traditional European baker attire. Wear a sturdy, flour-dusted canvas or linen apron over comfortable clothes. Consider pulling your hair back into a practical, no-nonsense bun. Carry a wooden mixing spoon and bring an empty small glass jar or crock. Germ will provide you with a generous amount of authentic Moria stiff levain (1:2 ratio) to carry during the event, which you will be allowed to keep afterward.</p>
+    </div>
+
+    <div class="private-letter-notice">
+        <h2>STRICTLY CONFIDENTIAL: PRIVATE LETTER</h2>
+        <p>Your private letter containing your secret motives, objectives, and clues is strictly confidential.</p>
+        <p>It will be handed to you in a sealed envelope upon your arrival at 113 Shinny Avenue, Stittsville.</p>
+        <p>Do not discuss your private instructions with anyone until the ovens are hot and the game officially begins.</p>
+    </div>
+
+</div>
+
+<script>
+    fetch('intro.md')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('System Error: Could not load intro.md');
+            }
+            return response.text();
+        })
+        .then(text => {
+            document.getElementById('intro-content').innerHTML = marked.parse(text);
+        })
+        .catch(error => {
+            document.getElementById('intro-content').innerHTML = '<p style="color:#e65100;">Error: Introduction text not found in the recipe box.</p>';
+            console.error('Error fetching intro.md:', error);
+        });
+</script>
+
+</body>
+</html>

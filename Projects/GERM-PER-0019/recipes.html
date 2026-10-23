@@ -1,0 +1,860 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bread Recipes</title>
+  <style>
+    /* Base styles */
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+
+    .tabs {
+      display: flex;
+      overflow-x: auto;
+      background: #eee;
+      border-bottom: 2px solid #ccc;
+    }
+
+    .tab-button {
+      flex: 1;
+      padding: 1em;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      background: #ddd;
+      font-weight: bold;
+    }
+
+    .tab-button.active {
+      background: #fff;
+      border-bottom: 3px solid #000;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 1em;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Section layout */
+    .section {
+      margin-bottom: 1.5em;
+    }
+
+    h2 {
+      margin-bottom: 0.5em;
+    }
+
+    ul {
+      padding-left: 1.2em;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5em;
+    }
+
+    .gallery img {
+      width: 100%;
+      max-width: 48%;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    /* Theme styles */
+    .earthy {
+      background: #f7f1e1;
+      color: #4b2e2e;
+    }
+
+    .white {
+      background: #fffbea;
+      color: #7a5e00;
+    }
+
+    .dark {
+      background: #ececec;
+      color: #333;
+    }
+
+    .rye {
+      background: #f0e5d8;
+      color: #5a4231;
+    }
+
+    
+/* Elrond - Ancient Elven Levain Style */
+.levain {
+  background: #f8f5ea; /* Soft, pale gold background for brightness */
+  color: #3a2f1b;       /* Warm, grounded brown for text */
+  font-family: 'Georgia', serif;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Headings in elegant golden tones */
+.levain h1, .levain h2 {
+  color: #a67c00; /* Rich gold for royal, ancient elven feel */
+}
+
+/* Description styling */
+.levain .description {
+  font-style: italic;
+  color: #6d5e3f;
+  margin-bottom: 1em;
+}
+
+/* Lists and bullets */
+.levain ul {
+  list-style-type: circle;
+  padding-left: 20px;
+}
+
+.levain li {
+  margin-bottom: 0.5em;
+}
+
+/* Cordon Bleu or yeast logos */
+.levain .logo img {
+  margin-top: 10px;
+  max-height: 60px;
+}
+
+/* Gallery section */
+.levain .gallery img {
+  border-radius: 5px;
+  max-width: 100%;
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Moria - Deep Earthen Stiff Levain Style */
+.stifflevain {
+  background: #e7e1d3; /* Aged parchment color for deep earthy tones */
+  color: #2f1f14;       /* Dark brown, stone-like text */
+  font-family: 'Palatino Linotype', 'Book Antiqua', serif;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Section Headings - forged bronze color */
+.stifflevain h1, .stifflevain h2 {
+  color: #7a5c35; /* Bronze/burnished copper tone */
+}
+
+/* Description notes */
+.stifflevain .description {
+  font-style: italic;
+  color: #5a4530;
+  margin-bottom: 1em;
+}
+
+/* List style for a more crafted look */
+.stifflevain ul {
+  list-style-type: square;
+  padding-left: 20px;
+}
+
+.stifflevain li {
+  margin-bottom: 0.5em;
+}
+
+/* Image/logo placement */
+.stifflevain .logo img {
+  margin-top: 10px;
+  max-height: 60px;
+}
+
+/* Gallery - rugged but elegant */
+.stifflevain .gallery img {
+  border-radius: 4px;
+  max-width: 100%;
+  margin-top: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+} 
+    
+    @media (max-width: 600px) {
+      .tab-button {
+        font-size: 0.9em;
+      }
+
+      .gallery img {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-button active" onclick="switchTab(0)">Fougasse</button>
+    <button class="tab-button" onclick="switchTab(1)">Pain Rustique</button>
+    <button class="tab-button" onclick="switchTab(2)">Pain à l'Ancienne</button>
+    <button class="tab-button" onclick="switchTab(3)">Pain Artisan</button>
+    <button class="tab-button" onclick="switchTab(4)">Pain de Campagne</button>
+    <button class="tab-button" onclick="switchTab(5)">Pre-Ferments</button>
+    <button class="tab-button" onclick="switchTab(6)">Elrond</button>
+    <button class="tab-button" onclick="switchTab(7)">Moria</button>
+    <button class="tab-button" onclick="switchTab(8)">Mithril</button>
+  </div>
+
+  
+<!-- Recipe Tab 1: Fougasse aux olives et pancetta -->
+<div class="tab-content rye" active>
+  <div class="recipe-header">
+    <h1>Fougasse aux olives et pancetta</h1>
+    <p class="description">
+      A classic from the South of France, this fougasse is rich with olive oil, savory olives, and pancetta. Based on a recipe taught at École Lenôtre, this version combines traditional fermentation with aromatic Provençal flair.
+    </p>
+    <div class="logo">
+      <img src="https://keystoneacademic-res.cloudinary.com/image/upload/element/15/156644_LOGOTYPEECOLELENOTREHORIZONTAL_4C.png" alt="Lenôtre Logo" style="height: 60px;">
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Ingredients</h2>
+    <ul>
+      <li>200g poolish</li>
+      <li>75g Elrond starter</li>
+      <li>260g water</li>
+      <li>2g yeast</li>
+      <li>400g bread flour</li>
+      <li>60g rye flour</li>
+      <li>4g salt (no worries. put salt)</li>
+      <li>25g olive oil</li>
+      <li>50g chopped olives</li>
+      <li>50g cooked, cooled pancetta (small cubes)</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Steps & Schedule</h2>
+    <h3>Day 1 – Morning</h3>
+    <ul>
+      <li>Prepare poolish (equal parts flour and water, pinch of yeast). Leave at room temperature.</li>
+      <li>Feed Elrond. Leave at room temperature.</li>
+    </ul>
+
+    <h3>Day 1 – Evening</h3>
+    <ul>
+      <li><strong>18:45</strong>: Mix flour + 250g water. Autolyse for 30–45 min.</li>
+      <li><strong>19:30</strong>: Add poolish, Elrond, yeast, salt, and olive oil. Knead 8–10 min.</li>
+      <li>Add pancetta and olives. Perform 4 gentle stretch & folds (avoid damaging dough).</li>
+      <li><strong>20:00</strong>: Transfer to lightly oiled bowl. Cold ferment (bulk) for 12h in fridge, covered with plastic wrap.</li>
+    </ul>
+
+    <h3>Day 2 – Morning</h3>
+    <ul>
+      <li><strong>06:30</strong>: Divide into 4 × 260g pieces. Shape into balls.</li>
+      <li><strong>07:00</strong>: Rest 20 min covered (détente).</li>
+      <li><strong>07:20</strong>: Flatten slightly, shape into ovals. Make 5–7 cuts in each and stretch slightly open.</li>
+      <li><strong>07:30</strong>: Final proof 45 min under linen (apprêt).</li>
+      <li><strong>08:15</strong>: Bake at 475°F (use steam if possible) for 15 min.</li>
+      <li><strong>Finish</strong>: Brush with garlic-infused olive oil immediately after baking.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Gallery</h2>
+    <div class="gallery">
+      <img src="https://lh3.googleusercontent.com/pw/AP1GczMj1vZIQes-SH53eGntcn8Yzon3gh33T1oGguwC2d8xNxF2h62crD4PecgTIgiEAsGJr6SXRhc3Ijym9ft20qOBMDhClotGJgtDBj7orNynmnyUFY2G=w2400" alt="Fougasse aux olives et pancetta">
+    
+      <img src="https://lh3.googleusercontent.com/pw/AP1GczOANa_wyJKN02IuTz6ZxzidqzfOzM5HOWLvtFRVN64QbMp74tdUqDkFTaUSwMDK9omvJ9bw9leZqdYcg0Lo59sWMyNn1eVBDnh2nnYTiTGL_ZwoYLrH=w2400" alt="Fougasse aux olives et pancetta">
+  
+    </div>
+  </div>
+</div>
+      
+
+
+
+
+  
+<!-- Recipe Tab 2: Pain rustique classique au levain -->
+<div class="tab-content white">
+  <div class="recipe-header">
+    <h1>Pain Rustique Classique au Levain</h1>
+    <p class="description">
+      A traditional French country bread from the École Internationale de Boulangerie, this rustic pain au levain balances strength, structure, and simplicity. Designed to highlight levain fermentation with minimal ingredients and hands-on technique.
+    </p>
+    <div class="logo">
+      <img src="https://f.maformation.fr/mf/img/centres/05272025_1058151573198081-46102.png" alt="École Internationale de Boulangerie Logo" style="height: 60px;">
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Ingredients</h2>
+    <ul>
+      <li>400g flour</li>
+      <li>200g poolish</li>
+      <li>100g Elrond (levain)</li>
+      <li>280g water</li>
+      <li>10g salt</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Steps & Schedule</h2>
+    <h3>Mixing & Pétrissage</h3>
+    <ul>
+      <li>Combine all ingredients and mix.</li>
+      <li>Autolyse for 10 min, covered.</li>
+      <li>On a floured table, knead with energy: stretch, fold, and smack the dough to incorporate oxygen. Rotate 90° between folds. Repeat in 3 sessions over 20 min total, until dough has good structure and elasticity.</li>
+      <li>Rest dough a few minutes, then form a large ball.</li>
+    </ul>
+
+    <h3>Fermentation (Pointage)</h3>
+    <ul>
+      <li>Rest 1.5h at ~24°C.</li>
+      <li>Perform a 4-way fold.</li>
+      <li>Rest 30 min.</li>
+      <li>Perform another 4-way fold.</li>
+      <li>For a same-day bread, follow this recipe: Ferment another 3h. 
+      <li>For overnight bread, then put in fridge in a well floured bowl or a banneton. You can add oat flakes for an extra houmpff! </li>
+    </ul>
+
+    <h3>Shaping for same-day bread</h3>
+
+    <ul>
+      <li>Simple fold, then shape gently into balls (do not degas).</li>
+      <li>Rest 10 min.</li>
+      <li>Envelope fold, rotate, shape into bâtards with gentle tension.</li>
+      <li>Flour and score with 2 classic grignes.</li>
+    </ul>
+
+    <h3>Shaping for next-day bread</h3>
+    <ul>
+      <li>In the morning, carefully deposit le banneton on the parchemin paper.</li>
+      <li>Leave at room temperature for 15/20 minutes.</li>
+      <li>Just before cooking, score the bread. </li>
+    </ul>
+
+    <h3>Baking</h3>
+    <ul>
+      <li>Preheat oven to 450F.</li>
+      <li>Bake for 35 min.</li>
+      <li>Lower temp slightly for the last few minutes if needed, or else the top will be black.</li>
+    </ul>
+  </div>
+  
+  <div class="section">
+    <h2>Gallery</h2>
+    <div class="gallery">
+        <img src="https://lh3.googleusercontent.com/pw/AP1GczMwd5jrGTDwfXq9L9RD6vJOFbLLLfazQTHn9cqMHLXjEXod0Ai3jTRexhasmCYsK6I9R1kTu_sc9qscp2GCCro4QQT6tXvolAirdk-cHFmmJYsENw3r=w2400" alt="Pain Artisan Rustique">
+        <img src="https://lh3.googleusercontent.com/pw/AP1GczNYIUzqEjPtlztm2MU1PE640bzMif8kJif9xR_w1NRRdj8aKPgz82Sm6HraR3qulnlLw0oD8kgzmNR1xIUQbGqA3RiW3NcjTg340wahsEpAXDI_IR1Q=w2400" alt="Pain rustique avec avoine">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+    
+<!-- Recipe Tab 3: Old Fashioned Slab -->
+<div class="tab-content earthy">
+  <div class="recipe-header earthy">
+    <h1>Old Fashioned Slab</h1>
+    <p class="description">
+      A hearty, grain-rich artisan bread inspired by Le Cordon Bleu’s traditional formula. This dense and flavorful loaf is built with a mix of flours, toasted seeds, and a robust stiff levain named <em>Moria</em>. Perfect for breakfast or pairing with cheese and charcuterie.
+    </p>
+    <div class="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/en/3/39/Le_Cordon_Bleu_logo.jpg" alt="Le Cordon Bleu" style="height: 60px;">
+    </div>
+  </div>
+  <div class="section">
+    <h2>Ingredients</h2>
+    <ul>
+      <li><strong>Grain Mix:</strong></li>
+      <li>100g Sunflower seeds</li>
+      <li>100g Brown flaxseeds</li>
+      <li>100g Water</li>
+      <li><strong>Dough:</strong></li>
+      <li>200g Bread flour</li>
+      <li>100g Spelt flour</li>
+      <li>100g Whole-wheat flour</li>
+      <li>50g Rye flour</li>
+      <li>50g All-purpose flour</li>
+      <li>15g Salt</li>
+      <li>3g Fresh yeast</li>
+      <li>300g Grain mix (prepared earlier)</li>
+      <li>380g Water (room temp)</li>
+      <li>300g Stiff levain (Moria)</li>
+      <li><strong>To finish:</strong> Oats (QS)</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Steps & Schedule</h2>
+    <h3>Morning</h3>
+    <ul>
+      <li>Toast grains at 350°F (175°C) for 4–5 min in convection oven.</li>
+      <li>Immediately plunge toasted grains in water, stir, and refrigerate to cool.</li>
+    </ul>
+    <h3>Midday</h3>
+    <ul>
+      <li>Place water, stiff levain, flours, and yeast in mixer with hook.</li>
+      <li>Mix on speed 1. After 30 sec, add salt. Mix 2–3 min more on speed 1.</li>
+      <li>Switch to speed 3 for 5 min. Add grain mix, mix 1 min on speed 1, then 3 until distributed.</li>
+      <li>Shape dough into smooth ball, cover and proof at 30°C for 45–60 min.</li>
+    </ul>
+    <h3>Afternoon</h3>
+    <ul>
+      <li>Degas dough, divide into 3x 420g pieces. Pre-shape into balls. Rest 10 min.</li>
+      <li>Shape slightly like eggs, place seam-up in linen-lined baskets. Final proof 45–60 min at 30°C.</li>
+    </ul>
+    <h3>Baking</h3>
+    <ul>
+      <li>Preheat oven at max temperature.</li>
+      <li>Score. </li>
+      <li>Steam oven (half a cup on bottom).</li>
+      <li>Bake: 475F for 18 min.</li>
+      <li>Rotate, bake 5–6 min more.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Gallery</h2>
+    <div class="gallery">
+      <img src="https://lh3.googleusercontent.com/pw/AP1GczO8ARVynuWeRzQry8EO52yGARcbm_5FSQWSK7xb7ng9i2r_LEVfyDW2VqiOtxtD2KDy4ZXCi8G0XpudkywfxPYJIHsQDyKEaZrlbWa_v4yUn4T_VCYm=w2400" alt="Old Fashioned Slab 1">
+      <img src="https://lh3.googleusercontent.com/pw/AP1GczNvaxtqgt0pwKbhd6R2TD-E5xJoruv3qWWLbk5uR80JCvqwu7mfQ3s6Zcz-mxFJb35ShvgrKXtKfEaj0ifGpUdc-EG5UlI-PrQPyhmN04DTEGCxIzV5=w2400" alt="Old  Fashioned Slab 2">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+<!-- Recipe Tab 4: Artisan Loaf -->
+<div class="tab-content rye">
+  <div class="recipe-header">
+    <h1>Artisan Loaf</h1>
+    <p class="description">
+      This artisan-style loaf was created by Germ, using a hybrid levain method and slow fermentation. The technique was refined at the Cordon Bleu Sourdough Masterclass, with emphasis on layered fermentation and rustic depth. A mix of poolish, rye-fed Elrond, and flaxseed soaker create a deeply flavorful and textured bread.
+    </p>
+    <div class="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/en/3/39/Le_Cordon_Bleu_logo.jpg" alt="Cordon Bleu Logo" style="height: 60px;">
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Ingredients</h2>
+    <ul>
+      <li><strong>Poolish:</strong></li>
+      <li>100g water</li>
+      <li>100g bread flour</li>
+      <li>Pinch of instant yeast</li>
+
+      <li><strong>Rye Elrond:</strong></li>
+      <li>50g rye flour</li>
+      <li>50g water</li>
+      <li>50g Elrond</li>
+
+      <li><strong>Grains Mix (optional):</strong></li>
+      <li>30g flaxseeds</li>
+      <li>40g warm water</li>
+
+      <li><strong>Bread Dough:</strong></li>
+      <li>250g bread flour</li>
+      <li>50g rye flour</li>
+      <li>200g water</li>
+      <li>7g salt</li>
+      <li>Poolish (200g)</li>
+      <li>Rye Elrond (150g)</li>
+      <li>Soaked flaxseeds (with water)</li>
+      <li>Oat flakes as toping</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Steps & Schedule</h2>
+    <h3>Day 1 - Morning</h3>
+    <ul>
+      <li>Prepare poolish: mix 100g water, 100g bread flour, pinch yeast. Leave at room temp.</li>
+      <li>Mix Elrond with rye flour and water for the rye levain. Leave at room temp.</li>
+    </ul>
+
+    <h3>Day 1 - Evening</h3>
+    <ul>
+      <li><strong>18h00:</strong> Mix flours and water for autolyse (30 min).</li>
+      <li>Prepare flaxseed soaker: mix seeds with 40g warm water, rest 30 min. Note that this is optional.</li>
+
+      <li><strong>18h30:</strong> Add salt, poolish, rye Elrond, soaked seeds to autolysed dough. Mix well.</li>
+      <li><strong>19h00–21h30:</strong> Bulk ferment for 2.5h with stretch & folds at 19h00, 19h30, and 20h00.</li>
+      <li><strong>21h30:</strong> Pre-shape into a loose ball, rest 15 min.</li>
+      <li>Wet the top and dip in oat flakes. </li>
+      <li><strong>21h45:</strong> Final shape and place into floured banneton, top on bottom.  Cold proof overnight in fridge.</li>
+    </ul>
+
+    <h3>Day 2 - Morning</h3>
+    <ul>
+      <li><strong>08h30:</strong> Bake in steam oven (bread mode) at 475°F (245°C) for 35 min. Score just before bake.</li>
+      <li>Cool fully before slicing.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+<h2>Gallery</h2>
+    <div class="gallery">
+      <img src="https://lh3.googleusercontent.com/pw/AP1GczP2I2mmA7R_mAUnQO4WO4K89IL5BzVG8K143pqziLjLRDDXYuNhBB9Dg7eFysXvlLDTBbMEu9rXP3QZu-xo-wewJ3NYbdzcd_otVIKLUH672kFcMb9d=w2400" alt="Artisan Bread 1">
+      <img src="https://lh3.googleusercontent.com/pw/AP1GczOHdDcy_orzb4pRl2IrWCELO_zYMoZR_oQS8CcsXEydNkfX4bCX3ghWSVmv54FxZHORqhAGNMz2t1SsETgyYfgew6FdGxRPuYeBaaBOcXe6yWKOMr25=w2400" alt="Artisan Bread 2">
+    </div>
+  </div>
+</div>
+
+
+
+
+  
+<!-- Recipe Tab 5: Pain de campagne -->
+<div class="tab-content white">
+  <div class="section">
+    <h1>Pain de Campagne</h1>
+    <p>
+      A rustic French country loaf adapted from Peter Reinhart's <em>The Bread Baker’s Apprentice</em>, this version adds rye levain 
+      and poolish for deeper flavor. Adjusted to be slightly drier to balance the use of whole rye, the result is an airy, chewy interior 
+      with a crisp, golden crust — perfect for everyday enjoyment.
+    </p>
+    <img src="https://acornabbey.com/blog/wp-content/uploads/2015/07/bba-book.jpg" alt="The Bread Baker’s Apprentice book" style="max-width: 150px;">
+  </div>
+
+  <div class="section">
+    <h2>Ingredients</h2>
+    <h3>Preferments (make 8–12 hours ahead at 24–26°C)</h3>
+    <ul>
+      <li><strong>Levain (75 to 100 g):</strong> 100% hydration starter</li>
+    </ul>
+
+    <h3>Final Dough at 70% Hydration</h3>
+    <ul>
+      <li>485 g bread flour</li>
+      <li>150 g rye flour</li>
+      <li>100 g whole wheat flour</li>
+      <li>500 g water</li>
+      <li>100 g ripe levain</li>
+      <li>15 g salt</li>
+      <li>2.5 g instant yeast</li>
+      <li>Oat, sesame or other grains for topping</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Steps & Schedule</h2>
+
+    <h3>Day 1 – Morning</h3>
+    <ul>
+      <li>Feed levain. Feed with either flour or a mix or wheat flour and rye, and ferment until domed and bubbly. Refrigerate if ready early.</li>
+    </ul>
+
+    <h3>Day 1 – Afternoon</h3>
+    <ul>
+      <li><strong>Mix:</strong> Mix all ingredients for 4–6 min (mixer) or 6–8 min (hand) until smooth and tacky.</li>
+      <li><strong>Bulk Ferment:</strong> 2–3 hours at 24–26°C. Do 2 stretch and folds at 30 min intervals. Dough should rise 75% and feel airy. </li>
+    </ul>
+
+    <h3>Day 1 – Evening</h3>
+    <ul>
+      <li><strong>Divide & Pre-shape:</strong> Cut into 3 x 450 g or 2 x 675 g pieces. Lightly round and rest 15–20 min.</li>
+      <li><strong>Shape:</strong> Shape into boules or bâtards. Place seam-up in floured bannetons or seam-down on parchment.</li>
+      <li><strong>Proof:</strong>Either 45–90 min at room temp, overnight in the fridge, or for small boules, 10 minutes of détente. Finger dent should spring back slowly.</li>
+    </ul>
+
+    <h3>Bake</h3>
+    <ul>
+      <li><strong>Bake:</strong> Score loaves. Bake with steam 30 min at 450°F. Boulea can be baked for 21 min. Internal temp should be 93–96°C.</li>
+      <li><strong>Cool:</strong> Rest on wire rack at least 30 minutes before slicing.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Gallery</h2>
+    <div class="gallery">
+      <img src="https://lh3.googleusercontent.com/pw/AP1GczNZpjmZmkyYHa5jzxWh3drGNLKWDeC1yARN16lb0l_zobB6A4S9SIozIQubXSWgK1t9w4VAtAPqb-ODuaAtd4lbgDdI4QhcSfGqh3UAZcFUfTnvxiJQ=w2400" alt="Pain de Campagne 1">
+      <img src="https://lh3.googleusercontent.com/pw/AP1GczOyEMNHzNw2w__EXqhFs2ibPU4K_WbmzsPfVvqaNip8gb7S1nXmbIV-YfvJc91FxlBC-H-i6LZZDDFGpm79oMwBeW8jLBBAYvXlMal16XH80b2hyj0_=" alt="Pain de Campagne 2">
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Notes</h2>
+    <ul>
+      <li>This bread balances rustic structure from rye with softness and flexibility from poolish.</li>
+      <li>Use slightly less water if your flour is low in protein or absorbs less.</li>
+      <li>Semolina or cornmeal adds a nice crunch to the crust.</li>
+      <li>Inspired by and adapted from Peter Reinhart’s original Pain de Campagne formula.</li>
+    </ul>
+  </div>
+</div>
+
+  
+  
+
+
+<!-- Recipe Tab 6: Pre-Ferments -->
+<div class="tab-content levain">
+  <div class="section">
+    <h1>Pre-Ferments: Rye Levain & Wheat Poolish</h1>
+    <p>
+      This tab presents two complementary pre-ferments used for artisan bread baking: a rye-based levain and a wheat-based poolish. 
+      The <strong>rye levain</strong> offers complexity, tang, and strength, while the optional <strong>wheat poolish</strong> 
+      lends a sweeter note and a more extensible crumb. Use either based on your recipe goals—or combine both for a deeper flavor profile.
+    </p>
+    <p>
+      The rye levain is developed from <strong>Elrond</strong> or <strong>Mithril</strong>, the Germ Bakery’s trusted sourdough cultures. 
+      The poolish recipe was learned at <strong>Le Cordon Bleu</strong> and complements the levain when a softer interior is desired.
+    </p>
+  </div>
+  
+  <div class="section">
+    <h2>Rye Levain (100% Hydration)</h2>
+    <div class="logo">
+      <img src="https://www.cordonbleu.edu/files/mediafile/44695.jpg" alt="pre-ferment Logo" style="height: 60px;">
+    </div>
+    <p><strong>Goal:</strong> 200 g ripe levain (100 g rye flour + 100 g water)</p>
+    <ul>
+      <li>10–20 g active sourdough starter (100% hydration)</li>
+      <li>100 g whole-rye flour</li>
+      <li>100 g water (room temperature, preferably spring water)</li>
+    </ul>
+    <p><strong>Method:</strong></p>
+    <ul>
+      <li>Mix all ingredients thoroughly in a jar or bowl.</li>
+      <li>Cover loosely and let ferment for 8–12 hours at 24–26°C.</li>
+      <li>Use when bubbly, domed, and fragrant.</li>
+      <li>Use 200 g for dough; retain leftover for next build.</li>
+    </ul>
+  </div>
+  <div class="section">
+    <h2>Rye Levain (118% Hydration)</h2>
+    <div class="logo">
+      <img src="https://f.maformation.fr/mf/img/centres/05272025_1058151573198081-46102.png" alt="pre-ferment Logo" style="height: 60px;">
+    </div>
+    <p><em>Recipe from École Internationale de Boulangerie</em></p>
+    <ul>
+      <li><strong>Goal:</strong> 650 g levain (approx.) at 118% hydration</li>
+      <li><strong>Ingredients:</strong>
+        <ul>
+          <li>100 g active starter (100% hydration)</li>
+          <li>500 g whole rye flour</li>
+          <li>600 g spring water (never tap water)</li>
+        </ul>
+      </li>
+      <li><strong>Instructions:</strong> Mix all ingredients well in a large container. Cover and ferment at room temperature (22–24°C) for 18–24 hours until aromatic, bubbly, and expanded. Use directly in rustic rye breads or refrigerate for up to 48h before use.</li>
+      <li>This levain is loose and tangy, ideal for deep, earthy breads with high moisture and open crumb.</li>
+    </ul>
+  </div>  
+  <div class="section">
+    <h2>Wheat Poolish</h2>
+    <p><strong>Goal:</strong> Lighten crumb, enhance extensibility, slightly sweeter flavor</p>
+    <ul>
+      <li>75 g bread flour</li>
+      <li>75 g water (room temperature)</li>
+      <li>Tiny pinch (0.05 g) instant yeast</li>
+    </ul>
+    <p><strong>Method:</strong></p>
+    <ul>
+      <li>Mix all ingredients until smooth.</li>
+      <li>Ferment covered at room temp for 8–12 hours.</li>
+      <li>Use when bubbly, domed, and just starting to recede.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Notes</h2>
+    <ul>
+      <li><strong>Rye levain</strong> provides stronger flavor and acidity; excellent for rustic or hearty breads.</li>
+      <li><strong>Poolish</strong> introduces mild sweetness and more flexible dough structure.</li>
+      <li>Combining both can yield complex aroma and balanced texture.</li>
+      <li>Use high-quality flour and non-chlorinated water for best results.</li>
+    </ul>
+  </div>
+</div>
+
+
+  
+
+
+<!-- Tab 7: Elrond Levain -->
+<div class="tab-content levain">
+  <div class="recipe-header">
+    <h1>Elrond – The Airy Levain</h1>
+    <p class="description">
+      Born from the ancient essence of fruit — grapes and apples — Elrond is a living Elven relic over 30 years old. Its parents, lovingly named Owen, began their fermentation journey at the Cordon Bleu in Ottawa, where generations of pastry students have fed, nurtured, and baked with Elrond. It is bright yellow, intensely sour (pH below 5.5), and wildly bubbly — as alive as the legends of the First Age.
+    </p>
+    <div class="logo">
+      <img src="https://www.cordonbleu.edu/files/mediafile/44695.jpg" alt="Elven Origin Logo" style="height: 60px;">
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Care & Feeding</h2>
+    <ul>
+      <li><strong>Ratio:</strong> Discard half, then use 1:1 ratio (flour:water).</li>
+      <li><strong>Flour:</strong> Use bread flour for feeding, but versatile with rye (see rye transformation below).</li>
+      <li><strong>Water:</strong> Always use spring or filtered water — never tap water.</li>
+      <li><strong>Frequency:</strong> Feed every 7 days if refrigerated, daily at room temp.</li>
+      <li><strong>Storage:</strong> Loosely sealed in the fridge. Let breathe weekly.</li>
+      <li><strong>Reactivation:</strong> Two daily feedings at room temp will reawaken its magic.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Rye Transformation</h2>
+    <p>
+      Elrond easily transforms into a powerful <em onclick="switchTab(5)">levain de seigle</em> for rustic rye breads.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>Notes</h2>
+    <ul>
+      <li>Elrond’s airy strength makes it ideal for baguettes, fougasse, pain de campagne, or soft levain loaves.</li>
+      <li>Its sharp tang and fruity aroma lend depth and character to even the simplest dough.</li>
+      <li>Best used with long bulk fermentations and gentle stretch and folds.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Gallery</h2>
+    <div class="gallery">
+      <img src="https://lh3.googleusercontent.com/pw/AP1GczOQEVEdgxBtORF-uPuE2JesVmEU_SLwwf2U627DcZxvJnrDOySMhBJaCNtrNUGsWt1sMNhPoRUCh9aL0gIWZ85j3eQGJpSRxbGfWyjf8zAcd8Jmbu-c=w2400" alt="Elrond Starter in Jar">
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Tab 8: Moria Levain -->
+<div class="tab-content srifflevain">
+  <div class="recipe-header">
+    <h1>Moria – The Earthbound Levain</h1>
+    <p class="description">
+      Forged in the depths of fermentation, Moria is a dark and grounded levain named after the legendary dwarven halls. Created five years ago at Le Cordon Bleu Ottawa from grapes, apples, and cranberries, it has since become the foundation of all earthy breads made by generations of pastry students. Its parent, Derrick, passed on a deep, fruity complexity that now defines this levain. Used for the iconic Old Fashioned Slab and featured in the final patisserie exam, Moria represents tradition, patience, and strength.
+    </p>
+    <div class="logo">
+      <img src="https://www.cordonbleu.edu/files/mediafile/44695.jpg" alt="Cordon Bleu Logo" style="height: 60px;">
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Care & Feeding</h2>
+    <ul>
+      <li><strong>Ratio:</strong> Discard half, then use 2:1 ratio (flour:water).</li>
+      <li><strong>Flour:</strong> Bread flour only.</li>
+      <li><strong>Water:</strong> Always use spring or filtered water.</li>
+      <li><strong>Feeding schedule:</strong> Once every 1–2 weeks if refrigerated.</li>
+      <li><strong>Storage:</strong> Keep loosely covered in the fridge. Allow to breathe after long storage.</li>
+      <li><strong>Reactivation:</strong> Feed daily at room temperature for 2–3 days before use in baking.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Usage & Tradition</h2>
+    <ul>
+      <li>Moria is ideal for dense, rustic breads with earthy character and chewy crumb.</li>
+      <li>Signature use: Old Fashioned Slab and other earthy loaves in the final Cordon Bleu exam.</li>
+      <li>Pairs well with rye flour, toasted grains, or smoked ingredients like pancetta or olives.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Notes</h2>
+    <ul>
+      <li>While less bubbly than Elrond, Moria is powerful and forgiving.</li>
+      <li>Its mellow acidity and fruit-forward complexity deepen with time.</li>
+      <li>Perfect for recipes that call for patience and slow fermentation.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Gallery</h2>
+    <div class="gallery">
+      <img src="https://lh3.googleusercontent.com/pw/AP1GczPa6XAX5fjhRagI96dvFtvw5EcGW0w5EmpBGIn1ni7KrQdPBPHthCZ1r1wUqRxJ9tjZG1GvaPItfcxtFTWqt0xcXEla8kl25RRYa23IDFRasJEiQYj6=w2400" alt="Moria Starter in Jar">
+    </div>
+  </div>
+</div>
+
+
+
+
+ 
+<!-- Tab 9: Mithril Levain --> 
+<div class="tab-content levain">
+  <div class="recipe-header">
+    <h1>Mithril – Levain</h1>
+    <p class="description">
+      Mithril is a young and luminous levain, born from grapes and pineapple. It takes its name from the legendary silver-steel of Tolkien’s Middle-earth — a rare, radiant metal prized for its strength and lightness. In the same spirit, this levain is subtle yet powerful, ideal for creating soft, open-crumb breads with a gentle tang. Its 1:1 feeding ratio makes it easy to care for, even for wandering bakers. Though newly forged, Mithril carries the potential of something timeless — a quiet force ready to rise.
+    </p>
+    <div class="logo">
+      <img src="https://lh3.googleusercontent.com/pw/AP1GczNe-jdTnSPQdEJVNmrOghsugJpk8BGyqEUEGLxA-TgOclCeYX13b8iFiTdsqVMyFSLC5GV9HzcahRRKrLAAz3i8Yrq5p6wU1y8B_wIf7bJBC9800y0Y=w2400" alt="Antar Logo" style="height: 60px;">
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Care & Feeding</h2>
+    <ul>
+      <li><strong>Ratio:</strong> Mix this ratio with half of Mithril 1:1 (flour:water). </li>
+      <li><strong>Flour:</strong> Bread flour only.</li>
+      <li><strong>Water:</strong> Better to use spring or filtered water. Can survive with tap water. </li>
+      <li><strong>Feeding schedule:</strong> Feed once every 7 days if refrigerated. Daily if left at room temperature</li>
+      <li><strong>Storage:</strong> Keep loosely covered in the fridge.</li>
+      <li><strong>Reactivation:</strong> After being split in half, let it come to room temperature before feeding. Put the freshly fed half in the fridge, and feed the other half of Mithril for your recipe. See below how to use for baking.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Culinary Use</h2>
+    Mithril can be used in two ways for your bread recipe:
+    <ul>
+      <li>Feed normally (1:1 ratio) for sourdough bread and artisan loafs.</li>
+      <li>Mix 100g of Mithril with 400g of rye flour and 500g of water for a more earthy, active, sour and deeper taste bread. Could pair well with grains and whole-wheat flours. </li>
+    </ul>
+  </div>
+<div class="section">
+  <h2>Notes</h2>
+  <ul>
+    <li>Created by the Antar family, Mithril is a young levain with a bright, balanced character.</li>
+    <li>Its resilient nature allows it to thrive even when fed with all-purpose flour and tap water.</li>
+    <li>Though light and gentle, it ferments steadily and brings a soft, airy texture to bread.</li>
+    <li>Ideal for beginner bakers or light, enriched doughs that benefit from subtle acidity.</li>
+  </ul>
+</div>
+
+  <div class="section">
+    <h2>Gallery</h2>
+    <div class="gallery">
+      <img src="mithril_starter.jpg" alt="Mithril Starter in Jar">
+    </div>
+  </div>
+</div>
+
+
+
+      
+  <script>
+    // Tab switching logic
+    function switchTab(index) {
+      const tabs = document.querySelectorAll('.tab-content');
+      const buttons = document.querySelectorAll('.tab-button');
+
+      tabs.forEach((tab, i) => {
+        tab.classList.toggle('active', i === index);
+        buttons[i].classList.toggle('active', i === index);
+      });
+    }
+  </script>
+</body>
+</html>

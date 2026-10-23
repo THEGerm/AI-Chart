@@ -118,8 +118,8 @@
       else if (view === "diff") { setNav("library"); await viewDiff(token, parts[1], parts[2], q); }
       else if (view === "tcds") { setNav("tcds"); await viewTcds(token, parts[1] || "H-92", parts[2]); }
       else if (view === "stc") {
-        const id = parts[1] || "B206-407-BASKET";
-        setNav(id === "B206-407-BASKET" ? "project" : "stc");
+        const id = parts[1] || "GERM-AIR-0004";
+        setNav(id === "GERM-AIR-0004" ? "project" : "stc");
         await viewStc(token, id);
       } else { setNav(""); await viewHome(token); }
     } catch (err) {
@@ -144,7 +144,7 @@
           h("ul", { class: "small" }, m.rulebooks.map((b) => h("li", null, h("a", { href: href(["library", b.id]) }, b.label))))),
         h("div", { class: "card" }, h("h2", null, h("a", { href: "#/tcds/H-92" }, "TCDS H-92")),
           h("p", null, "Bell 206L and 407 series: the basis of each model, section by section.")),
-        h("div", { class: "card" }, h("h2", null, h("a", { href: "#/stc/B206-407-BASKET" }, "STC project")),
+        h("div", { class: "card" }, h("h2", null, h("a", { href: "#/stc/GERM-AIR-0004" }, "STC project")),
           h("p", null, "Boost basket and step: applicability, applicable sections, elections and export.")),
         h("div", { class: "card" }, h("h2", null, h("a", { href: "#/stc/SH14-47" }, "STC SH14-47")),
           h("p", null, "Eagle 407HP: the Model 407 basis with the STC's own sections and ESFs.")))

@@ -1,6 +1,6 @@
 // UI smoke test for the CertBasis web pages (Playwright, Chromium).
-// Usage: node CertBasis/tests/ui_smoke.mjs [baseUrl]
-//   baseUrl defaults to http://localhost:8765/CertBasis/ (serve the repo root with python3 -m http.server 8765)
+// Usage: node Projects/GERM-AIR-0011/tests/ui_smoke.mjs [baseUrl]
+//   baseUrl defaults to http://localhost:8765/Projects/GERM-AIR-0011/ (serve the repo root with python3 -m http.server 8765)
 // Env: PW_CORE   path to playwright-core's index.mjs if it is not resolvable from here
 //      CHROMIUM  browser executable (default /opt/pw-browsers/chromium)
 //      SHOTS     folder for screenshots (optional)
@@ -8,7 +8,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-const base = process.argv[2] || "http://localhost:8765/CertBasis/";
+const base = process.argv[2] || "http://localhost:8765/Projects/GERM-AIR-0011/";
 const pw = await import(process.env.PW_CORE ? pathToFileURL(process.env.PW_CORE).href : "playwright-core");
 const chromium = pw.chromium || pw.default.chromium;
 const shots = process.env.SHOTS || null;
@@ -71,7 +71,7 @@ try {
   check("AWM 527 warns that only current text is loaded", (await page.textContent("#inexact")).includes("Change 527-3 is not loaded"));
 
   // 4. STC project
-  await page.goto(`${base}#/stc/B206-407-BASKET`);
+  await page.goto(`${base}#/stc/GERM-AIR-0004`);
   await page.evaluate(() => { try { localStorage.clear(); } catch (e) { /* ignore */ } });
   await page.reload();
   await page.waitForSelector("#main-model", { timeout: 60000 });
@@ -116,7 +116,7 @@ try {
   const phone = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
   const pp = await phone.newPage();
   watch(pp);
-  await pp.goto(`${base}#/stc/B206-407-BASKET`);
+  await pp.goto(`${base}#/stc/GERM-AIR-0004`);
   await pp.waitForSelector("#main-model", { timeout: 60000 });
   await pp.check('input[data-model="206L-3"]');
   await pp.waitForSelector("#cmp-table");

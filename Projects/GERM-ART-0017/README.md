@@ -1,6 +1,8 @@
 # Hebba Enthroned
 
-A portrait drawn entirely in code, in the same simulated risograph technique as `Egypt/`. It shows Hebba as a princess of the New Kingdom (c. 1550 to 1069 BCE), seated on a gilded throne inside a finished Egyptian frame.
+**GERM-ART-0017.** Former location `Hebba/`, moved 2026-10-23. Live page: https://thegerm.github.io/AI-Chart/Projects/GERM-ART-0017/
+
+A portrait drawn entirely in code, in the same simulated risograph technique as `../GERM-ART-0016/` (Egypt). It shows Hebba as a princess of the New Kingdom (c. 1550 to 1069 BCE), seated on a gilded throne inside a finished Egyptian frame.
 
 - **File:** `index.html`, **76676 bytes**. It is a single file with Canvas 2D only: no images, fonts, libraries or network requests beyond the page itself.
 - **No background:** only the paper stock shows behind the figure and throne.

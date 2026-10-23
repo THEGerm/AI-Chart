@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silas - The Supplier</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* Importing gritty, typewriter-style fonts for a covert dossier aesthetic */
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Oswald:wght@400;500&display=swap');
+
+        body {
+            font-family: 'Courier Prime', monospace;
+            margin: 0;
+            padding: 20px;
+            background-color: #121212; /* Deep alleyway black */
+            color: #d4d4d8; /* Muted gray text */
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #1c1c1c;
+            padding: 25px;
+            border-radius: 2px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            border: 1px solid #3f3f46;
+            border-top: 8px solid #52525b; /* Gunmetal gray */
+        }
+        /* Part 1: Banner style */
+        .banner {
+            width: 100%;
+            height: auto;
+            border-bottom: 2px solid #52525b;
+            margin-bottom: 25px;
+            /* Gritty surveillance camera filter */
+            filter: grayscale(80%) sepia(20%) contrast(130%) brightness(80%);
+        }
+        /* Part 2: Generic text style */
+        .intro-section {
+            padding: 20px;
+            background-color: #27272a; /* Dark gray */
+            margin-bottom: 25px;
+            border-left: 4px solid #a1a1aa; /* Silver accent */
+        }
+        .intro-section p, .intro-section li {
+            font-size: 15px;
+            color: #d4d4d8;
+        }
+        .intro-section ol {
+            padding-left: 20px;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .intro-section li {
+            margin-bottom: 12px;
+        }
+        /* Part 3: Character section style */
+        .character-section {
+            margin-bottom: 35px;
+            padding: 30px 25px;
+            background-color: #1c1c1c;
+            border: 1px dashed #52525b; /* Document folder feel */
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        h2 {
+            font-family: 'Oswald', sans-serif;
+            color: #f4f4f5;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 1px solid #3f3f46;
+            padding-bottom: 15px;
+            margin-top: 0;
+            font-size: 2.2em;
+            text-align: center;
+        }
+        .item-title {
+            font-family: 'Oswald', sans-serif;
+            color: #a1a1aa; /* Metallic silver */
+            margin-top: 25px;
+            margin-bottom: 5px;
+            display: block;
+            font-size: 1.3em;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        p {
+            margin-top: 5px;
+        }
+        /* Bottom: Private letter style */
+        .private-letter-notice {
+            background-color: #000000;
+            border: 2px solid #ef4444; /* Alert red */
+            padding: 25px;
+            text-align: center;
+            color: #ef4444;
+            border-radius: 2px;
+        }
+        .private-letter-notice h2 {
+            font-family: 'Oswald', sans-serif;
+            color: #ef4444;
+            border-bottom: none;
+            margin-bottom: 10px;
+            padding-bottom: 0;
+            font-size: 1.8em;
+            letter-spacing: 3px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <img src="1771807162225.png" alt="The International Artisan Bread Championship Murder Mystery" class="banner">
+
+    <div id="intro-content" class="intro-section">
+        <p><i>Decrypting intercept data...</i></p>
+    </div>
+
+    <div class="character-section">
+        <h2>Silas The Supplier (Played by James)</h2>
+        
+        <span class="item-title">1. Your Background.</span>
+        <p>You are Silas, the shadowy underground broker of the baking world. While others purchase their ingredients from wholesome farms or commercial distributors, you operate out of the back of an unmarked van. You provide the exclusive, highly regulated 20C flour to the competitors. Your past is a mystery, your prices are exorbitant, and your business practices are highly illegal.</p>
+        
+        <span class="item-title">2. The Conflict.</span>
+        <p>Bartholomew Crust was your most lucrative client, but he recently became suspicious of your shipments. Earlier today, you were seen in a heated, aggressive argument with him in the alleyway behind the venue. He had run an analysis and discovered your latest batch of premium flour was actually cut with cheap, low-protein fillers. He threatened to expose your fraud to the international baking commission, a move that would permanently destroy your underground enterprise.</p>
+
+        <span class="item-title">3. The Clue.</span>
+        <p>You were spotted slipping through the kitchen's back door just minutes before Bartholomew was found dead. Even more suspicious, the victim was discovered face-down inside a heavy sack of flour bearing your counterfeit supply labels.</p>
+
+        <span class="item-title">4. Costume Ideas.</span>
+        <p>Shady, covert, and suspicious. Wear a sleek suit layered under a long, dark trench coat. Keep a pair of dark sunglasses on, even indoors. Carry a mysterious metal briefcase or clutch a suspicious, unmarked brown paper bag labeled "Specialty Flour" to conduct your back-alley deals throughout the evening.</p>
+    </div>
+
+    <div class="private-letter-notice">
+        <h2>CLASSIFIED: PRIVATE DOSSIER</h2>
+        <p>Your private letter containing your secret motives, objectives, and clues is strictly classified.</p>
+        <p>It will be handed to you in a sealed envelope upon your arrival at 113 Shinny Avenue, Stittsville.</p>
+        <p>Do not compromise your cover or discuss your private instructions with any operatives until the sting begins.</p>
+    </div>
+
+</div>
+
+<script>
+    fetch('intro.md')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Intercept Error: Could not load intro.md');
+            }
+            return response.text();
+        })
+        .then(text => {
+            document.getElementById('intro-content').innerHTML = marked.parse(text);
+        })
+        .catch(error => {
+            document.getElementById('intro-content').innerHTML = '<p style="color:#ef4444;">Error: Introduction data corrupted.</p>';
+            console.error('Error fetching intro.md:', error);
+        });
+</script>
+
+</body>
+</html>

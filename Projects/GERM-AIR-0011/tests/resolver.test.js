@@ -1,4 +1,4 @@
-// Run: node --test CertBasis/tests/
+// Run: node --test Projects/GERM-AIR-0011/tests/
 const test = require("node:test");
 const assert = require("node:assert");
 const fs = require("node:fs");

@@ -1,4 +1,4 @@
-"""Tests for the fetch scripts. Run: python3 -m unittest discover -s CertBasis/tests -p 'test_*.py'"""
+"""Tests for the fetch scripts. Run: python3 -m unittest discover -s Projects/GERM-AIR-0011/tests -p 'test_*.py'"""
 import json
 import pathlib
 import sys

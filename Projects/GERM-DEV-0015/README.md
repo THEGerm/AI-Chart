@@ -1,5 +1,7 @@
 # Project Sphere
 
+**GERM-DEV-0015.** Former location `project-sphere/`, moved 2026-10-23. Live page: https://thegerm.github.io/AI-Chart/Projects/GERM-DEV-0015/
+
 Upload a 360 photo from an Insta360 and publish it to Google Street View as a standalone blue dot at its GPS location (no business or landmark needed).
 
 It runs entirely in the browser. No server. It talks straight to the Google Street View Publish API with your own Google sign-in.
@@ -28,7 +30,7 @@ The app ships with this project's Client ID already filled in (`DEFAULT_CLIENT_I
 ## Run it
 
 ```bash
-cd AI-Chart/project-sphere
+cd AI-Chart/Projects/GERM-DEV-0015
 python3 -m http.server 8080
 ```
 
@@ -40,7 +42,7 @@ To use it from your phone, host the folder on GitHub Pages (or any static host) 
 
 1. In the AI-Chart repo: **Settings > Pages**.
 2. **Source:** Deploy from a branch. **Branch:** `main`, folder `/ (root)`. Save.
-3. Wait 1 to 2 minutes, then open https://thegerm.github.io/AI-Chart/project-sphere/ (the path is case-sensitive).
+3. Wait 1 to 2 minutes, then open https://thegerm.github.io/AI-Chart/Projects/GERM-DEV-0015/ (the path is case-sensitive).
 4. In Google Cloud, the OAuth client's **Authorized JavaScript origins** must include `https://thegerm.github.io` (no path, no trailing slash).
 
 ## Getting the right file from your Insta360

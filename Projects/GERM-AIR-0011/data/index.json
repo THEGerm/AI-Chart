@@ -8,6 +8,6 @@
  "tcds": [{"id": "H-92", "file": "tcds/H-92.json"}],
  "stc": [
   {"id": "SH14-47", "file": "stc/SH14-47.json"},
-  {"id": "B206-407-BASKET", "file": "stc/B206-407-BASKET.json"}
+  {"id": "GERM-AIR-0004", "file": "stc/GERM-AIR-0004.json"}
  ]
 }

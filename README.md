@@ -13,5 +13,3 @@ Each project lives in its own folder, `Projects/<ID>/`, and is published with Gi
 | [GERM-PER-0019](Projects/GERM-PER-0019/) | Bread calculator and recipes (from the Bread repo) | [open](https://thegerm.github.io/AI-Chart/Projects/GERM-PER-0019/) |
 | [GERM-PER-0020](Projects/GERM-PER-0020/) | Ancient DNA analysis (from the Bread repo) | [open](https://thegerm.github.io/AI-Chart/Projects/GERM-PER-0020/) |
 | [GERM-PER-0021](Projects/GERM-PER-0021/) | Murder mystery dinner kit (from the MM repo) | [open](https://thegerm.github.io/AI-Chart/Projects/GERM-PER-0021/) |
-
-The full register, including private projects, is kept in Germ's private Daily-Report repo.

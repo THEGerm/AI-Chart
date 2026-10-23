@@ -1,6 +1,8 @@
 # The Musician of Nakht
 
-A figure drawn entirely in code, in the same simulated four-ink risograph print as `Egypt/` and `Hebba/`. She is based on the banquet musicians painted in the tomb of Nakht at Thebes (Theban tomb 52, 18th Dynasty, c. 1400 BCE). She is an invented figure in the tomb's own conventions, not a portrait of anyone:
+**GERM-ART-0018.** Former location `Nakht/`, moved 2026-10-23. Live page: https://thegerm.github.io/AI-Chart/Projects/GERM-ART-0018/
+
+A figure drawn entirely in code, in the same simulated four-ink risograph print as `../GERM-ART-0016/` (Egypt) and `../GERM-ART-0017/` (Hebba). She is based on the banquet musicians painted in the tomb of Nakht at Thebes (Theban tomb 52, 18th Dynasty, c. 1400 BCE). She is an invented figure in the tomb's own conventions, not a portrait of anyone:
 
 - profile head with the eye drawn whole;
 - shoulders turned toward the viewer;

@@ -1,0 +1,220 @@
+<!-- autosomal-ancient-dna.html --> <!doctype html> 
+<html lang="en">
+   <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Autosomal DNA analysis: Ancient DNA</title>
+      <meta name="description" content="Autosomal DNA analysis with context on matching ancient tribes/peoples and notable ancient DNA samples." />
+      <style> :root{ --bg:#0f172a; /* slate-900 */ --panel:#111827; /* gray-900 */ --ink:#e5e7eb; /* gray-200 */ --muted:#9ca3af; /* gray-400 */ --accent:#22c55e; /* green-500 */ --accent-2:#60a5fa; /* blue-400 */ --accent-3:#f59e0b; /* amber-500 */ --ring:#334155; /* slate-700 */ --card:#0b1220; } *{box-sizing:border-box} html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;line-height:1.55} a{color:var(--accent-2)} header{padding:1.25rem 1rem 0.5rem;background:linear-gradient(180deg,rgba(255,255,255,0.04),transparent)} .wrap{max-width:1100px;margin:0 auto;padding:0 1rem} h1{font-size:1.6rem;margin:0 0 .25rem;font-weight:800} .sub{color:var(--muted);font-size:.95rem;margin:.25rem 0 1rem} .pill{ display:inline-flex;gap:.5rem;align-items:center; border:1px solid var(--ring);color:var(--ink); padding:.4rem .65rem;border-radius:999px;font-size:.85rem;background:rgba(255,255,255,0.03) } .grid{ display:grid;gap:1rem;margin:1rem 0 1.5rem; grid-template-columns:1fr; } @media (min-width: 780px){ .grid{grid-template-columns:1.1fr .9fr} } figure{margin:0;background:var(--panel);border:1px solid var(--ring);border-radius:.75rem;overflow:hidden} .figpad{padding:.75rem} img{max-width:100%;height:auto;display:block} .caption{color:var(--muted);font-size:.85rem;margin-top:.5rem} details{ background:var(--panel);border:1px solid var(--ring);border-radius:.8rem;margin:.75rem 0;overflow:hidden } summary{ display:flex;gap:.75rem;align-items:center;list-style:none;padding:.9rem 1rem; cursor:pointer;font-weight:700;background:rgba(255,255,255,0.02) } summary::-webkit-details-marker{display:none} details[open] summary{border-bottom:1px solid var(--ring);background:rgba(255,255,255,0.04)} .badge{font-size:.78rem;color:#06110a;background:var(--accent);padding:.15rem .5rem;border-radius:.5rem;font-weight:700} .content{padding:1rem} .row{display:flex;flex-wrap:wrap;gap:.75rem} .card{ background:var(--card);border:1px solid var(--ring);border-radius:.75rem;padding:.9rem } ul{padding-left:1.1rem;margin:.35rem 0 .75rem} .kpi{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem} .kpi .cell{background:rgba(255,255,255,0.03);border:1px solid var(--ring);border-radius:.5rem;padding:.55rem .6rem} .mono{font-family:ui-monospace,Menlo,Consolas,monospace} .small{font-size:.9rem;color:var(--muted)} .muted{color:var(--muted)} .btns{display:flex;gap:.5rem;flex-wrap:wrap;margin:.25rem 0 1rem} button{ background:rgba(255,255,255,0.06);border:1px solid var(--ring);color:var(--ink); padding:.5rem .75rem;border-radius:.5rem;font-weight:700;cursor:pointer } button:hover{background:rgba(255,255,255,0.1)} footer{color:var(--muted);font-size:.85rem;padding:1.25rem 1rem 2rem} .distlist{columns:1} @media(min-width:660px){.distlist{columns:2}} .chip{ display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--ring); background:rgba(255,255,255,0.03);padding:.25rem .5rem;border-radius:.5rem;font-size:.85rem } .lead{font-size:1.05rem} </style>
+   </head>
+<body>
+      <header>
+         <div class="wrap">
+            <h1>Analyse de l'ADN autosomal : ADN ancien</h1>
+            <p class="sub">Un aperçu des correspondances proches avec les populations et individus anciens, avec un contexte historique pour chaque tribu/peuple.</p>
+            <div class="btns"> <button id="expandAll" aria-controls="content">Tout développer</button> <button id="collapseAll" aria-controls="content">Tout réduire</button> <a class="pill" href="#ancient-matches">Aller aux correspondances ADN anciennes</a> </div>
+         </div>
+      </header>
+      <main id="content" class="wrap">
+         <section class="grid" aria-labelledby="at-a-glance">
+            <figure>
+               <div class="figpad">
+                  <h2 id="at-a-glance">En un coup d'œil</h2>
+                  <p class="lead">Une distance génétique plus faible indique une plus grande similarité. Les correspondances composites combinent deux tribus de référence.</p>
+                  <div class="distlist">
+                     <p><span class="chip">Némètes + Francs</span> <strong>4.073</strong></p>
+                     <p><span class="chip">Quades + Chérusques</span> <strong>4.134</strong></p>
+                     <p><span class="chip">Quades + Francs</span> <strong>4.460</strong></p>
+                     <p><span class="chip">Némètes + Chérusques</span> <strong>4.582</strong></p>
+                     <p><span class="chip">Francs + Pannoniens</span> <strong>4.890</strong></p>
+                     <p><span class="chip">Francs</span> <strong>6.570</strong></p>
+                     <p><span class="chip">Chérusques</span> <strong>7.640</strong></p>
+                     <p><span class="chip">Némètes</span> <strong>8.127</strong></p>
+                     <p><span class="chip">Pannoniens</span> <strong>8.695</strong></p>
+                     <p><span class="chip">Quades</span> <strong>8.759</strong></p>
+                  </div>
+                  <p class="small">Les chiffres représentent des distances dans un espace génétique construit à partir de données autosomales; ce ne sont ni des années ni des pourcentages.</p>
+               </div>
+            </figure>
+            <figure>
+               <div class="figpad">
+                  <h3>Diagrammes en beignet</h3>
+                  <img src="https://lh3.googleusercontent.com/pw/AP1GczNwSYTBwtqqZV0khl6ppRYoWXOLf3Pqbux0jfGw2wXL2OzK-Muh7BxFV4Mag8Q41GNVNLJbNSxuqIekWh34Bw0h4ujBsWElzb2Bfzam84_aXDVL0fG3=w2400" alt="Répartition de l'ascendance autosomale en beignet." />
+                  <figcaption class="caption">Beignet de l'ascendance principale.</figcaption>
+                  <img style="margin-top:.75rem" src="https://lh3.googleusercontent.com/pw/AP1GczNBknxSZ5EsLE3jkzjCd7k8Dm4rmKu7Npqjhff3T0xojesOwW-AxM0V2cPB453dlI6a9H5SlRbTig0EV-amzZd8gn8LOJGr0ruadMlqJK2aKBsKF1Yq=w2400" alt="Répartition des haplogroupes Y-DNA en beignet." />
+                  <div class="caption">Beignet des haplogroupes Y-DNA.</div>
+               </div>
+            </figure>
+         </section>
+         <details open>
+            <summary><span class="badge">Contexte du profil</span> Comment lire ces résultats</summary>
+            <div class="content">
+               <ul>
+                  <li>Distance plus faible = similarité génétique plus proche de ce groupe de référence; les paires composites capturent des affinités mixtes.</li>
+                  <li>Les "correspondances" ADN anciennes indiquent des schémas d'ascendance partagée, pas une descendance directe de ces individus.</li>
+                  <li>Les tailles de population ci-dessous sont des estimations historiques larges; de nombreux groupes anciens étaient petits comparés aux nations modernes.</li>
+               </ul>
+            </div>
+         </details>
+         <!-- Tribus/peuples --> 
+         <details>
+            <summary>Francs (Bas/Moyen Rhin, Antiquité tardive–Haut Moyen Âge)</summary>
+            <div class="content">
+               <div class="kpi">
+                  <div class="cell"><strong>Distances les plus proches</strong><br><span class="mono">Franc (6.57), +Némètes (4.073), +Quades (4.46), +Pannoniens (4.89)</span></div>
+                  <div class="cell"><strong>Langue/Culture</strong><br>Confédération germanique occidentale (branches salienne et ripuaire), fortement influencée par Rome au 5e siècle.</div>
+               </div>
+               <div class="row">
+                  <div class="card" style="flex:1 1 320px">
+                     <h4>Qui et où</h4>
+                     <ul>
+                        <li>Origine le long du bas et moyen Rhin (Pays-Bas, Belgique, ouest de l'Allemagne modernes).</li>
+                        <li>Fœderati et ennemis de l'Empire romain; ont ensuite fondé le royaume mérovingien en Gaule.</li>
+                     </ul>
+                     <h4>Taille de la population</h4>
+                     <p>En tant que confédération dans l'antiquité tardive, probablement plusieurs centaines de milliers de personnes réparties le long de la frontière du Rhin et dans le nord de la Gaule.</p>
+                     <h4>Interactions</h4>
+                     <ul>
+                        <li>Avec Rome : raids, service comme fédérés, puis dirigeants du nord de la Gaule.</li>
+                        <li>Avec les voisins : Saxons, Alamans, Thuringiens, Burgondes; forte admixture avec les Gallo‑Romains.</li>
+                     </ul>
+                     <h4>Ce qui est arrivé</h4>
+                     <p>Aux 6e–8e siècles, les Francs ont dominé une grande partie de la Gaule et de l'ouest de l'Allemagne, évoluant vers l'Empire carolingien.</p>
+                  </div>
+                  <div class="card" style="flex:1 1 260px">
+                     <h4>Images </h4>
+                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Les_Francs_entre_400_et_440.svg/1280px-Les_Francs_entre_400_et_440.svg.png" alt="Carte des terres franques." />  <img style="margin-top:.5rem" src="https://theatrum-belli.com/wp-content/uploads/2020/12/cfce9cde6df767c55aa244a085f8cb08.jpg" alt="Image illustrative pour les Francs." />  
+                  </div>
+               </div>
+            </div>
+         </details>
+         <details>
+            <summary>Némètes (Haut-Rhin, époque romaine)</summary>
+            <div class="content">
+               <div class="kpi">
+                  <div class="cell"><strong>Distances les plus proches</strong><br><span class="mono">Némètes (8.127), +Francs (4.073), +Chérusques (4.582)</span></div>
+                  <div class="cell"><strong>Identité</strong><br>Petite tribu frontalière du Rhin, culturellement celtique-germanique; capitale à Noviomagus des Némètes (près de Speyer moderne).</div>
+               </div>
+               <div class="row">
+                  <div class="card" style="flex:1 1 320px">
+                     <h4>Qui et où</h4>
+                     <ul>
+                        <li>Vivaient sur le Haut-Rhin en face du Palatinat; incorporés dans la province romaine de Germanie supérieure.</li>
+                        <li>Connus par des sources et inscriptions romaines; alliés à Rome à diverses reprises.</li>
+                     </ul>
+                     <h4>Taille de la population</h4>
+                     <p>Probablement une petite civitas de l'ordre de dizaines de milliers.</p>
+                     <h4>Interactions</h4>
+                     <ul>
+                        <li>Commerce et service militaire sous Rome; voisins incluaient Vangiones, Triboci, et plus tard Alamans et Francs.</li>
+                     </ul>
+                     <h4>Ce qui est arrivé</h4>
+                     <p>Romanisation progressive; à l'antiquité tardive, les Némètes ont été absorbés dans les populations alémaniques puis franques le long du Rhin.</p>
+                  </div>
+                  <div class="card" style="flex:1 1 260px">
+                     <h4>Images </h4>
+                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Europa_Germanen_50_n_Chr-fr.svg/langfr-1280px-Europa_Germanen_50_n_Chr-fr.svg.png" alt="Carte des Némètes sur le Haut-Rhin." />  <img style="margin-top:.5rem" src="https://warhistory.org/media/2024/01/1706476092_423_Germanic-Warfare.jpg" alt="Image illustrative pour les Némètes." />  
+                  </div>
+               </div>
+            </div>
+         </details>
+         <details>
+   <summary>Quades (Moravie et Slovaquie occidentale, période impériale romaine)</summary>
+   <div class="content">
+      <div class="kpi">
+         <div class="cell"><strong>Distances les plus proches</strong><br><span class="mono">Quades (8.759), +Chérusques (4.134), +Francs (4.46)</span></div>
+         <div class="cell"><strong>Identité</strong><br>Groupe suève (germanique) étroitement allié aux Marcomans sur la frontière danubienne de Rome.</div>
+      </div>
+      <div class="row">
+         <div class="card" style="flex:1 1 320px">
+            <h4>Qui et où</h4>
+            <ul>
+               <li>Basés le long du bassin supérieur de la Morava/March (République tchèque/Slovaquie).</li>
+               <li>Bien attestés durant les 1er–4e siècles de notre ère.</li>
+            </ul>
+            <h4>Taille de la population</h4>
+            <p>Société tribale régionale, probablement dans les dizaines à centaines de milliers à travers les groupes alliés.</p>
+            <h4>Interactions</h4>
+            <ul>
+               <li>Conflits fréquents et traités avec Rome; acteurs centraux des guerres marcomanes (2e siècle de notre ère).</li>
+               <li>Contacts avec les Sarmates et autres groupes de la steppe; mobilité accrue pendant la période des migrations.</li>
+            </ul>
+            <h4>Ce qui est arrivé</h4>
+            <p>Au 5e siècle, les Quades disparaissent en tant que nom distinct, leur peuple se fondant dans des groupes suèves plus larges et d'autres groupes migrateurs.</p>
+         </div>
+         <div class="card" style="flex:1 1 260px">
+            <h4>Images</h4>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Europa_Germanen_50_n_Chr-fr.svg/langfr-1280px-Europa_Germanen_50_n_Chr-fr.svg.png" alt="Carte du territoire des Quades autour de la Moravie et de la Slovaquie occidentale." /> 
+            <img style="margin-top:.5rem" src="https://warhistory.org/media/2024/01/The-Marcomannic-Wars.jpg" alt="Image illustrative pour les Quades." />  
+         </div>
+      </div>
+   </div>
+</details>
+
+<details>
+   <summary>Chérusques (région de la Weser, début de l'époque romaine)</summary>
+   <div class="content">
+      <div class="kpi">
+         <div class="cell"><strong>Distances les plus proches</strong><br><span class="mono">Chérusques (7.64), +Quades (4.134), +Némètes (4.582)</span></div>
+         <div class="cell"><strong>Identité</strong><br>Tribu germanique septentrionale célèbre pour avoir vaincu les légions romaines en 9 de notre ère sous Arminius.</div>
+      </div>
+      <div class="row">
+         <div class="card" style="flex:1 1 320px">
+            <h4>Qui et où</h4>
+            <ul>
+               <li>Patrie autour du fleuve Weser (Basse-Saxe, Allemagne).</li>
+               <li>Alliances et rivalités avec les Chattes, Bructères, et d'autres voisins.</li>
+            </ul>
+            <h4>Taille de la population</h4>
+            <p>Probablement un groupe tribal petit à moyen, peut-être dans les dizaines de milliers.</p>
+            <h4>Interactions</h4>
+            <ul>
+               <li>Conflit avec Rome culminant dans l'embuscade de la forêt de Teutoburg (9 de notre ère); les campagnes romaines ultérieures ont dévasté la région.</li>
+            </ul>
+            <h4>Ce qui est arrivé</h4>
+            <p>Les querelles internes et la pression des voisins ont réduit les Chérusques; à l'antiquité tardive, ils ont été largement absorbés dans les groupements saxons émergents.</p>
+         </div>
+         <div class="card" style="flex:1 1 260px">
+            <h4>Images </h4>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Europa_Germanen_50_n_Chr-fr.svg/langfr-1280px-Europa_Germanen_50_n_Chr-fr.svg.png" alt="Carte des Chérusques autour de la Weser." /> 
+            <img style="margin-top:.5rem" src="https://64.media.tumblr.com/da0119e348422ce57bffd98fa6112a80/171553577ff4a8d0-18/s1280x1920/72a5a57ac6139a7b1643b3142180c680e9953009.jpg" alt="Image illustrative pour les Chérusques." />  
+         </div>
+      </div>
+   </div>
+</details>
+
+<details>
+   <summary>Pannoniens / Illyriens pannoniens (bassin du Danube, pré-romain à fin romaine)</summary>
+   <div class="content">
+      <div class="kpi">
+         <div class="cell"><strong>Distances les plus proches</strong><br><span class="mono">Pannonien (8.695), +Franc (4.89)</span></div>
+         <div class="cell"><strong>Identité</strong><br>Groupes pré-romains dans les plaines et collines de Pannonie (ouest de la Hongrie, est de l'Autriche, nord de la Croatie/Slovénie/Serbie), plus tard fortement romanisés.</div>
+      </div>
+      <div class="row">
+         <div class="card" style="flex:1 1 320px">
+            <h4>Qui et où</h4>
+            <ul>
+               <li>Zones culturelles mixtes illyriennes et celtiques le long du Danube moyen; province de Pannonie sous Rome.</li>
+            </ul>
+            <h4>Taille de la population</h4>
+            <p>Multiples tribus à travers une grande province, collectivement probablement dans les centaines de milliers pendant la période romaine.</p>
+            <h4>Interactions</h4>
+            <ul>
+               <li>Fournissaient des soldats et officiers à l'armée romaine; plus tard affectés par les mouvements gothiques, huniques et avars.</li>
+            </ul>
+            <h4>Ce qui est arrivé</h4>
+            <p>À travers l'antiquité tardive, les populations locales ont été absorbées dans des fédérations changeantes et plus tard des groupes parlant slave après les 6e–7e siècles.</p>
+         </div>
+         <div class="card" style="flex:1 1 260px">
+            <h4>Images</h4>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Invasioni_occidente_258-260_png.png" alt="Carte de la Pannonie dans le bassin du Danube." /> 
+            <img style="margin-top:.5rem" src="https://miro.medium.com/v2/resize:fit:1400/0*enzvEPkcxwJkP0_X" alt="Image illustrative pour les peuples pannoniens." />  
+         </div>
+      </div>
+   </div>
+</details>
+      </main>
+      <footer class="wrap"> Built for clarity on mobile and desktop; uses native summary/details for accessible click‑to‑expand.  </footer>
+      <script> // Expand/Collapse convenience const expandBtn = document.getElementById('expandAll'); const collapseBtn = document.getElementById('collapseAll'); const allDetails = () => Array.from(document.querySelectorAll('main details')); expandBtn.addEventListener('click', () => { allDetails().forEach(d => d.open = true); }); collapseBtn.addEventListener('click', () => { allDetails().forEach(d => d.open = false); }); </script> 
+   </body>
+</html>

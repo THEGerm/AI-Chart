@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathieu - The Apprentice</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* Importing sturdy, industrial fonts for the overworked apprentice */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400&family=Inter:wght@400&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #e2e8f0; /* Industrial cool gray */
+            color: #334155;
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+            border: 1px solid #cbd5e1;
+            border-top: 8px solid #475569; /* Slate gray border */
+        }
+        /* Part 1: Banner style */
+        .banner {
+            width: 100%;
+            height: auto;
+            border-bottom: 2px solid #94a3b8;
+            margin-bottom: 25px;
+            border-radius: 2px;
+            /* Slightly desaturated and gritty */
+            filter: grayscale(20%) contrast(110%);
+        }
+        /* Part 2: Generic text style */
+        .intro-section {
+            padding: 20px;
+            background-color: #f1f5f9;
+            margin-bottom: 25px;
+            border-left: 4px solid #64748b;
+            border-radius: 2px;
+        }
+        .intro-section p, .intro-section li {
+            font-size: 16px;
+            color: #334155;
+        }
+        .intro-section ol {
+            padding-left: 20px;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .intro-section li {
+            margin-bottom: 12px;
+        }
+        /* Part 3: Character section style */
+        .character-section {
+            margin-bottom: 35px;
+            padding: 30px 25px;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 2px;
+            box-shadow: inset 0 0 10px rgba(71, 85, 105, 0.05);
+        }
+        h2 {
+            font-family: 'Roboto Slab', serif;
+            color: #1e293b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #cbd5e1;
+            padding-bottom: 15px;
+            margin-top: 0;
+            font-size: 2em;
+            text-align: center;
+            font-weight: normal;
+        }
+        .item-title {
+            font-family: 'Roboto Slab', serif;
+            color: #334155;
+            margin-top: 25px;
+            margin-bottom: 5px;
+            display: block;
+            font-size: 1.3em;
+            text-transform: uppercase;
+        }
+        p {
+            margin-top: 5px;
+        }
+        /* Bottom: Private letter style */
+        .private-letter-notice {
+            background-color: #fefce8;
+            border: 2px dashed #ca8a04; /* Industrial yellow warning */
+            padding: 25px;
+            text-align: center;
+            color: #854d0e;
+            border-radius: 4px;
+        }
+        .private-letter-notice h2 {
+            color: #854d0e;
+            border-bottom: none;
+            margin-bottom: 10px;
+            padding-bottom: 0;
+            font-size: 1.6em;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <img src="1771807162225.png" alt="The International Artisan Bread Championship Murder Mystery" class="banner">
+
+    <div id="intro-content" class="intro-section">
+        <p><i>Loading shift instructions...</i></p>
+    </div>
+
+    <div class="character-section">
+        <h2>Mathieu The Apprentice (Played by Dany)</h2>
+        
+        <span class="item-title">1. Your Background.</span>
+        <p>You are Mathieu, Bartholomew's chronically overworked and entirely unappreciated apprentice. For years, you have been the hidden muscle behind the Crust Bakery empire, doing all the heavy lifting while Bartholomew smiled for the cameras. You know every intimate detail of the bakery's operations, but you receive absolutely none of the credit or the profits.</p>
+        
+        <span class="item-title">2. The Conflict.</span>
+        <p>Bartholomew's exploitation reached a breaking point this week. He explicitly banned you from using the Cuisinart stand mixer, forcing you to mix hundreds of pounds of stiff dough completely by hand. Worse, he recently stole your innovative recipe for dinner rolls baked in the Cuisinart steam convection oven plus, presenting it to the judges as his own masterpiece. You are tired of being treated like cheap manual labor while he steals your culinary genius.</p>
+
+        <span class="item-title">3. The Clue.</span>
+        <p>You were the last person seen at the preparation station before Bartholomew's demise. Your specific task was to fill the sink with exactly 15C warm water to balance the 21.5C kitchen and 20C flour for his signature bulk fermentation. The police suspect the water was tampered with before Bartholomew face-planted into the flour sack.</p>
+
+        <span class="item-title">4. Costume Ideas.</span>
+        <p>Utilitarian and exhausted. Wear a plain t-shirt and a highly functional, flour-stained apron. Smudge a little extra flour on your face and arms to show you have been doing the manual labor. Carry a heavy whisk or a dough scraper, and practice looking deeply resentful of anyone giving orders.</p>
+    </div>
+
+    <div class="private-letter-notice">
+        <h2>STRICTLY CONFIDENTIAL: PRIVATE LETTER</h2>
+        <p>Your private letter containing your secret motives, objectives, and clues is strictly confidential.</p>
+        <p>It will be handed to you in a sealed envelope upon your arrival at 113 Shinny Avenue, Stittsville.</p>
+        <p>Do not discuss your private instructions with anyone until the shift begins.</p>
+    </div>
+
+</div>
+
+<script>
+    fetch('intro.md')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('System Error: Could not load intro.md');
+            }
+            return response.text();
+        })
+        .then(text => {
+            document.getElementById('intro-content').innerHTML = marked.parse(text);
+        })
+        .catch(error => {
+            document.getElementById('intro-content').innerHTML = '<p style="color:#ca8a04;">Error: Introduction text not found.</p>';
+            console.error('Error fetching intro.md:', error);
+        });
+</script>
+
+</body>
+  </html>
+          

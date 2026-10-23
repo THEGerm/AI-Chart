@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mei - The Prodigy</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* Importing modern, trendy, and quirky fonts for the prodigy aesthetic */
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Nunito:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #fff5f5; /* Soft pastel pink */
+            color: #2d3748; /* Dark slate */
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.1);
+            border: 1px solid #fed7d7;
+            border-top: 8px solid #ff6b6b; /* Vibrant coral pink */
+        }
+        /* Part 1: Banner style */
+        .banner {
+            width: 100%;
+            height: auto;
+            border-bottom: 3px solid #ff9f43; /* Warm pastel orange */
+            margin-bottom: 25px;
+            border-radius: 8px;
+            /* Trendy, vibrant, slightly warm filter */
+            filter: hue-rotate(330deg) saturate(130%) contrast(105%);
+        }
+        /* Part 2: Generic text style */
+        .intro-section {
+            padding: 20px;
+            background-color: #fffaf0; /* Very light warm tone */
+            margin-bottom: 25px;
+            border-left: 4px solid #f6e58d; /* Pastel yellow */
+            border-radius: 8px;
+        }
+        .intro-section p, .intro-section li {
+            font-size: 15px;
+            color: #4a5568;
+        }
+        .intro-section ol {
+            padding-left: 20px;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .intro-section li {
+            margin-bottom: 12px;
+        }
+        /* Part 3: Character section style */
+        .character-section {
+            margin-bottom: 35px;
+            padding: 30px 25px;
+            background-color: #ffffff;
+            border: 1px solid #fed7d7;
+            border-radius: 8px;
+            box-shadow: inset 0 0 15px rgba(255, 107, 107, 0.03);
+        }
+        h2 {
+            font-family: 'Quicksand', sans-serif;
+            color: #e53e3e;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px dotted #fed7d7;
+            padding-bottom: 15px;
+            margin-top: 0;
+            font-size: 2.2em;
+            text-align: center;
+        }
+        .item-title {
+            font-family: 'Quicksand', sans-serif;
+            color: #dd6b20;
+            margin-top: 25px;
+            margin-bottom: 5px;
+            display: block;
+            font-size: 1.3em;
+            font-weight: 700;
+        }
+        p {
+            margin-top: 5px;
+        }
+        /* Bottom: Private letter style */
+        .private-letter-notice {
+            background-color: #fff5f5;
+            border: 2px dashed #fc5c65; /* Vibrant red-pink */
+            padding: 25px;
+            text-align: center;
+            color: #c0392b;
+            border-radius: 12px;
+        }
+        .private-letter-notice h2 {
+            font-family: 'Quicksand', sans-serif;
+            color: #fc5c65;
+            border-bottom: none;
+            margin-bottom: 10px;
+            padding-bottom: 0;
+            font-size: 1.7em;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <img src="1771807162225.png" alt="The International Artisan Bread Championship Murder Mystery" class="banner">
+
+    <div id="intro-content" class="intro-section">
+        <p><i>Loading latest trend data...</i></p>
+    </div>
+
+    <div class="character-section">
+        <h2>Mei The Prodigy (Played by Sandy)</h2>
+        
+        <span class="item-title">1. Your Background.</span>
+        <p>You are Mei, the youngest and most talked-about baker in the modern artisan bread world. You do not just bake; you create edible, viral art. Your social media presence is exploding, and your avant-garde techniques have completely disrupted the traditional scene. Your prized possession is your fiercely active 1:1 ratio levain, named Mithril, which is exceptionally young at less than a year old.</p>
+        
+        <span class="item-title">2. The Conflict.</span>
+        <p>Bartholomew Crust represented the dusty, boring past, and he hated you for being the future. He recently dismissed your innovative creations as "child's play" and publicly doubted the strength of your young Mithril starter, stating it lacked the depth of his 40-year-old Elrond. However, the real crisis happened last night: someone sabotaged your precious Mithril by pouring bleach directly into its jar. You immediately and loudly accused Bartholomew of trying to eliminate his biggest threat.</p>
+
+        <span class="item-title">3. The Clue.</span>
+        <p>You were seen storming away from Bartholomew's station in tears just an hour before he was found dead. The police are looking closely at the young prodigy who had both the motive to retaliate and the modern chemistry knowledge to execute a flawless revenge.</p>
+
+        <span class="item-title">4. Costume Ideas.</span>
+        <p>Trendy, hipster, and avant-garde baker attire. Wear colorful clothing, bold accessories, or temporary tattoos. Bring a sketchbook filled with your crazy recipe ideas, and perhaps carry a small, sad-looking empty glass jar labeled "Mithril - RIP" to garner sympathy from the other guests throughout the evening.</p>
+    </div>
+
+    <div class="private-letter-notice">
+        <h2>VIRAL SECRET: PRIVATE LETTER</h2>
+        <p>Your private letter containing your secret motives, objectives, and clues is strictly offline.</p>
+        <p>It will be handed to you in a sealed envelope upon your arrival at 113 Shinny Avenue, Stittsville.</p>
+        <p>Do not post or discuss your private instructions with anyone until the stream goes live on Friday.</p>
+    </div>
+
+</div>
+
+<script>
+    fetch('intro.md')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network Error: Could not load intro.md');
+            }
+            return response.text();
+        })
+        .then(text => {
+            document.getElementById('intro-content').innerHTML = marked.parse(text);
+        })
+        .catch(error => {
+            document.getElementById('intro-content').innerHTML = '<p style="color:#fc5c65;">Error: Introduction text failed to load.</p>';
+            console.error('Error fetching intro.md:', error);
+        });
+</script>
+
+</body>
+  </html>
+  

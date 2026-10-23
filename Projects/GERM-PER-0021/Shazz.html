@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vikram - The Corporate Executive</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* Importing sharp, high-end corporate fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Montserrat:wght@300;400;500&display=swap');
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f4f8; /* Crisp, cool corporate gray-blue */
+            color: #1e293b;
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 2px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+            border: 1px solid #cbd5e1;
+            border-top: 8px solid #0f172a; /* Midnight navy border */
+        }
+        /* Part 1: Banner style */
+        .banner {
+            width: 100%;
+            height: auto;
+            border-bottom: 3px solid #d4af37; /* Gold accent */
+            margin-bottom: 25px;
+            /* Sleek, high-contrast look */
+            filter: contrast(115%) saturate(85%);
+        }
+        /* Part 2: Generic text style */
+        .intro-section {
+            padding: 20px;
+            background-color: #f8fafc;
+            margin-bottom: 25px;
+            border-left: 4px solid #1d4ed8; /* Strong corporate blue */
+        }
+        .intro-section p, .intro-section li {
+            font-size: 15px;
+            color: #334155;
+        }
+        .intro-section ol {
+            padding-left: 20px;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .intro-section li {
+            margin-bottom: 12px;
+        }
+        /* Part 3: Character section style */
+        .character-section {
+            margin-bottom: 35px;
+            padding: 30px 25px;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: inset 0 0 15px rgba(29, 78, 216, 0.03);
+        }
+        h2 {
+            font-family: 'Cinzel', serif;
+            color: #0f172a;
+            letter-spacing: 2px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 15px;
+            margin-top: 0;
+            font-size: 2.2em;
+            text-align: center;
+        }
+        .item-title {
+            font-family: 'Montserrat', sans-serif;
+            color: #1d4ed8;
+            margin-top: 25px;
+            margin-bottom: 5px;
+            display: block;
+            font-size: 1.2em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        p {
+            margin-top: 5px;
+        }
+        /* Bottom: Private letter style */
+        .private-letter-notice {
+            background-color: #0f172a; /* Midnight navy background */
+            border: 2px solid #d4af37; /* Gold border */
+            padding: 25px;
+            text-align: center;
+            color: #f8fafc;
+            border-radius: 2px;
+        }
+        .private-letter-notice h2 {
+            font-family: 'Cinzel', serif;
+            color: #d4af37;
+            border-bottom: none;
+            margin-bottom: 10px;
+            padding-bottom: 0;
+            font-size: 1.6em;
+            letter-spacing: 3px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <img src="1771807162225.png" alt="The International Artisan Bread Championship Murder Mystery" class="banner">
+
+    <div id="intro-content" class="intro-section">
+        <p><i>Accessing corporate itinerary...</i></p>
+    </div>
+
+    <div class="character-section">
+        <h2>Vikram The Corporate Executive (Played by Shazz)</h2>
+        
+        <span class="item-title">1. Your Background.</span>
+        <p>You are Vikram, the ruthless VP of Acquisitions for MegaBread Corp, the world's largest and most profitable commercial bakery conglomerate. You do not care about heritage grains, artisanal crusts, or the romance of baking. You care about scale, efficiency, and market domination. Your board of directors has given you one mandate: acquire the legendary 1:1 ratio Elrond starter so MegaBread can chemically reverse-engineer it for mass production.</p>
+        
+        <span class="item-title">2. The Conflict.</span>
+        <p>Yesterday afternoon, you cornered Bartholomew Crust in the lobby and offered him a staggering multi-million dollar buyout for his bakery and the exclusive rights to the Elrond starter. Instead of taking the money, he laughed in your face. He loudly called your company a purveyor of factory sludge and tore up your contract in front of the entire international baking press. Your board is furious, and your prestigious job is now hanging by a thread.</p>
+
+        <span class="item-title">3. The Clue.</span>
+        <p>You were seen hovering near the competitor workstations just moments before Bartholomew collapsed into the flour. You claim you were merely pacing while taking an urgent phone call from your shareholders, but several witnesses swear they saw you eyeing the glass fermentation jars with extreme desperation.</p>
+
+        <span class="item-title">4. Costume Ideas.</span>
+        <p>An impeccably tailored, expensive-looking suit. Wear a flashy, oversized watch, a crisp pocket square, and slick back your hair if possible. Carry a sleek leather portfolio, a Montblanc pen, or a stack of aggressive buyout contracts to wave in the faces of the artisanal bakers throughout the evening.</p>
+    </div>
+
+    <div class="private-letter-notice">
+        <h2>NON-DISCLOSURE AGREEMENT: PRIVATE LETTER</h2>
+        <p>Your private letter containing your secret corporate motives, objectives, and clues is heavily classified.</p>
+        <p>It will be handed to you in a sealed envelope upon your arrival at 113 Shinny Avenue, Stittsville.</p>
+        <p>Do not leak your private instructions to the press or competitors until the negotiations officially open.</p>
+    </div>
+
+</div>
+
+<script>
+    fetch('intro.md')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Corporate Firewall Error: Could not load intro.md');
+            }
+            return response.text();
+        })
+        .then(text => {
+            document.getElementById('intro-content').innerHTML = marked.parse(text);
+        })
+        .catch(error => {
+            document.getElementById('intro-content').innerHTML = '<p style="color:#d4af37;">Error: Introduction document locked by MegaBread Corp IT.</p>';
+            console.error('Error fetching intro.md:', error);
+        });
+</script>
+
+</body>
+  </html>
+  

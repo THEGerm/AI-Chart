@@ -1,5 +1,7 @@
 # Ancient Egypt, one image per Kingdom
 
+**GERM-ART-0016.** Former location `Egypt/`, moved 2026-10-23. Live page: https://thegerm.github.io/AI-Chart/Projects/GERM-ART-0016/
+
 A single HTML file that prints a four-ink risograph poster of ancient Egypt: six isometric cut-away dioramas, one per period, each with its main pharaoh present somewhere in the scene. Every scene, person, object and ink dot is drawn in code with Canvas 2D.
 
 - **File:** `index.html`, **190,645 bytes** (one file, no images, no data-URI images, no fonts, no libraries, no WebGL).

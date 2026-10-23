@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ji-Hoon - The Tech Baker</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* Importing a tech-themed monospace font */
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        body {
+            font-family: 'Share Tech Mono', 'Courier New', monospace;
+            margin: 0;
+            padding: 20px;
+            background-color: #0b0f19;
+            color: #d1d5db;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #111827;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.1);
+            border: 1px solid #1f2937;
+        }
+        /* Part 1: Banner style */
+        .banner {
+            width: 100%;
+            height: auto;
+            border-bottom: 2px solid #00ffcc;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            filter: grayscale(60%) sepia(20%) hue-rotate(180deg);
+        }
+        /* Part 2: Generic text style */
+        .intro-section {
+            padding: 15px 20px;
+            background-color: #1f2937;
+            margin-bottom: 20px;
+            border-left: 4px solid #00ffcc;
+            border-radius: 4px;
+        }
+        .intro-section p, .intro-section li {
+            font-size: 16px;
+            color: #d1d5db;
+        }
+        .intro-section ol {
+            padding-left: 20px;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .intro-section li {
+            margin-bottom: 12px;
+        }
+        /* Part 3: Character section style */
+        .character-section {
+            margin-bottom: 30px;
+            padding: 15px 20px;
+            background-color: #0b0f19;
+            border: 1px solid #00ffcc;
+            border-radius: 4px;
+            box-shadow: inset 0 0 10px rgba(0, 255, 204, 0.05);
+        }
+        h2 {
+            color: #00ffcc;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px dashed #374151;
+            padding-bottom: 10px;
+            font-weight: normal;
+        }
+        .accent-text {
+            color: #60a5fa;
+        }
+        .item-title {
+            color: #00ffcc;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        p {
+            margin-top: 5px;
+        }
+        /* Bottom: Private letter style */
+        .private-letter-notice {
+            background-color: #2a0a0a;
+            border: 2px dashed #ef4444;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            color: #ef4444;
+        }
+        .private-letter-notice h2 {
+            color: #ef4444;
+            border-bottom: none;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <img src="1771807162225.png" alt="The International Artisan Bread Championship Murder Mystery" class="banner">
+
+    <div id="intro-content" class="intro-section">
+        <p><i>Loading system parameters...</i></p>
+    </div>
+
+    <div class="character-section">
+        <h2>Ji-Hoon The Tech Baker (Played by Brian)</h2>
+        
+        <span class="item-title">1. Your Background.</span>
+        <p>You are Ji-Hoon, a disruptive Silicon Valley transplant who views traditional baking as an inefficient, obsolete algorithm. You do not rely on touch or intuition; you code your dough. Your startup relies entirely on atmospheric sensors, hydration matrices, and predictive machine learning. You believe human error is the only thing holding bread back from perfection.</p>
+        
+        <span class="item-title">2. The Conflict.</span>
+        <p>Bartholomew Crust represented everything you despise about the old culinary guard. He mocked your presentation at a recent symposium when your automated Cuisinart mixing array suffered a critical malfunction. You entered this championship specifically to prove your data-driven approach is objectively superior to his archaic 1:1 ratio Elrond starter. You have been obsessively reverse-engineering his methods, setting up covert sensors around his station to monitor his precise variables: a 21.5C ambient kitchen temperature, 20C flour, and 15C water for his sink bulk fermentation.</p>
+
+        <span class="item-title">3. The Clue.</span>
+        <p>The local police are already suspicious of you. Your proprietary digital thermometer was found abandoned directly next to the sink where Bartholomew was preparing his 15C water just moments before his death.</p>
+
+        <span class="item-title">4. Costume Ideas.</span>
+        <p>Silicon Valley tech attire. Wear a sleek black turtleneck, dark jeans, and minimalist sneakers. Carry a tablet or smartphone at all times, and consider wearing safety goggles or bringing digital probes to measure your dinner.</p>
+    </div>
+
+    <div class="private-letter-notice">
+        <h2>SYSTEM ALERT: PRIVATE LETTER</h2>
+        <p>Your private letter containing your secret motives, objectives, and clues is strictly confidential.</p>
+        <p>It will be handed to you in a sealed envelope upon your arrival at 113 Shinny Avenue, Stittsville.</p>
+        <p>Do not discuss your private instructions with anyone until the game officially begins.</p>
+    </div>
+
+</div>
+
+<script>
+    fetch('intro.md')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('System Error: Could not load intro.md');
+            }
+            return response.text();
+        })
+        .then(text => {
+            document.getElementById('intro-content').innerHTML = marked.parse(text);
+        })
+        .catch(error => {
+            document.getElementById('intro-content').innerHTML = '<p style="color:#ef4444;">Error 404: Introduction text not found.</p>';
+            console.error('Error fetching intro.md:', error);
+        });
+</script>
+
+</body>
+</html>

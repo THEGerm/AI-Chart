@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madam Lin - The Critic</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* Importing elegant fonts for an editorial/fashion feel */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Lato&display=swap');
+
+        body {
+            font-family: 'Lato', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #fdfbf7;
+            color: #2c2c2c;
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 2px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border-top: 5px solid #722f37;
+        }
+        /* Part 1: Banner style */
+        .banner {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #e0dcd3;
+            margin-bottom: 25px;
+            /* Subtle sepia tone for a refined look */
+            filter: sepia(20%) contrast(110%);
+        }
+        /* Part 2: Generic text style */
+        .intro-section {
+            padding: 20px;
+            background-color: #f9f8f6;
+            margin-bottom: 25px;
+            border-left: 3px solid #d4af37;
+        }
+        .intro-section p, .intro-section li {
+            font-size: 16px;
+            color: #4a4a4a;
+        }
+        .intro-section ol {
+            padding-left: 20px;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .intro-section li {
+            margin-bottom: 12px;
+        }
+        /* Part 3: Character section style */
+        .character-section {
+            margin-bottom: 35px;
+            padding: 25px;
+            background-color: #ffffff;
+            border: 1px solid #e0dcd3;
+            box-shadow: inset 0 0 15px rgba(114, 47, 55, 0.03);
+        }
+        h2 {
+            font-family: 'Playfair Display', serif;
+            color: #722f37;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 1px solid #e0dcd3;
+            padding-bottom: 15px;
+            margin-top: 0;
+            font-weight: normal;
+            text-align: center;
+        }
+        .item-title {
+            font-family: 'Playfair Display', serif;
+            color: #722f37;
+            margin-top: 20px;
+            margin-bottom: 5px;
+            display: block;
+            font-size: 1.2em;
+        }
+        p {
+            margin-top: 5px;
+        }
+        /* Bottom: Private letter style */
+        .private-letter-notice {
+            background-color: #fdf5f5;
+            border: 1px solid #722f37;
+            padding: 25px;
+            text-align: center;
+            color: #722f37;
+        }
+        .private-letter-notice h2 {
+            color: #722f37;
+            border-bottom: none;
+            font-weight: normal;
+            margin-bottom: 10px;
+            padding-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <img src="1771807162225.png" alt="The International Artisan Bread Championship Murder Mystery" class="banner">
+
+    <div id="intro-content" class="intro-section">
+        <p><i>Loading event details...</i></p>
+    </div>
+
+    <div class="character-section">
+        <h2>Madam Lin The Critic (Played by Cindy)</h2>
+        
+        <span class="item-title">1. Your Background.</span>
+        <p>You are Madam Lin, the undisputed sovereign of the culinary review world. Your syndicated column, "The Crumb," is read by millions. A mere sigh from you can shutter a bakery; a nod of approval guarantees a lifetime of success. You are accustomed to being treated like royalty, with executive chefs trembling as you take your first bite of their creations.</p>
+        
+        <span class="item-title">2. The Conflict.</span>
+        <p>Bartholomew Crust is the only baker who has ever dared to defy you. At the opening gala of this very championship, he served you a dense, horribly under-proofed loaf. When you gave him a harsh critique, he laughed in your face and loudly announced to the room that your palate was "as sophisticated as a wet sponge." The public humiliation was absolute. You swore he would pay for his insolence and lack of respect for your authority.</p>
+
+        <span class="item-title">3. The Clue.</span>
+        <p>You were seen lurking near his competition station right before he collapsed into the flour sack. Worse, a fellow competitor witnessed you hastily throwing a suspicious empty foil packet into the trash can.</p>
+
+        <span class="item-title">4. Costume Ideas.</span>
+        <p>Intimidating, high-fashion elegance. Think oversized designer sunglasses, an impeccable silk scarf, and tailored attire. Carry a sophisticated Moleskine notebook and an expensive pen to silently judge everyone else's outfits and alibis throughout the evening.</p>
+    </div>
+
+    <div class="private-letter-notice">
+        <h2>SECRET: PRIVATE LETTER</h2>
+        <p>Your private letter containing your secret motives, objectives, and clues is strictly confidential.</p>
+        <p>It will be handed to you in a sealed envelope upon your arrival at 113 Shinny Avenue, Stittsville.</p>
+        <p>Do not discuss your private instructions with anyone until the game officially begins.</p>
+    </div>
+
+</div>
+
+<script>
+    fetch('intro.md')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('System Error: Could not load intro.md');
+            }
+            return response.text();
+        })
+        .then(text => {
+            document.getElementById('intro-content').innerHTML = marked.parse(text);
+        })
+        .catch(error => {
+            document.getElementById('intro-content').innerHTML = '<p style="color:#722f37;">Error: Introduction text not found.</p>';
+            console.error('Error fetching intro.md:', error);
+        });
+</script>
+
+</body>
+</html>

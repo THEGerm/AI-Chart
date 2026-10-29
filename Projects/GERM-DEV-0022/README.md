@@ -1,6 +1,6 @@
 # GERM-DEV-0022: Tidewall
 
-Plan, rev 2.1, 29 Oct 2026. Germ and Shazz.
+Plan, rev 3, 29 Oct 2026. Germ and Shazz.
 
 Tidewall is an island city-state behind a sea wall. Nobody leaves. A government runs it, criminals work it, and the world itself (news, weather, accidents, luck) pushes back. Three AI models take those three seats, one week at a time, and swap seats every week.
 
@@ -17,7 +17,8 @@ The idea came from Marvel's Madripoor. The name is our own, so the code, the log
 - **The end day is random** (2% chance each day that the game ends), so there's no last-day betrayal built into the rules.
 - **Every player states its beliefs** each day, so we can test whether its move was a best response to what it believed.
 - **Week 0** runs scripted bots that play the equilibrium, to prove the engine reproduces the theory before any model touches it.
-- **Cost:** about $40 to $70 a week, $400 to $600 for 9 weeks. My estimate until week 0 and week 1 give real numbers.
+- **A dashboard runs it all.** Each participant saves their own API keys in it. Game days take turns between participants, and each day bills its owner's keys first. If the owner has no key for a provider, the other participant's key covers it. After each day the dashboard shows whose key spent how many tokens.
+- **Cost:** about $40 to $70 a week, $400 to $600 for 9 weeks, shared by the turn order. My estimate until week 0 and week 1 give real numbers.
 
 ## The game, in one paragraph
 
@@ -167,6 +168,55 @@ After each 3-week cycle, compare the measures two ways: by model across all seat
 
 The analysis uses a two-way model (model effect, seat effect, cycle as repeat). Shazz and Germ agree the tests before week 1.
 
+## The dashboard and the keys
+
+The whole project runs from one web app. Participants don't touch code to play.
+
+### What it shows
+
+- **Live city:** the map with who holds each building, the day's moves, the Wire's news and the score table
+- **Game theory panel:** crime and inspection rates against 27% and 25%, gang cooperation over time, audit rate against 10%, belief accuracy
+- **Token ledger:** after every game day, and as running totals per week and for the study
+- **Controls:** start, pause and resume a run; the weekly cap; the turn order
+- **Public view:** anyone with the link can watch and replay. Keys and controls show only to a signed-in participant.
+
+### Keys
+
+- Each participant opens **My keys** and pastes their key for Anthropic, Google and OpenAI. Any of the 3 can be left blank.
+- A key goes once, over HTTPS, to the server and is stored encrypted. Nobody, the other participant included, can read it back; the page only shows "Anthropic key saved, ends in ...4f2a".
+- Keys never reach the other participant's browser, the logs or this public repo.
+- A participant can replace or delete a key at any time.
+- Use a **new key made for Tidewall,** with a spending limit set in the provider's own console. That limit is a second cap under the dashboard's.
+
+### Whose turn it is
+
+- Game days alternate between participants: day 1 Germ, day 2 Shazz, day 3 Germ, and so on. A third participant joins the rotation the same way.
+- On your day, every model call uses **your** key for that provider.
+- If you have no key for a provider, or yours fails (no credit, rate limit), the call goes to the next participant who has one. The ledger marks it as a fallback.
+- If nobody has a working key for a provider, the run pauses and the dashboard says which key is missing.
+- The key never changes the model: same model ID, same settings, whoever pays. Each call logs the model version the provider reports, as a check.
+
+### The token ledger
+
+At the end of each game day the dashboard shows a table like this (numbers made up):
+
+| Day 12, Shazz's turn | Anthropic | Google | OpenAI | Cost |
+|---|---|---|---|---|
+| Shazz | 98,400 in (71,000 cached), 9,800 out | 41,200 in, 4,100 out | none | $0.61 |
+| Germ (fallback) | none | none | 52,700 in, 6,900 out | $0.24 |
+
+Below it: running totals per participant for the week and the study. Cost is worked out from a dated price table in the code, and the ledger is part of the public log, so anyone can check who paid for what.
+
+### How it's built
+
+- **Front end:** a static page in this folder, published with GitHub Pages
+- **Back end:** a Cloudflare Worker that runs the engine, calls the 3 providers, and holds the keys encrypted in its database (D1), with the encryption key as a Worker secret
+- **Sign-in:** Cloudflare Access, one email each for Germ and Shazz
+- **Schedule:** a Worker cron plays 8 game days a day; the pause button stops it
+- **Analysis:** Python notebooks read the exported logs (the solver, the statistics, the paper's figures)
+
+Calls go from the server, never from a browser, so keys stay off participants' machines and the providers' browser rules (CORS) don't matter. Cloudflare's free tier should cover a study this size; I haven't checked the limits yet.
+
 ## Cost
 
 My estimates; week 0 and week 1 replace them.
@@ -188,15 +238,15 @@ Gemini and GPT prices aren't checked yet. **The engine has a hard spending cap p
 
 | Step | What | Done when | Who |
 |---|---|---|---|
-| 0. Agree | This page (Germ agreed 29 Oct), cost split, co-authorship | Shazz says go | Germ, Shazz |
+| 0. Agree | This page (Germ agreed 29 Oct), co-authorship | Shazz says go | Germ, Shazz |
 | 1. Rules | World bible plus the 4 games written as payoff tables, solved in code | Solver reproduces the equilibria above | JARVIS drafts, both check |
-| 2. Engine | Python engine, one adapter per provider, belief prompts, log, spending cap | 10-day test run on cheap models, no crash, full log | Germ |
+| 2. Engine and dashboard | Worker engine, one adapter per provider, belief prompts, log, spending cap; dashboard with keys, turn order and token ledger | Both participants save keys; a 10-day test run on cheap models alternates turns, uses a fallback once, and the ledger matches the providers' own usage pages | Germ |
 | 3. Week 0 | Scripted bots | Measured rates match the solver within noise | Germ |
 | 4. Weeks 1 to 3 | First cycle | 3 logs; fix what broke; freeze rules and payoffs | Both |
 | 5. Weeks 4 to 9 | Cycles 2 and 3 | 9 logs | Germ runs, both read |
 | 6. Paper | Analysis, figures, write-up, arXiv preprint | Preprint posted, code and logs public here | Both |
 
-A replay page in this folder will show the city map day by day for each week.
+The dashboard replays every week day by day.
 
 ## Prior work to read first
 
@@ -218,6 +268,8 @@ Our angle: three providers rotated through government, crime and the world itsel
 - **The World decides too much.** It only frames; Nature and the arithmetic are code, and every news item must trace to a logged event.
 - **Refusals.** A model may refuse to play a gang. Keep the data: refusal rate by seat and model is a result. Read each provider's usage policy before week 1.
 - **Model updates mid-study.** Pin versions and log them daily.
+- **A leaked key.** Keys are encrypted at rest, never logged, and each has a provider-side spending limit. Delete the Tidewall keys when the study ends.
+- **Uneven bills.** One provider can cost more than another, so alternating days won't split the cost exactly in half. The ledger shows the real split; settle the difference at the end if you want.
 - **Changing rules after cycle 1** would break the comparison. Tune in cycle 1, then freeze.
 
 ## Decisions
@@ -225,6 +277,7 @@ Our angle: three providers rotated through government, crime and the world itsel
 Settled by Germ, 29 Oct 2026:
 
 1. **Payoff numbers:** as written above.
-2. **Budget:** a weekly cap of $70, the top of the estimate. The cost split between Germ and Shazz is still open.
+2. **Budget:** a weekly cap of $70, the top of the estimate. The cost splits by turn: each participant pays for their own game days, with fallback to the other's key, all shown in the token ledger.
 3. **Length:** 3 cycles, 9 weeks.
 4. **Venue:** arXiv preprint.
+5. **Front end:** one dashboard; participants' own keys; turns alternate; token ledger after every day.

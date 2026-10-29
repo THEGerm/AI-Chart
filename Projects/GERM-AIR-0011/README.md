@@ -6,6 +6,8 @@ CertBasis turns a certification basis, as a Transport Canada TCDS or an STC stat
 
 It is a static page published from this repo with GitHub Pages: `https://thegerm.github.io/AI-Chart/Projects/GERM-AIR-0011/`. It's Germ's own tool, with no login and no server.
 
+The plan the build started from is [docs/plan-rev2-2026-10-21.md](docs/plan-rev2-2026-10-21.md) (rev 2, 21 Oct 2026). The build has moved on since: CAR 6 joined Phase 1 and the folder moved here on 23 Oct.
+
 ## How it is organised
 
 1. **Regulation library** (`data/rulebooks/`). Every section of a rulebook at every amendment that changed it. The text at level L is the latest version at or before L.

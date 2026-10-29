@@ -1,6 +1,6 @@
 # GERM-DEV-0022: Tidewall
 
-Plan, rev 2, 29 Oct 2026. Germ and Shazz.
+Plan, rev 2.1, 29 Oct 2026. Germ and Shazz.
 
 Tidewall is an island city-state behind a sea wall. Nobody leaves. A government runs it, criminals work it, and the world itself (news, weather, accidents, luck) pushes back. Three AI models take those three seats, one week at a time, and swap seats every week.
 
@@ -188,7 +188,7 @@ Gemini and GPT prices aren't checked yet. **The engine has a hard spending cap p
 
 | Step | What | Done when | Who |
 |---|---|---|---|
-| 0. Agree | This page, the payoff numbers, budget, cost split, co-authorship | Both say go | Germ, Shazz |
+| 0. Agree | This page (Germ agreed 29 Oct), cost split, co-authorship | Shazz says go | Germ, Shazz |
 | 1. Rules | World bible plus the 4 games written as payoff tables, solved in code | Solver reproduces the equilibria above | JARVIS drafts, both check |
 | 2. Engine | Python engine, one adapter per provider, belief prompts, log, spending cap | 10-day test run on cheap models, no crash, full log | Germ |
 | 3. Week 0 | Scripted bots | Measured rates match the solver within noise | Germ |
@@ -220,9 +220,11 @@ Our angle: three providers rotated through government, crime and the world itsel
 - **Model updates mid-study.** Pin versions and log them daily.
 - **Changing rules after cycle 1** would break the comparison. Tune in cycle 1, then freeze.
 
-## Decisions for Germ and Shazz
+## Decisions
 
-1. The payoff numbers above, or different ones
-2. The weekly budget cap, and how the cost splits
-3. How many cycles: 3 (9 weeks), or stop when the trends settle
-4. Venue: arXiv preprint only, or a workshop as well
+Settled by Germ, 29 Oct 2026:
+
+1. **Payoff numbers:** as written above.
+2. **Budget:** a weekly cap of $70, the top of the estimate. The cost split between Germ and Shazz is still open.
+3. **Length:** 3 cycles, 9 weeks.
+4. **Venue:** arXiv preprint.

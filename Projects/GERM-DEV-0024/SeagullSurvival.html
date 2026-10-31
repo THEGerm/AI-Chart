@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Squawk & Survive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: linear-gradient(180deg, #87CEEB 0%, #B0E0F5 40%, #F5E6C8 100%);
+    min-height: 100vh;
+    font-family: 'Nunito', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .clouds { position: fixed; top: 0; left: 0; right: 0; pointer-events: none; z-index: 0; height: 120px; }
+  .cloud {
+    position: absolute;
+    background: rgba(255,255,255,0.7);
+    border-radius: 50px;
+    animation: drift linear infinite;
+  }
+  @keyframes drift { from { transform: translateX(-200px); } to { transform: translateX(110vw); } }
+
+  .game-card {
+    background: rgba(255,255,255,0.92);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(0,80,160,0.15), 0 2px 0 #fff inset;
+    border: 3px solid #0077B6;
+    padding: 24px;
+    width: 100%;
+    max-width: 680px;
+    position: relative;
+    z-index: 1;
+    margin-top: 8px;
+  }
+
+  h1.title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.4rem;
+    color: #0077B6;
+    text-align: center;
+    text-shadow: 3px 3px 0 #90E0EF;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .subtitle { text-align: center; color: #5a7a8a; font-size: 0.95rem; font-weight: 600; margin-bottom: 20px; }
+
+  /* STATS */
+  .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .stat-block { background: #f0f8ff; border-radius: 12px; padding: 8px 10px; border: 2px solid #cce4f7; text-align: center; }
+  .stat-label { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: #5a7a8a; margin-bottom: 4px; }
+  .stat-bar-wrap { background: #daeef7; border-radius: 8px; height: 10px; overflow: hidden; margin-bottom: 4px; }
+  .stat-bar { height: 100%; border-radius: 8px; transition: width 0.5s ease; }
+  .stat-val { font-size: 0.75rem; font-weight: 800; color: #0077B6; }
+
+  /* DAY HEADER */
+  .day-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 6px; }
+  .day-badge { font-family: 'Fredoka One', cursive; font-size: 1.05rem; background: #FFB703; color: #7a4600; padding: 5px 14px; border-radius: 20px; border: 2px solid #e09c00; box-shadow: 0 3px 0 #c88800; }
+  .action-pill { font-family: 'Nunito', sans-serif; font-size: 0.75rem; font-weight: 800; background: #fff; color: #0077B6; padding: 4px 12px; border-radius: 20px; border: 2px solid #0077B6; }
+  .rank-badge { font-family: 'Fredoka One', cursive; font-size: 0.9rem; background: #0077B6; color: #fff; padding: 5px 12px; border-radius: 20px; border: 2px solid #005a8c; box-shadow: 0 3px 0 #004070; }
+
+  .section-title { font-family: 'Fredoka One', cursive; font-size: 1.05rem; color: #0077B6; margin-bottom: 10px; }
+
+  /* PROGRESS */
+  .progress-bar-wrap { background: #daeef7; border-radius: 10px; height: 8px; margin-top: 8px; overflow: hidden; margin-bottom: 14px; }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, #FFB703, #ff8c00); border-radius: 10px; transition: width 0.5s ease; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 0.68rem; color: #5a7a8a; font-weight: 700; margin-top: 2px; }
+
+  /* PREEN */
+  .preen-btn {
+    width: 100%; background: linear-gradient(90deg, #b8e6d0, #d4f0e0);
+    border: 2px solid #2ecc71; border-radius: 14px; padding: 10px 14px; cursor: pointer;
+    font-family: 'Nunito', sans-serif; font-weight: 800; color: #1a6d3a; font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: all 0.15s; flex-wrap: wrap; margin-bottom: 12px;
+  }
+  .preen-btn:hover:not(:disabled) { background: linear-gradient(90deg, #9edfbf, #c0e8d0); transform: translateY(-2px); }
+  .preen-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .preen-sub { font-size: 0.7rem; color: #3a7a5a; font-weight: 600; }
+
+  /* LOCATIONS */
+  .locations-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+  .loc-btn { background: #f0f8ff; border: 2px solid #90c8e8; border-radius: 14px; padding: 10px 6px; cursor: pointer; text-align: center; transition: all 0.15s; font-family: 'Nunito', sans-serif; }
+  .loc-btn:hover:not(:disabled) { background: #d8f0ff; border-color: #0077B6; transform: translateY(-2px); }
+  .loc-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .loc-btn.selected { background: #0077B6; border-color: #005a8c; transform: translateY(-2px); box-shadow: 0 4px 0 #004070; }
+  .loc-emoji { font-size: 1.4rem; display: block; margin-bottom: 2px; }
+  .loc-name { font-size: 0.7rem; font-weight: 800; line-height: 1.2; color: #005a8c; }
+  .loc-btn.selected .loc-name { color: #fff; }
+  .loc-desc { background: #f0f8ff; border-radius: 12px; padding: 10px 14px; font-size: 0.85rem; color: #3a5a6a; margin-bottom: 12px; border-left: 4px solid #0077B6; font-style: italic; }
+
+  /* ACTIONS */
+  .actions-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+  .action-btn { background: #fff; border: 2px solid #90c8e8; border-radius: 14px; padding: 12px 16px; cursor: pointer; text-align: left; transition: all 0.15s; font-family: 'Nunito', sans-serif; display: flex; align-items: flex-start; gap: 10px; width: 100%; }
+  .action-btn:hover:not(:disabled) { background: #e8f6ff; border-color: #0077B6; transform: translateX(3px); }
+  .action-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .principle-tag { background: #FFB703; color: #7a4600; font-size: 0.6rem; font-weight: 800; padding: 2px 7px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; margin-top: 3px; }
+  .action-text { font-size: 0.85rem; font-weight: 700; color: #0a3a5a; }
+  .action-preview { font-size: 0.72rem; color: #5a7a8a; margin-top: 2px; }
+  .species-bonus { color: #1a8a4a; font-weight: 800; }
+
+  /* RESULT */
+  .result-panel { border-radius: 16px; padding: 14px 16px; margin-bottom: 12px; border: 2px solid; animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+  @keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .result-panel.success { background: #e8f8f0; border-color: #2ecc71; }
+  .result-panel.fail { background: #fff0f0; border-color: #e74c3c; }
+  .result-panel.night { background: #e8e0f5; border-color: #6c5ce7; }
+  .result-title { font-family: 'Fredoka One', cursive; font-size: 1rem; margin-bottom: 6px; }
+  .result-title.success { color: #1a8a4a; }
+  .result-title.fail { color: #c0392b; }
+  .result-title.night { color: #4a3c9a; }
+  .result-msg { font-size: 0.85rem; color: #3a3a4a; line-height: 1.5; }
+  .event-tag { background: #fffbe6; border: 1px solid #FFB703; border-radius: 8px; padding: 6px 10px; font-size: 0.78rem; color: #7a5500; margin-top: 8px; }
+
+  /* LOG */
+  .log-wrap { background: #f0f8ff; border-radius: 14px; padding: 10px 12px; max-height: 140px; overflow-y: auto; border: 2px solid #cce4f7; }
+  .log-entry { font-size: 0.72rem; color: #3a5a6a; padding: 4px 0; border-bottom: 1px solid #daeef7; line-height: 1.4; }
+  .log-entry:last-child { border-bottom: none; }
+  .log-day { font-weight: 800; color: #0077B6; }
+  .log-success { color: #1a8a4a; }
+  .log-fail { color: #c0392b; }
+
+  /* INTRO */
+  .intro-content { text-align: center; padding: 10px 0; }
+  .intro-gull { font-size: 5rem; display: block; margin: 0 auto 10px; animation: bob 2s ease-in-out infinite; }
+  @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .intro-text { font-size: 0.9rem; color: #3a5a6a; line-height: 1.6; max-width: 420px; margin: 0 auto 20px; }
+  .name-row { display: flex; gap: 10px; justify-content: center; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+  .name-label { font-weight: 800; color: #0077B6; }
+  .name-input { font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700; border: 2px solid #0077B6; border-radius: 12px; padding: 8px 14px; width: 180px; outline: none; color: #0a3a5a; }
+  .name-input:focus { border-color: #FFB703; box-shadow: 0 0 0 3px rgba(255,183,3,0.25); }
+
+  /* SPECIES */
+  .species-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .species-card { background: #fff; border: 3px solid #cce4f7; border-radius: 16px; padding: 14px; cursor: pointer; text-align: left; transition: all 0.15s; width: 100%; font-family: 'Nunito', sans-serif; }
+  .species-card:hover { border-color: #0077B6; transform: translateY(-2px); box-shadow: 0 4px 0 #cce4f7; }
+  .species-card.selected { border-color: #FFB703; background: #fffbe6; box-shadow: 0 4px 0 #FFB703; }
+  .species-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .species-emoji { font-size: 2rem; }
+  .species-name { font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: #0077B6; }
+  .species-desc { font-size: 0.8rem; color: #3a5a6a; line-height: 1.4; margin-bottom: 4px; }
+  .species-bonus-line { font-size: 0.75rem; color: #1a8a4a; font-weight: 800; }
+
+  /* BUTTONS */
+  .btn-primary { font-family: 'Fredoka One', cursive; font-size: 1.1rem; background: #0077B6; color: #fff; border: none; border-radius: 16px; padding: 12px 28px; cursor: pointer; box-shadow: 0 5px 0 #005a8c; transition: all 0.1s; }
+  .btn-primary:hover:not(:disabled) { background: #0096d6; transform: translateY(-2px); box-shadow: 0 7px 0 #005a8c; }
+  .btn-primary:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 #005a8c; }
+  .btn-primary:disabled { background: #bbb; box-shadow: 0 5px 0 #888; cursor: not-allowed; }
+
+  .guide-toggle { background: transparent; border: 2px solid #90c8e8; border-radius: 10px; padding: 5px 12px; font-family: 'Nunito', sans-serif; font-size: 0.78rem; font-weight: 800; color: #0077B6; cursor: pointer; margin-bottom: 12px; }
+  .guide-toggle:hover { background: #e8f6ff; }
+  .principles-panel { background: #fffbe6; border: 2px solid #FFB703; border-radius: 14px; padding: 12px 14px; margin-bottom: 14px; }
+  .principle-item { font-size: 0.75rem; color: #4a4a2a; padding: 3px 0; border-bottom: 1px dashed rgba(255,217,112,0.4); line-height: 1.45; }
+  .principle-item:last-child { border-bottom: none; }
+  .principle-num { font-weight: 800; color: #c07700; }
+
+  /* SPECIES PILL */
+  .species-pill { display: inline-block; font-size: 0.7rem; font-weight: 800; color: #7a4600; background: #FFE898; padding: 2px 8px; border-radius: 12px; margin-left: 6px; vertical-align: middle; }
+
+  /* END SCREENS */
+  .end-screen { text-align: center; padding: 10px 0; }
+  .end-gull { font-size: 4rem; display: block; margin: 0 auto 12px; }
+  .won-gull { animation: bob 1s ease-in-out infinite; }
+  .end-title { font-family: 'Fredoka One', cursive; font-size: 2rem; margin-bottom: 8px; }
+  .end-title.won { color: #0077B6; }
+  .end-title.dead { color: #c0392b; }
+  .end-title.survived { color: #c07700; }
+  .end-msg { font-size: 0.9rem; color: #3a5a6a; line-height: 1.6; margin-bottom: 20px; }
+  .end-stats { display: flex; justify-content: center; gap: 14px; margin-bottom: 20px; flex-wrap: wrap; }
+  .end-stat { background: #f0f8ff; border: 2px solid #cce4f7; border-radius: 12px; padding: 8px 16px; text-align: center; }
+  .end-stat-val { font-family: 'Fredoka One', cursive; font-size: 1.5rem; color: #0077B6; }
+  .end-stat-label { font-size: 0.7rem; font-weight: 800; color: #5a7a8a; text-transform: uppercase; }
+
+  /* HIDDEN */
+  .hidden { display: none !important; }
+
+  @media (max-width: 480px) {
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .locations-grid { grid-template-columns: repeat(2, 1fr); }
+    h1.title { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Clouds -->
+<div class="clouds">
+  <div class="cloud" style="width:100px;height:35px;top:8%;left:-100px;animation-duration:28s;animation-delay:0s"></div>
+  <div class="cloud" style="width:70px;height:25px;top:15%;left:-70px;animation-duration:22s;animation-delay:8s"></div>
+  <div class="cloud" style="width:130px;height:45px;top:5%;left:-130px;animation-duration:35s;animation-delay:15s"></div>
+</div>
+
+<div class="game-card" id="app">
+
+  <!-- ===== INTRO ===== -->
+  <div id="phase-intro">
+    <h1 class="title">SQUAWK &amp; SURVIVE</h1>
+    <p class="subtitle">Can you survive one week as a gull?</p>
+    <div class="intro-content">
+      <span class="intro-gull">🐦</span>
+      <p class="intro-text">
+        You are a young seagull. Your parents stopped feeding you. The coast is yours to conquer.
+        Survive <strong>7 days</strong>, 3 actions per day. Reach <strong>Colony Alpha</strong> by
+        building Flock Rep and Confidence. Starve or collapse, and it's over.
+      </p>
+      <div class="name-row">
+        <span class="name-label">Your name:</span>
+        <input id="gull-name" class="name-input" maxlength="16" placeholder="Gary" type="text">
+      </div>
+      <p style="margin-bottom:16px;font-size:0.8rem;color:#5a7a8a;">
+        Win: <strong>55 Flock Rep</strong> + <strong>55 Confidence</strong> by end of Day 7
+      </p>
+      <button class="btn-primary" onclick="goSpecies()">Pick Your Species</button>
+    </div>
+  </div>
+
+  <!-- ===== SPECIES ===== -->
+  <div id="phase-species" class="hidden">
+    <h1 class="title" style="font-size:1.8rem">Choose Your Gull</h1>
+    <p class="subtitle">Each species plays differently. Pick your edge.</p>
+    <div class="species-grid" id="species-grid"></div>
+    <div style="text-align:center">
+      <button class="btn-primary" id="btn-fly" disabled onclick="startGame()">Pick a species</button>
+    </div>
+  </div>
+
+  <!-- ===== PLAYING ===== -->
+  <div id="phase-playing" class="hidden">
+    <h1 class="title" style="font-size:1.5rem;margin-bottom:2px" id="playing-title"></h1>
+    <div class="day-header">
+      <div class="day-badge" id="day-badge">Day 1 / 7</div>
+      <div class="action-pill" id="action-pill">Action 1 / 3</div>
+      <div class="rank-badge" id="rank-badge">🐣 Lost Chick</div>
+    </div>
+    <div>
+      <div class="progress-label">
+        <span>Alpha Progress</span>
+        <span id="progress-label-right">Rep 0/55 · Conf 0/55</span>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
+    </div>
+    <div class="stats-row" style="margin-top:8px">
+      <div class="stat-block">
+        <div class="stat-label">Hunger</div>
+        <div class="stat-bar-wrap"><div class="stat-bar" id="bar-hunger" style="width:60%;background:#e74c3c"></div></div>
+        <div class="stat-val" id="val-hunger">60</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Confidence</div>
+        <div class="stat-bar-wrap"><div class="stat-bar" id="bar-confidence" style="width:20%;background:#FFB703"></div></div>
+        <div class="stat-val" id="val-confidence">20</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Flock Rep</div>
+        <div class="stat-bar-wrap"><div class="stat-bar" id="bar-flockRep" style="width:10%;background:#0077B6"></div></div>
+        <div class="stat-val" id="val-flockRep">10</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Energy</div>
+        <div class="stat-bar-wrap"><div class="stat-bar" id="bar-energy" style="width:80%;background:#2ecc71"></div></div>
+        <div class="stat-val" id="val-energy">80</div>
+      </div>
+    </div>
+
+    <button class="guide-toggle" id="guide-toggle" onclick="toggleGuide()">▼ Show Survival Guide (10 Principles)</button>
+    <div id="principles-panel" class="principles-panel hidden"></div>
+
+    <!-- Result panel -->
+    <div id="result-panel" class="result-panel hidden">
+      <div class="result-title" id="result-title"></div>
+      <div class="result-msg" id="result-msg"></div>
+      <div class="event-tag hidden" id="event-tag"></div>
+    </div>
+
+    <!-- Action area -->
+    <div id="action-area">
+      <button class="preen-btn" id="preen-btn" onclick="doPreen()">
+        <span>🪶 Preen &amp; Rest a Few Hours</span>
+        <span class="preen-sub">(+25 Energy, uses 1 action slot)</span>
+      </button>
+      <div class="section-title">Or choose a location:</div>
+      <div class="locations-grid" id="locations-grid"></div>
+      <div id="loc-detail" class="hidden">
+        <div class="loc-desc" id="loc-desc"></div>
+        <div class="section-title">Choose your action:</div>
+        <div class="actions-list" id="actions-list"></div>
+      </div>
+    </div>
+
+    <!-- Log -->
+    <div id="log-section" class="hidden">
+      <div class="section-title" style="margin-top:12px">Activity Log</div>
+      <div class="log-wrap" id="log-wrap"></div>
+    </div>
+  </div>
+
+  <!-- ===== END SCREENS ===== -->
+  <div id="phase-won" class="hidden">
+    <div class="end-screen">
+      <span class="end-gull won-gull">👑</span>
+      <h2 class="end-title won">Colony Alpha: <span id="won-name"></span></h2>
+      <p class="end-msg" id="won-msg"></p>
+      <div class="end-stats" id="won-stats"></div>
+      <button class="btn-primary" onclick="resetGame()">Fly Again</button>
+    </div>
+  </div>
+
+  <div id="phase-survived" class="hidden">
+    <div class="end-screen">
+      <span class="end-gull">🐦</span>
+      <h2 class="end-title survived">Survived the Week</h2>
+      <p class="end-msg" id="survived-msg"></p>
+      <div class="end-stats" id="survived-stats"></div>
+      <button class="btn-primary" onclick="resetGame()">Try Again</button>
+    </div>
+  </div>
+
+  <div id="phase-dead" class="hidden">
+    <div class="end-screen">
+      <span class="end-gull" style="font-size:4rem">💀</span>
+      <h2 class="end-title dead" id="dead-title">You Starved</h2>
+      <p class="end-msg" id="dead-msg"></p>
+      <div class="end-stats" id="dead-stats"></div>
+      <button class="btn-primary" onclick="resetGame()">Try Again</button>
+    </div>
+  </div>
+
+</div><!-- /game-card -->
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const SPECIES = {
+  ringbilled: {
+    name: "Ring-billed Gull", emoji: "🐦",
+    desc: "Smaller, clever, lives for parking lots and chip trucks. A true human-theft specialist.",
+    bonusText: "+20% success stealing from humans",
+    mods: { humanTheft: 0.20, boatTheft: 0, survival: 0, energyDiscount: 0, hungerYield: 0 }
+  },
+  herring: {
+    name: "Herring Gull", emoji: "🕊️",
+    desc: "Big, tough, adaptable. Everyone's nightmare. Higher endurance, well-rounded edge.",
+    bonusText: "+10% success everywhere, -25% energy cost",
+    mods: { humanTheft: 0.10, boatTheft: 0.10, survival: 0.10, energyDiscount: 0.25, hungerYield: 0 }
+  },
+  laughing: {
+    name: "Laughing Gull", emoji: "🐧",
+    desc: "Coastal specialist. Loud cackle, masterful over open water. Boats are your buffet.",
+    bonusText: "+20% success on boats & waterfront, +25% food from the sea",
+    mods: { humanTheft: 0, boatTheft: 0.20, survival: 0, energyDiscount: 0, hungerYield: 0.25 }
+  }
+};
+
+const LOCATIONS = {
+  chipTruck: {
+    name: "Chip Truck", emoji: "🍟",
+    desc: "Distracted tourists. Grease in the air. Peak opportunity. This is where legends are made.",
+    actions: [
+      { id:"observe", label:"Observe peak stupidity hours", principle:2, type:"survival", effects:{hunger:-5,confidence:5,flockRep:2,energy:-5}, msg:"Confirmed: 3pm is when tourists are most distracted. Critical intelligence gathered." },
+      { id:"snatch", label:"Dive-bomb a tourist's fries", principle:5, type:"humanTheft", successRate:0.70, effects:{hunger:20,confidence:15,flockRep:5,energy:-15}, failMsg:"The tourist SCREAMED and covered their cup. You retreated. Shamefully.", msg:"Mid-air snatch. Full cone of fries. The crowd gasped. You are a legend." },
+      { id:"coordinate", label:"Run a flock distraction play", principle:6, type:"survival", effects:{hunger:15,confidence:10,flockRep:15,energy:-20}, msg:"Synchronized squawk-and-dive. Three gulls eat. You eat. Glorious coordinated chaos." },
+      { id:"tableSwipe", label:"Swipe from an outdoor table", principle:5, type:"humanTheft", successRate:0.65, effects:{hunger:18,confidence:12,flockRep:3,energy:-10}, failMsg:"Waiter swatted you with a menu. Indignity. Flew off empty-beaked.", msg:"Grabbed a whole poutine. Two seniors clapped. Not sure if sarcasm." },
+      { id:"ketchupHunt", label:"Raid the condiment station scraps", principle:1, type:"humanTheft", effects:{hunger:8,confidence:4,flockRep:1,energy:-6}, msg:"Half a ketchup packet, a pickle spear, and three forgotten fries. Modest but earned." }
+    ]
+  },
+  parkingLot: {
+    name: "Parking Lot", emoji: "🅿️",
+    desc: "Suburban wasteland. Fallen fast food everywhere. No competition, no glamour, all results.",
+    actions: [
+      { id:"patrol", label:"Patrol the asphalt kingdom", principle:1, type:"humanTheft", effects:{hunger:10,confidence:5,flockRep:0,energy:-10}, msg:"Half a burger near a minivan. Nobody gave this to you. You earned it." },
+      { id:"crowCoalition", label:"Shadow the crows", principle:8, type:"survival", effects:{hunger:8,confidence:3,flockRep:8,energy:-8}, msg:"Crow diplomacy is awkward. But the pizza slice they found was worth it." },
+      { id:"intimidate", label:"Psychologically destroy a small child", principle:5, type:"humanTheft", successRate:0.78, effects:{hunger:12,confidence:20,flockRep:5,energy:-10}, failMsg:"The child THREW their hot dog at you. You are covered in mustard. Confidence shaken.", msg:"The child dropped the hot dog immediately. Flawless. Pure intimidation." },
+      { id:"driveThru", label:"Raid the drive-thru trash bin", principle:1, type:"humanTheft", successRate:0.72, effects:{hunger:22,confidence:8,flockRep:2,energy:-12}, failMsg:"A teenager chased you with a broom. Dignity: destroyed. Stomach: empty.", msg:"Full chicken nugget box. Untouched dipping sauce. This is the dream." },
+      { id:"carWindow", label:"Stalk an open car window", principle:3, type:"humanTheft", successRate:0.55, effects:{hunger:15,confidence:18,flockRep:4,energy:-12}, failMsg:"Got in. Got stuck. Owner returned. Violence ensued. You are fine. Mostly.", msg:"Unattended donut on the passenger seat. In and out in two seconds. Elite work." }
+    ]
+  },
+  waterfront: {
+    name: "Waterfront", emoji: "⚓",
+    desc: "Docks, fish smell, tourist boats. High prestige territory. The gulls here mean business.",
+    actions: [
+      { id:"fishPatrol", label:"Work the fishing boats", principle:1, type:"boatTheft", effects:{hunger:15,confidence:5,flockRep:0,energy:-10}, msg:"Caught a discarded perch mid-toss. Self-sufficiency is deeply satisfying." },
+      { id:"shareBounty", label:"Alert the colony to a big haul", principle:10, type:"survival", effects:{hunger:8,confidence:5,flockRep:20,energy:-10}, msg:"You called it. Twenty gulls appeared. Everyone ate. Your reputation soars." },
+      { id:"studySchedule", label:"Study the tourist boat schedule", principle:2, type:"survival", effects:{hunger:-5,confidence:8,flockRep:5,energy:-5}, msg:"The 2pm boat drops snacks at the south dock. You will be ready every time now." },
+      { id:"fishermanBucket", label:"Rob a fisherman's bait bucket", principle:5, type:"boatTheft", successRate:0.60, effects:{hunger:22,confidence:15,flockRep:6,energy:-15}, failMsg:"The fisherman threw a boot at you. A wet boot. You are wet and broke.", msg:"Entire herring, still flapping. Glorious. You are a natural thief of the sea." },
+      { id:"boatDeck", label:"Swoop a tour boat deck mid-lunch", principle:3, type:"boatTheft", successRate:0.68, effects:{hunger:18,confidence:12,flockRep:5,energy:-12}, failMsg:"A retiree blocked you with a paperback. Full-face hit. Flew off disoriented.", msg:"Snatched a sandwich directly off a plate. Child cried. You soared away, glorious." },
+      { id:"tideline", label:"Walk the tideline for crustaceans", principle:1, type:"boatTheft", effects:{hunger:12,confidence:3,flockRep:0,energy:-6}, msg:"Two crabs and a washed-up fish head. The sea provides when worked properly." }
+    ]
+  },
+  park: {
+    name: "City Park", emoji: "🌳",
+    desc: "Picnickers. Joggers. Distracted parents. Soft targets in a peaceful environment.",
+    actions: [
+      { id:"stalking", label:"Patiently stalk a family picnic", principle:3, type:"humanTheft", effects:{hunger:12,confidence:10,flockRep:5,energy:-5}, msg:"Your stillness was deeply unnerving. The child eventually dropped the granola bar. Patience wins." },
+      { id:"formSwarm", label:"Assemble the squad for a swarm", principle:7, type:"survival", effects:{hunger:18,confidence:8,flockRep:12,energy:-15}, msg:"Six gulls responded to your call. The birthday party didn't stand a chance." },
+      { id:"observePattern", label:"Map the picnicker feeding windows", principle:2, type:"survival", effects:{hunger:-3,confidence:7,flockRep:3,energy:-5}, msg:"Lunchtime patterns logged. Saturday afternoons: maximum yield. You are learning." },
+      { id:"joggerSnack", label:"Snatch a jogger's energy bar", principle:5, type:"humanTheft", successRate:0.62, effects:{hunger:14,confidence:14,flockRep:4,energy:-10}, failMsg:"The jogger caught you mid-grab. She hissed back. You flew off, shaken.", msg:"Ripped the bar straight out of her hand mid-stride. Clean extraction." },
+      { id:"breadLady", label:"Dominate the old-lady bread pile", principle:5, type:"humanTheft", effects:{hunger:16,confidence:10,flockRep:3,energy:-8}, msg:"Muscled past three pigeons and a meek duck. All the bread is yours now. She seemed pleased." },
+      { id:"playgroundSnack", label:"Raid a toddler's abandoned snack cup", principle:1, type:"humanTheft", successRate:0.80, effects:{hunger:10,confidence:8,flockRep:1,energy:-6}, failMsg:"The toddler returned. Screamed. Parents glared. Moral victory only.", msg:"Half a cup of goldfish crackers. Easy and dignified. Well, relatively." }
+    ]
+  },
+  landfill: {
+    name: "The Landfill", emoji: "🗑️",
+    desc: "Competitive, chaotic, and absolutely stacked. High risk. Maximum reward.",
+    actions: [
+      { id:"aggressiveDive", label:"Full-commit aggressive dive", principle:3, type:"survival", successRate:0.60, effects:{hunger:25,confidence:15,flockRep:-5,energy:-25}, failMsg:"Bigger gull body-checked you mid-dive. You ate nothing. Your back hurts.", msg:"Went in hard. Came out with a full loaf of bread. Every scratch was worth it." },
+      { id:"alertColony", label:"Broadcast a major find to the colony", principle:10, type:"survival", effects:{hunger:12,confidence:5,flockRep:18,energy:-12}, msg:"Your call brought the entire colony. You ate. They ate. You're a local hero." },
+      { id:"claimZone", label:"Claim a premium garbage zone", principle:1, type:"survival", successRate:0.65, effects:{hunger:15,confidence:12,flockRep:5,energy:-15}, failMsg:"Three bigger gulls blocked you and laughed. This is not your zone yet.", msg:"Zone secured. No one is testing you today. This dumpster is yours." },
+      { id:"freshDelivery", label:"Intercept a fresh truck delivery", principle:3, type:"survival", successRate:0.55, effects:{hunger:28,confidence:18,flockRep:8,energy:-20}, failMsg:"The compactor started. You fled inches from becoming a legend of a different kind.", msg:"First to the pile. Warm restaurant waste. Untouched. You eat like royalty." },
+      { id:"scrapPick", label:"Pick the edges while others fight", principle:3, type:"survival", effects:{hunger:10,confidence:3,flockRep:0,energy:-5}, msg:"Strategic patience. Three apple cores and a chicken bone. Modest. Safe. Wise." }
+    ]
+  },
+  roost: {
+    name: "The Roost", emoji: "🏗️",
+    desc: "A parking garage roof. The social hub of gull society. Negotiate, recruit, learn.",
+    actions: [
+      { id:"negotiateElders", label:"Negotiate with the elder gulls", principle:4, type:"survival", effects:{hunger:-5,confidence:10,flockRep:20,energy:-8}, msg:"Gerald the Elder granted you the east pier feeding zone. Invaluable. You owe him one fish." },
+      { id:"buildSquad", label:"Recruit reliable flockmates", principle:7, type:"survival", effects:{hunger:-5,confidence:8,flockRep:15,energy:-10}, msg:"Dave and Sandra have agreed to respond to your alarm calls. The squad takes shape." },
+      { id:"peckingOrder", label:"Study the pecking order", principle:4, type:"survival", effects:{hunger:-3,confidence:6,flockRep:10,energy:-5}, msg:"You've mapped who bullies whom. Strategic leverage acquired." }
+    ]
+  }
+};
+
+const RANDOM_EVENTS = [
+  { msg:"A toddler hurled an ice cream cone at you by accident. Bonus meal.", effects:{hunger:15,confidence:10} },
+  { msg:"A dog chased you 200 metres. Humiliating. Good cardio though.", effects:{energy:-15,confidence:-5} },
+  { msg:"Raccoon tipped a garbage can right in front of you. Rare alliance energy.", effects:{hunger:12,flockRep:5} },
+  { msg:"Another gull stole your fish mid-flight. You are furious.", effects:{hunger:-10,confidence:-8} },
+  { msg:"A photographer offered you a chip to pose. Easily exploited.", effects:{hunger:8,confidence:12} },
+  { msg:"Storm front rolling in. Fighting the wind costs you.", effects:{energy:-15,hunger:-5} },
+  { msg:"Found a dropped birthday cake. Unreal. This cannot be legal.", effects:{hunger:25,confidence:5} },
+  { msg:"A pigeon showed you a new food spot. Unexpected but appreciated.", effects:{flockRep:8,hunger:5} },
+  { msg:"Tangled briefly in a kite string. The humans laughed. Dark day.", effects:{energy:-10,confidence:-10} },
+  { msg:"An elder gull taught you a new squawk frequency. Flock respect rises.", effects:{flockRep:10,confidence:5} },
+  { msg:"Tourist dropped a hot dog in one clean arc. Fortune favors the patient.", effects:{hunger:18,confidence:7} },
+  { msg:"A wedding party left an entire charcuterie board unattended.", effects:{hunger:20,flockRep:5} }
+];
+
+const RANKS = [
+  { name:"Lost Chick", emoji:"🐣", minRep:0, minConf:0 },
+  { name:"Scrappy Fledgling", emoji:"🐦", minRep:15, minConf:10 },
+  { name:"Park Regular", emoji:"🦅", minRep:25, minConf:20 },
+  { name:"Dock Veteran", emoji:"⚓", minRep:35, minConf:35 },
+  { name:"Flock Lieutenant", emoji:"🎖️", minRep:45, minConf:45 },
+  { name:"Colony Alpha", emoji:"👑", minRep:55, minConf:55 }
+];
+
+const PRINCIPLES = [
+  "Promote yourself. Actively seek your own food. No one feeds you now.",
+  "Accelerate your learning. Observe humans at chip trucks and waterfronts.",
+  "Match strategy to situation. Landfill = aggressive. Park = patient.",
+  "Negotiate success. Talk to dominant gulls. Learn the pecking order.",
+  "Secure early wins. Snatch something visible. Build your presence.",
+  "Achieve alignment. Sync your dives with the flock for max chaos.",
+  "Build your team. Form a crew that responds to your alarm calls.",
+  "Create coalitions. Share space with crows and pigeons when useful.",
+  "Keep your balance. Preen, rest, conserve heat. Burnout is real.",
+  "Expedite everyone. Squawk when you find a big haul. Share the bounty."
+];
+
+const DAYS_TOTAL = 7;
+const ACTIONS_PER_DAY = 3;
+const NIGHT_ENERGY = 80;
+const WIN_REP = 55;
+const WIN_CONF = 55;
+
+// ============================================================
+// STATE
+// ============================================================
+let state = {};
+
+function initState() {
+  state = {
+    phase: "intro",
+    name: "",
+    species: null,
+    stats: { hunger:60, confidence:20, flockRep:10, energy:80 },
+    day: 1,
+    actionsToday: 0,
+    location: null,
+    waiting: false,
+    log: [],
+    showGuide: false,
+    wins: 0
+  };
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function clamp(v) { return Math.min(100, Math.max(0, v)); }
+
+function getRank(s) {
+  let rank = RANKS[0];
+  for (const r of RANKS) {
+    if (s.flockRep >= r.minRep && s.confidence >= r.minConf) rank = r;
+  }
+  return rank;
+}
+
+function applyFx(stats, fx, yieldMod=0, energyDiscount=0) {
+  const n = {...stats};
+  for (const [k,v] of Object.entries(fx)) {
+    if (n[k] === undefined) continue;
+    let adj = v;
+    if (k === "hunger" && v > 0 && yieldMod) adj = v * (1 + yieldMod);
+    if (k === "energy" && v < 0 && energyDiscount) adj = v * (1 - energyDiscount);
+    n[k] = clamp(n[k] + adj);
+  }
+  return n;
+}
+
+function adjustedSuccess(action) {
+  if (action.successRate === undefined) return 1;
+  const mods = SPECIES[state.species].mods;
+  const bonus = mods[action.type] || 0;
+  return Math.min(0.95, action.successRate + bonus);
+}
+
+function getYieldMod(action) {
+  if (action.type === "boatTheft") return SPECIES[state.species].mods.hungerYield || 0;
+  return 0;
+}
+
+function randomEvent() {
+  if (Math.random() < 0.22) return RANDOM_EVENTS[Math.floor(Math.random() * RANDOM_EVENTS.length)];
+  return null;
+}
+
+// ============================================================
+// PHASES
+// ============================================================
+function showPhase(id) {
+  ["intro","species","playing","won","survived","dead"].forEach(p => {
+    document.getElementById("phase-" + p).classList.add("hidden");
+  });
+  document.getElementById("phase-" + id).classList.remove("hidden");
+}
+
+function goSpecies() {
+  state.name = document.getElementById("gull-name").value.trim() || "Gary";
+  buildSpeciesGrid();
+  showPhase("species");
+}
+
+function buildSpeciesGrid() {
+  const grid = document.getElementById("species-grid");
+  grid.innerHTML = "";
+  for (const [key, s] of Object.entries(SPECIES)) {
+    const btn = document.createElement("button");
+    btn.className = "species-card";
+    btn.dataset.key = key;
+    btn.innerHTML = `
+      <div class="species-head">
+        <span class="species-emoji">${s.emoji}</span>
+        <span class="species-name">${s.name}</span>
+      </div>
+      <div class="species-desc">${s.desc}</div>
+      <div class="species-bonus-line">✓ ${s.bonusText}</div>
+    `;
+    btn.onclick = () => selectSpecies(key);
+    grid.appendChild(btn);
+  }
+}
+
+function selectSpecies(key) {
+  state.species = key;
+  document.querySelectorAll(".species-card").forEach(c => c.classList.remove("selected"));
+  document.querySelector(`.species-card[data-key="${key}"]`).classList.add("selected");
+  const btn = document.getElementById("btn-fly");
+  btn.disabled = false;
+  btn.textContent = `Fly Free, ${state.name}`;
+}
+
+function startGame() {
+  if (!state.species) return;
+  buildPrinciplesPanel();
+  buildLocationsGrid();
+  updatePlayingUI();
+  showPhase("playing");
+}
+
+function buildPrinciplesPanel() {
+  const panel = document.getElementById("principles-panel");
+  panel.innerHTML = PRINCIPLES.map((p, i) =>
+    `<div class="principle-item"><span class="principle-num">${i+1}. </span>${p}</div>`
+  ).join("");
+}
+
+function buildLocationsGrid() {
+  const grid = document.getElementById("locations-grid");
+  grid.innerHTML = "";
+  for (const [key, loc] of Object.entries(LOCATIONS)) {
+    const btn = document.createElement("button");
+    btn.className = "loc-btn";
+    btn.id = "loc-" + key;
+    btn.innerHTML = `<span class="loc-emoji">${loc.emoji}</span><span class="loc-name">${loc.name}</span>`;
+    btn.onclick = () => selectLocation(key);
+    grid.appendChild(btn);
+  }
+}
+
+function selectLocation(key) {
+  if (state.waiting) return;
+  state.location = key;
+  document.querySelectorAll(".loc-btn").forEach(b => b.classList.remove("selected"));
+  document.getElementById("loc-" + key).classList.add("selected");
+  const loc = LOCATIONS[key];
+  document.getElementById("loc-desc").textContent = loc.desc;
+  buildActionsList(loc.actions);
+  document.getElementById("loc-detail").classList.remove("hidden");
+}
+
+function buildActionsList(actions) {
+  const list = document.getElementById("actions-list");
+  list.innerHTML = "";
+  for (const a of actions) {
+    const btn = document.createElement("button");
+    btn.className = "action-btn";
+    const adj = a.successRate !== undefined ? adjustedSuccess(a) : undefined;
+    const hasBonus = adj !== undefined && adj > a.successRate;
+    let preview = "";
+    if (adj !== undefined) {
+      preview = `<div class="action-preview">Success: ${Math.round(adj * 100)}%${hasBonus ? ' <span class="species-bonus">(species bonus)</span>' : ''}</div>`;
+    }
+    btn.innerHTML = `<span class="principle-tag">#${a.principle}</span><div><div class="action-text">${a.label}</div>${preview}</div>`;
+    btn.onclick = () => doAction(a);
+    list.appendChild(btn);
+  }
+}
+
+// ============================================================
+// ACTIONS
+// ============================================================
+function setWaiting(v) {
+  state.waiting = v;
+  document.querySelectorAll(".action-btn, .loc-btn, .preen-btn").forEach(b => b.disabled = v);
+}
+
+function showResult(type, title, msg, eventMsg) {
+  const panel = document.getElementById("result-panel");
+  panel.className = "result-panel " + type;
+  document.getElementById("result-title").className = "result-title " + type;
+  document.getElementById("result-title").textContent = title;
+  document.getElementById("result-msg").textContent = msg;
+  const etag = document.getElementById("event-tag");
+  if (eventMsg) {
+    etag.textContent = "⚡ Random Event: " + eventMsg;
+    etag.classList.remove("hidden");
+  } else {
+    etag.classList.add("hidden");
+  }
+  panel.classList.remove("hidden");
+  document.getElementById("action-area").classList.add("hidden");
+  // Scroll result into view
+  panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function hideResult() {
+  document.getElementById("result-panel").classList.add("hidden");
+  document.getElementById("action-area").classList.remove("hidden");
+}
+
+function addLog(entry) {
+  state.log.unshift(entry);
+  if (state.log.length > 25) state.log.pop();
+  if (entry.success !== "night") state.wins += entry.success ? 1 : 0;
+  renderLog();
+}
+
+function renderLog() {
+  const wrap = document.getElementById("log-wrap");
+  const section = document.getElementById("log-section");
+  if (state.log.length === 0) { section.classList.add("hidden"); return; }
+  section.classList.remove("hidden");
+  wrap.innerHTML = state.log.map(e => {
+    const sClass = e.success === true ? "log-success" : e.success === "night" ? "" : "log-fail";
+    const icon = e.success === true ? "✓" : e.success === "night" ? "🌙" : "✗";
+    const evStr = e.event ? ` · <span style="color:#c07700">⚡ ${e.event.slice(0,50)}</span>` : "";
+    return `<div class="log-entry"><span class="log-day">Day ${e.day}</span> · ${e.loc} · <span class="${sClass}">${icon}</span> ${e.msg.slice(0,80)}${e.msg.length>80?"…":""}${evStr}</div>`;
+  }).join("");
+}
+
+function updateStats(newStats) {
+  state.stats = newStats;
+  const keys = ["hunger","confidence","flockRep","energy"];
+  keys.forEach(k => {
+    document.getElementById("bar-" + k).style.width = Math.round(newStats[k]) + "%";
+    document.getElementById("val-" + k).textContent = Math.round(newStats[k]);
+  });
+  const rank = getRank(newStats);
+  document.getElementById("rank-badge").textContent = rank.emoji + " " + rank.name;
+  const rep = Math.min(newStats.flockRep, WIN_REP);
+  const conf = Math.min(newStats.confidence, WIN_CONF);
+  const pct = Math.min(100, (rep/WIN_REP)*50 + (conf/WIN_CONF)*50);
+  document.getElementById("progress-bar").style.width = pct + "%";
+  document.getElementById("progress-label-right").textContent = `Rep ${Math.round(newStats.flockRep)}/${WIN_REP} · Conf ${Math.round(newStats.confidence)}/${WIN_CONF}`;
+}
+
+function updateDayUI() {
+  document.getElementById("day-badge").textContent = `Day ${state.day} / ${DAYS_TOTAL}`;
+  document.getElementById("action-pill").textContent = `Action ${Math.min(state.actionsToday + 1, ACTIONS_PER_DAY)} / ${ACTIONS_PER_DAY}`;
+}
+
+function updatePlayingUI() {
+  const sp = SPECIES[state.species];
+  document.getElementById("playing-title").innerHTML =
+    `${sp.emoji} ${state.name} <span class="species-pill">${sp.name}</span>`;
+  updateDayUI();
+  updateStats(state.stats);
+  // Reset location
+  state.location = null;
+  document.querySelectorAll(".loc-btn").forEach(b => b.classList.remove("selected"));
+  document.getElementById("loc-detail").classList.add("hidden");
+  hideResult();
+}
+
+function doAction(action) {
+  if (state.waiting) return;
+  setWaiting(true);
+
+  const successChance = adjustedSuccess(action);
+  const success = action.successRate === undefined ? true : Math.random() < successChance;
+  const msg = success ? action.msg : action.failMsg;
+  const fx = success ? action.effects : { hunger:-3, confidence:-8, energy:-10, flockRep:0 };
+  const event = randomEvent();
+  const yieldMod = success ? getYieldMod(action) : 0;
+  const energyDiscount = SPECIES[state.species].mods.energyDiscount || 0;
+
+  let newStats = applyFx(state.stats, fx, yieldMod, energyDiscount);
+  if (event) newStats = applyFx(newStats, event.effects);
+
+  addLog({ day:state.day, loc:LOCATIONS[state.location].name, msg, success, event:event?.msg||null });
+  showResult(success?"success":"fail", success?"✓ Success":"✗ Setback", msg, event?.msg||null);
+  updateStats(newStats);
+
+  finishTurn(newStats, state.actionsToday + 1);
+}
+
+function doPreen() {
+  if (state.waiting) return;
+  setWaiting(true);
+
+  const fx = { energy:25, hunger:-3, confidence:2, flockRep:0 };
+  const event = Math.random() < 0.15 ? RANDOM_EVENTS[Math.floor(Math.random() * RANDOM_EVENTS.length)] : null;
+  let newStats = applyFx(state.stats, fx);
+  if (event) newStats = applyFx(newStats, event.effects);
+
+  const msg = "You find a sunlit ledge and preen meticulously. Feathers aligned. Energy recovering. The day feels lighter.";
+  addLog({ day:state.day, loc:"Preening", msg, success:true, event:event?.msg||null });
+  showResult("success","✓ Preening", msg, event?.msg||null);
+  updateStats(newStats);
+
+  finishTurn(newStats, state.actionsToday + 1);
+}
+
+function finishTurn(newStats, nextActions) {
+  if (newStats.hunger <= 0 || newStats.energy <= 0) {
+    setTimeout(() => showEndScreen("dead", newStats), 5600);
+    return;
+  }
+
+  if (nextActions >= ACTIONS_PER_DAY) {
+    // Night transition
+    setTimeout(() => {
+      const nextDay = state.day + 1;
+      const afterNight = {
+        ...newStats,
+        energy: Math.max(newStats.energy, NIGHT_ENERGY),
+        hunger: clamp(newStats.hunger - 5)
+      };
+
+      if (afterNight.hunger <= 0) {
+        showEndScreen("dead", afterNight);
+        setWaiting(false);
+        return;
+      }
+
+      if (nextDay > DAYS_TOTAL) {
+        if (afterNight.flockRep >= WIN_REP && afterNight.confidence >= WIN_CONF) {
+          showEndScreen("won", afterNight);
+        } else {
+          showEndScreen("survived", afterNight);
+        }
+        setWaiting(false);
+        return;
+      }
+
+      // Show night result
+      updateStats(afterNight);
+      state.day = nextDay;
+      state.actionsToday = 0;
+      updateDayUI();
+
+      const nightMsg = `Night ${state.day - 1}. You roost on a pier light. Salt air, cold wind. You preen and sleep. Energy restored to ${Math.round(afterNight.energy)}.`;
+      addLog({ day:state.day-1, loc:"Night Roost", msg:nightMsg, success:"night", event:null });
+      showResult("night","🌙 Nightfall", nightMsg, null);
+
+      setTimeout(() => {
+        hideResult();
+        setWaiting(false);
+        state.location = null;
+        document.querySelectorAll(".loc-btn").forEach(b => b.classList.remove("selected"));
+        document.getElementById("loc-detail").classList.add("hidden");
+      }, 5200);
+
+    }, 5600);
+
+  } else {
+    // More actions today
+    setTimeout(() => {
+      state.actionsToday = nextActions;
+      updateDayUI();
+      hideResult();
+      setWaiting(false);
+      state.location = null;
+      document.querySelectorAll(".loc-btn").forEach(b => b.classList.remove("selected"));
+      document.getElementById("loc-detail").classList.add("hidden");
+    }, 5600);
+  }
+}
+
+function showEndScreen(type, finalStats) {
+  const sp = SPECIES[state.species];
+  const statsHTML = (pairs) => pairs.map(([v,l]) =>
+    `<div class="end-stat"><div class="end-stat-val">${v}</div><div class="end-stat-label">${l}</div></div>`
+  ).join("");
+  const wins = state.log.filter(e => e.success === true).length;
+
+  if (type === "won") {
+    document.getElementById("won-name").textContent = state.name;
+    document.getElementById("won-msg").textContent = `Seven days. Dominance secured. You are the alpha of this coastline. Gerald the Elder bows slightly. Tourists fear you. The crows respect you. Dave and Sandra are loyal. Not bad for a ${sp.name.toLowerCase()}.`;
+    document.getElementById("won-stats").innerHTML = statsHTML([
+      [DAYS_TOTAL,"Days Survived"],
+      [Math.round(finalStats.flockRep),"Flock Rep"],
+      [Math.round(finalStats.confidence),"Confidence"],
+      [wins,"Wins"]
+    ]);
+    showPhase("won");
+  } else if (type === "survived") {
+    document.getElementById("survived-msg").textContent = `${state.name} made it to Day 7. Alive. Fed. But not quite Alpha material yet. Respected, unbothered, still climbing. Try a different species or a bolder strategy next time.`;
+    document.getElementById("survived-stats").innerHTML = statsHTML([
+      [DAYS_TOTAL,"Days Survived"],
+      [Math.round(finalStats.flockRep),"Flock Rep"],
+      [Math.round(finalStats.confidence),"Confidence"],
+      [wins,"Wins"]
+    ]);
+    showPhase("survived");
+  } else {
+    const starved = finalStats.hunger <= 0;
+    document.getElementById("dead-title").textContent = starved ? "You Starved" : "You Collapsed";
+    document.getElementById("dead-msg").textContent = starved
+      ? `${state.name} waited too long. The chip truck was right there. Hunger wins in the end.`
+      : `${state.name} overextended and ran completely out of steam. Rest is not weakness.`;
+    document.getElementById("dead-stats").innerHTML = statsHTML([
+      [state.day,"Days Reached"],
+      [Math.round(finalStats.flockRep),"Flock Rep"],
+      [Math.round(finalStats.confidence),"Confidence"],
+      [wins,"Wins"]
+    ]);
+    showPhase("dead");
+  }
+}
+
+function toggleGuide() {
+  state.showGuide = !state.showGuide;
+  const panel = document.getElementById("principles-panel");
+  const btn = document.getElementById("guide-toggle");
+  if (state.showGuide) {
+    panel.classList.remove("hidden");
+    btn.textContent = "▲ Hide Survival Guide (10 Principles)";
+  } else {
+    panel.classList.add("hidden");
+    btn.textContent = "▼ Show Survival Guide (10 Principles)";
+  }
+}
+
+function resetGame() {
+  initState();
+  document.getElementById("gull-name").value = "";
+  document.getElementById("log-wrap").innerHTML = "";
+  document.getElementById("log-section").classList.add("hidden");
+  document.getElementById("principles-panel").classList.add("hidden");
+  document.getElementById("guide-toggle").textContent = "▼ Show Survival Guide (10 Principles)";
+  showPhase("intro");
+}
+
+// ============================================================
+// INIT
+// ============================================================
+initState();
+showPhase("intro");
+</script>
+</body>
+</html>

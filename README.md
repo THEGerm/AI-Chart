@@ -14,3 +14,4 @@ Each project lives in its own folder, `Projects/<ID>/`, and is published with Gi
 | [GERM-PER-0020](Projects/GERM-PER-0020/) | Ancient DNA analysis | [open](https://thegerm.github.io/AI-Chart/Projects/GERM-PER-0020/) |
 | [GERM-PER-0021](Projects/GERM-PER-0021/) | Murder mystery dinner kit | [open](https://thegerm.github.io/AI-Chart/Projects/GERM-PER-0021/) |
 | [GERM-DEV-0022](https://github.com/THEGerm/tidewall) | Tidewall: AI factions running a closed city-state, a behaviour study | own repo |
+| [GERM-DEV-0024](Projects/GERM-DEV-0024/) | Squawk & Survive: survive one week as a gull, a browser game | [open](https://thegerm.github.io/AI-Chart/Projects/GERM-DEV-0024/SeagullSurvival.html) |

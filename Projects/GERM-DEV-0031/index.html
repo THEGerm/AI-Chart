@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Senet, the ancient Egyptian board game, playable under each published rule reconstruction, with the evidence behind every rule.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Senet</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='4' fill='%233a2a1c'/%3E%3Cpath d='M20 6c-4 0-6 3-6 6s2 5 4 6h-8v4h8v12h4V22h8v-4h-8c2-1 4-3 4-6s-2-6-6-6zm0 3c2 0 3 1.5 3 3s-1 3-3 3-3-1.5-3-3 1-3 3-3z' fill='%23e9c46a'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#17120d; --panel:#231b13; --panel2:#2d2218; --ink:#efe6d6; --muted:#b9a88f;
+  --ebony:#3a2a1c; --ebony2:#2a1d12; --ivory:#efe4cc; --ivory2:#e2d3b2; --gold:#d9a93b;
+  --cone:#2f8f83; --cone2:#1d5f57; --spool:#f3ead6; --spool2:#2a1d12;
+  --hl:#e9c46a; --bad:#e07a5f; --ok:#81b29a; --glyph:#6b4a2e;
+  --radius:10px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 Georgia,"Iowan Old Style","Palatino Linotype",serif;}
+a{color:var(--hl)}
+button{font:inherit;color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding:16px}
+header h1{margin:4px 0 0;font-size:2rem;letter-spacing:.04em}
+header p{margin:4px 0 0;color:var(--muted)}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0}
+.bar label{display:flex;gap:6px;align-items:center;color:var(--muted);font-size:.9rem}
+select,.btn{background:var(--panel2);border:1px solid #4a3a28;border-radius:8px;padding:6px 10px;color:var(--ink);font:inherit;font-size:.95rem}
+.btn{cursor:pointer}
+.btn:hover:not(:disabled){border-color:var(--gold)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.primary{background:var(--gold);color:#1b140c;border-color:var(--gold);font-weight:bold}
+.status{background:var(--panel);border-radius:var(--radius);padding:10px 14px;margin-bottom:12px;min-height:3em;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.status .who{display:inline-flex;align-items:center;gap:6px;font-weight:bold}
+.status .who svg{width:22px;height:22px}
+/* Board */
+.boardbox{background:linear-gradient(var(--ebony),var(--ebony2));border-radius:12px;padding:10px;box-shadow:0 6px 24px #0008 inset,0 2px 0 #0006}
+.board{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+.sq{position:relative;aspect-ratio:1/1;background:var(--ivory);border:0;border-radius:4px;padding:0;cursor:default;
+  background-image:radial-gradient(circle at 30% 25%,#fff6 0,transparent 60%);box-shadow:inset 0 0 0 1px #0002}
+.sq .num{position:absolute;left:3px;top:1px;font-size:.62rem;color:#7a6346;opacity:.0;pointer-events:none}
+.shownums .sq .num{opacity:.85}
+.sq svg.glyph{position:absolute;inset:8%;width:84%;height:84%;pointer-events:none}
+.sq svg.piece{position:absolute;inset:6%;width:88%;height:88%;pointer-events:none;filter:drop-shadow(0 2px 1px #0007)}
+.sq.can{cursor:pointer;box-shadow:inset 0 0 0 3px var(--hl)}
+.sq.sel{box-shadow:inset 0 0 0 4px var(--gold);background-color:#f7e9b8}
+.sq.dest{box-shadow:inset 0 0 0 3px var(--ok);cursor:pointer}
+.sq.dest::after{content:"";position:absolute;inset:38%;border-radius:50%;background:var(--ok);opacity:.7}
+.sq.last{background-color:#f1dca0}
+.sq:focus-visible{outline:3px solid var(--hl);outline-offset:2px}
+.trays{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.tray{background:var(--panel);border-radius:var(--radius);padding:8px 10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-height:48px}
+.tray .lbl{color:var(--muted);font-size:.85rem;margin-right:4px}
+.tray svg{width:26px;height:26px}
+.tray.dest{box-shadow:inset 0 0 0 3px var(--ok);cursor:pointer}
+.tray.can{box-shadow:inset 0 0 0 3px var(--hl);cursor:pointer}
+/* Sticks */
+.throwrow{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:14px 0}
+.sticks{display:flex;gap:8px}
+.stick{width:16px;height:96px;border-radius:8px;background:var(--ivory2);border:1px solid #0006;transition:transform .35s;position:relative}
+.stick.dark{background:#2a1d12}
+.stick.rolling{animation:roll .5s ease-in-out}
+@keyframes roll{0%{transform:rotate(0) translateY(0)}40%{transform:rotate(25deg) translateY(-14px)}70%{transform:rotate(-15deg) translateY(-4px)}100%{transform:rotate(0) translateY(0)}}
+.die{width:56px;height:56px;border-radius:8px;background:var(--ivory2);color:#3a2a1c;display:flex;align-items:center;justify-content:center;font-weight:bold}
+.die.rolling{animation:roll .5s ease-in-out}
+.tval{font-size:2.2rem;font-weight:bold;min-width:2ch;text-align:center;color:var(--hl)}
+.tnote{color:var(--muted);font-size:.9rem}
+/* Panels */
+.cols{display:grid;grid-template-columns:1.2fr 1fr;gap:14px;margin-top:6px}
+@media (max-width:760px){.cols{grid-template-columns:1fr}}
+.panel{background:var(--panel);border-radius:var(--radius);padding:12px 14px}
+.panel h2{font-size:1.05rem;margin:0 0 8px;color:var(--hl);letter-spacing:.03em}
+.panel ul{margin:0;padding-left:1.1em}
+.panel li{margin:3px 0}
+.log{max-height:220px;overflow:auto;font-size:.9rem;color:var(--muted);padding-left:1.4em;margin:0}
+.ev{width:100%;border-collapse:collapse;font-size:.88rem}
+.ev td,.ev th{text-align:left;vertical-align:top;padding:4px 6px;border-top:1px solid #3a2d20}
+.tag{display:inline-block;font-size:.72rem;font-weight:bold;padding:1px 6px;border-radius:999px;white-space:nowrap}
+.tag.E{background:#2f5d4a;color:#d9f2e4}.tag.I{background:#6b5520;color:#fbefc9}.tag.X{background:#6b2d24;color:#fbe0d9}
+details{margin-top:12px}
+summary{cursor:pointer;color:var(--hl)}
+footer{color:var(--muted);font-size:.85rem;margin:24px 0 8px}
+.sr{position:absolute;left:-9999px}
+@media (max-width:480px){.board{gap:3px}.boardbox{padding:6px}header h1{font-size:1.6rem}.stick{height:72px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Senet</h1>
+  <p>The board game of ancient Egypt, played for some 3,000 years. Nobody knows the full rules. Pick a scholar's reconstruction and play it; every rule shows how firm its evidence is.</p>
+</header>
+
+<div class="bar">
+  <label>Rules <select id="rs"></select></label>
+  <label>Opponent <select id="mode">
+    <option value="easy">Computer, easy</option>
+    <option value="normal" selected>Computer, normal</option>
+    <option value="hard">Computer, hard</option>
+    <option value="human">Two players, one screen</option>
+  </select></label>
+  <label>You play <select id="side">
+    <option value="0">Cones</option>
+    <option value="1">Spools</option>
+  </select></label>
+  <button class="btn" id="new">New game</button>
+  <label><input type="checkbox" id="nums"> Square numbers</label>
+</div>
+
+<div class="status" id="status" aria-live="polite"></div>
+
+<div class="boardbox"><div class="board" id="board" role="grid" aria-label="Senet board, 30 squares"></div></div>
+<div class="trays">
+  <div class="tray" id="tray0"></div>
+  <div class="tray" id="tray1"></div>
+</div>
+
+<div class="throwrow">
+  <button class="btn primary" id="throw">Throw sticks</button>
+  <div class="sticks" id="sticks" aria-hidden="true"></div>
+  <div class="tval" id="tval">&nbsp;</div>
+  <div class="tnote" id="tnote"></div>
+</div>
+
+<div class="cols">
+  <div class="panel">
+    <h2>Rules in play</h2>
+    <div id="rulesource" class="tnote"></div>
+    <table class="ev" id="evtable"></table>
+    <p class="tnote"><span class="tag E">Evidenced</span> an ancient board, set, picture or text shows it.
+      <span class="tag I">Inferred</span> a scholar's reading of ancient material.
+      <span class="tag X">Invented</span> a modern rule added to make the game work.</p>
+  </div>
+  <div class="panel">
+    <h2>Moves</h2>
+    <ol class="log" id="log"></ol>
+  </div>
+</div>
+
+<details>
+  <summary>What we know, and what we don't</summary>
+  <div class="panel" style="margin-top:8px" id="about"></div>
+</details>
+
+<footer>
+  GERM-DEV-0031. Research notes and sources: <a href="https://github.com/THEGerm/AI-Chart/blob/main/Projects/GERM-DEV-0031/research.md">research.md on GitHub</a>. No cookies, no storage, no network calls.
+</footer>
+</div>
+
+<script src="senet-engine.js"></script>
+<script src="senet-rulesets.js"></script>
+<script src="senet-ui.js"></script>
+</body>
+</html>

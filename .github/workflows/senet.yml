@@ -1,0 +1,28 @@
+name: Senet tests
+
+on:
+  push:
+    paths:
+      - 'Projects/GERM-DEV-0031/**'
+      - '.github/workflows/senet.yml'
+  pull_request:
+    paths:
+      - 'Projects/GERM-DEV-0031/**'
+      - '.github/workflows/senet.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Rule tests
+        run: node --test Projects/GERM-DEV-0031/tests/*.test.js
+      - name: Playability table
+        run: node Projects/GERM-DEV-0031/tests/playability.js 200

@@ -28,4 +28,4 @@ Vanilla HTML, CSS and JavaScript. No libraries, fonts, cookies, storage or netwo
 | Piccione | P. Piccione, rules for *King Tut's Game* (Cadaco) |
 | Minimal | This project: the evidence plus the fewest inventions needed to finish a game |
 
-The four published sets are encoded from the Digital Ludeme Project summaries (Ludii rulesets 922, 939, 529 and 938). The original booklets and books were not checked.
+The four published sets are encoded from the Digital Ludeme Project summaries (Ludii rulesets 922, 939, 529 and 938). Bell's was checked against his 1969 text and matches; Kendall's booklet, Jéquier's article and Piccione's game rules were not reached.

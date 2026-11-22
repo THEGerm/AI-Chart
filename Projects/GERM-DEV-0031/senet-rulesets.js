@@ -46,7 +46,7 @@
     backward: true, noBackFrom: 28, win: 'allOff',
     evidence: BOARD.concat([
       { s: 'I', rule: '7 pieces each, alternating on squares 1 to 14.', note: '7 a side is the Old Kingdom count (Hesy-Re) and "my seven" in Turin 1775; New Kingdom sets have 5. Beni Hasan shows 2 x 7 pieces alternating.' },
-      { s: 'X', rule: 'Count the light faces: 1 to 4 move that many; no light face moves 5. A 1, 4 or 5 throws again.', note: 'Close to the modern Egyptian game tab.' },
+      { s: 'X', rule: 'Count the light faces: 1 to 4 move that many; no light face moves 5. A 1, 4 or 5 throws again.', note: 'Adapted from tab (Lane 1836: all black = 6; 1, 4, 6 throw again).' },
       { s: 'X', rule: 'Landing on an enemy piece swaps the two.', note: 'Captions show pieces struck or taken away; the swap itself is modern.' },
       { s: 'X', rule: 'Two pieces in a row cannot be struck; three in a row cannot be passed.' },
       { s: 'X', rule: 'With no forward move, a piece must move backward. Pieces on 28 to 30 never move backward.' },
@@ -59,14 +59,14 @@
 
   R.jequier = {
     id: 'jequier', name: 'Jéquier', short: 'Jéquier',
-    source: 'Gustave Jéquier\'s reconstruction, encoded from the Ludii summary (ruleset 939). The original publication was not checked.',
+    source: 'G. Jéquier, "Un jeu renouvelé des anciens", Chronique d\'Égypte 5 (1930) 124-127, encoded from the Ludii summary (ruleset 939). The article itself was not checked. Its throws are those of tab, the game E.W. Lane recorded in Cairo.',
     pieces: 5, start: 'alternate', lot: 'sticks', zero: 6, extra: [1, 4, 6],
     capture: 'rear', protectPairs: true, blockRun: 3, safe: [26, 28, 29, 30],
     mustStop26: false, water: 'rear', offFrom: 21, exactOff: false, allHomeToBearOff: true,
     backward: true, win: 'allOff',
     evidence: BOARD.concat([
       { s: 'I', rule: '5 pieces each, alternating on the first row.', note: 'The count is evidenced (Tutankhamun 585r). Alternating rows of pieces appear in tomb scenes.' },
-      { s: 'X', rule: 'Count the light faces: 1 to 4 move that many; no light face moves 6. A 1, 4 or 6 throws again.', note: 'The scoring of tab as Lane recorded it in 1836.' },
+      { s: 'X', rule: 'Count the light faces: 1 to 4 move that many; no light face moves 6. A 1, 4 or 6 throws again.', note: 'Exactly the scoring of tab, the 19th-century Egyptian stick game in Lane\'s Manners and Customs of the Modern Egyptians.' },
       { s: 'I', rule: 'A struck piece goes to the rearmost empty square.', note: 'Captions show pieces taken away; where they go is modern.' },
       { s: 'X', rule: 'Two pieces in a row cannot be struck; three in a row cannot be passed.' },
       { s: 'I', rule: 'Squares 26, 28, 29 and 30 are safe.' },
@@ -79,7 +79,7 @@
 
   R.bell = {
     id: 'bell', name: 'Bell (1960)', short: 'Bell 1960',
-    source: 'R.C. Bell, Board and Table Games from Many Civilizations (OUP, 1960), encoded from the Ludii summary (ruleset 529). Bell uses a four-sided die, so the sticks are not shown.',
+    source: 'R.C. Bell, Board and Table Games from Many Civilizations (OUP, 1960; 2nd ed. 1969, pp. 27-28, "Suggested rules for the game of thirty squares"), checked against the 1969 text. Bell uses one long four-sided die, so the sticks are not shown.',
     pieces: 10, start: 'alternate', lot: 'd4', zero: 0, extra: [],
     capture: 'remove', protectPairs: false, blockRun: 0, safe: [15, 26, 27, 28, 29, 30],
     mustStop26: false, water: 'none', offFrom: 26, exactOff: true,
@@ -87,7 +87,7 @@
     evidence: BOARD.concat([
       { s: 'X', rule: '10 pieces each, alternating on the first two rows.', note: 'No excavated set has 10 a side.' },
       { s: 'X', rule: 'A four-sided die, 1 to 4, no extra throws.', note: 'Departs from the evidenced throwsticks.' },
-      { s: 'X', rule: 'A struck piece leaves the game.' },
+      { s: 'X', rule: 'A struck piece leaves the game. No backward moves.' },
       { s: 'I', rule: 'The marked squares 15 and 26 to 30 are safe.' },
       { s: 'X', rule: 'A piece bears off from 26 to 30 by the exact throw.' },
       { s: 'X', rule: 'The game ends when one side has nothing left in play. Most pieces wins, counting the other side\'s survivors as borne off.', note: 'Bell gives "most pieces borne off"; the count for survivors is this app\'s.' }
@@ -102,7 +102,7 @@
     mustStop26: false, water: 'reserve', offFrom: 26, exactOff: true,
     backward: true, noBackFrom: 28, win: 'allOff',
     evidence: BOARD.concat([
-      { s: 'I', rule: '5 pieces each, off the board at the start. A throw of 1 enters a piece on square 1.', note: 'The count is evidenced; the entry rule is invented.' },
+      { s: 'I', rule: '5 pieces each, off the board at the start. A throw of 1 enters a piece on square 1.', note: 'The count is evidenced. Entry on a 1 comes from tab, where each piece needs a 1 to start.' },
       { s: 'X', rule: 'Count the light faces: 1 to 4 move that many; no light face moves 5. A 5 throws again.' },
       { s: 'I', rule: 'Landing on 15 or 26 throws again.', note: 'Piccione (1980) reads 15 as the house of repeating life and 26 as the good house.' },
       { s: 'I', rule: 'Two pieces never share a square, and nothing is captured.', note: 'Follows Piccione\'s reading of senet as "passing".' },

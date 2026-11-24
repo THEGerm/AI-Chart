@@ -1,6 +1,6 @@
-# Stage 2 candidate: the "Evidence-led" rule set
+# Stage 2 candidate: the Germain Rules
 
-A rule set that replaces the invented rules with the smallest rules the evidence suggests, never loops forever, and works with skill switched off. To be built and tested after the first-stage sweep ends, since engine changes would stop the running sweep from accepting rows.
+The Germain Rules (named for the paper, Germain et al.) are a rule set that replaces the invented rules with the smallest rules the evidence suggests, never loops forever, and works with skill switched off. To be built and tested after the first-stage sweep ends, since engine changes would stop the running sweep from accepting rows.
 
 ## Rules
 
@@ -17,7 +17,7 @@ A rule set that replaces the invented rules with the smallest rules the evidence
 | Leaving | From 26 on a 5, 28 on a 3, 29 on a 2, 30 on a 1, exact throws only | Marks "three", "two", Old Kingdom "one"; "knowing three and finding two" |
 | Win | First to bear off all pieces | "Passing is mine"; "true of voice" |
 
-Germ's decisions, 2026-11-24: square 30 exits on an exact 1. Struck pieces that have not passed 15 go off the board and re-enter (draft default, open to change).
+Decisions, 2026-11-24: square 30 exits on an exact 1. Struck pieces that have not passed 15 go off the board and re-enter. The rule set is named the Germain Rules.
 
 ## Three versions
 
@@ -39,4 +39,4 @@ No backward moves; a struck piece falls back no further than 15 once past it; no
 
 ## Test
 
-2,000 games each for Fate, Contest and Master, beside Kendall, Jéquier, Piccione and Minimal. Pass marks: completion 100%; the longest games bounded (report the 99th percentile); balance near 0.5. Skill should be near 0.5 for Fate and rise from Contest to Master.
+2,000 games each for Germain Rules Fate, Contest and Master, beside Kendall, Jéquier, Piccione and Minimal. Pass marks: completion 100%; the longest games bounded (report the 99th percentile); balance near 0.5. Skill should be near 0.5 for Fate and rise from Contest to Master.

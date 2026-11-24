@@ -28,13 +28,13 @@ commit_results() {
 # Close out any session file left uncommitted, after checking it.
 if [ -n "$(git status --porcelain results/)" ]; then
   python3 sanity.py --quick || { echo "CHAIN STOP: sanity failed on existing results"; exit 1; }
-  commit_results "Senet sweep: $(ls results/session-*.csv | tail -1 | xargs basename .csv) complete, sanity pass"
+  commit_results "Senet sweep: $(basename "$(ls results/session-*.csv | tail -1)" .csv) complete, sanity pass"
 fi
 
 for n in $(seq 1 "$MAX"); do
   out=$(python3 run.py session --budget-min "$BUDGET" 2>&1); echo "$out"
   if echo "$out" | grep -q "Sweep complete"; then echo "CHAIN DONE"; exit 0; fi
-  sess=$(ls results/session-*.csv | tail -1 | xargs basename .csv)
+  sess=$(basename "$(ls results/session-*.csv | tail -1)" .csv)
   python3 sanity.py --quick || { commit_results "Senet sweep: $sess, SANITY FAILED, chain stopped"; echo "CHAIN STOP: sanity failed"; exit 1; }
   commit_results "Senet sweep: $sess complete, sanity pass"
   python3 run.py status

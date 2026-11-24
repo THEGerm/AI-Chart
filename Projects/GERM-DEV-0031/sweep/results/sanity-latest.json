@@ -9,16 +9,16 @@
   },
   "integrity": {
     "ok": true,
-    "detail": "1710 rows; clean"
+    "detail": "2492 rows; clean"
   },
   "logic": {
     "ok": true,
-    "detail": "0 no-capture rows with hits; 280 configurations with unfinished games"
+    "detail": "0 no-capture rows with hits; 422 configurations with unfinished games"
   },
   "determinism": {
     "ok": true,
     "detail": "3 re-run; identical"
   },
-  "rows": 1710,
-  "date_utc": "2026-11-24T15:19:11Z"
+  "rows": 2492,
+  "date_utc": "2026-11-24T15:38:05Z"
 }

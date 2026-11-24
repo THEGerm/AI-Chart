@@ -267,16 +267,15 @@ def apply_move(st0: State, mv: tuple, rs: dict):
                 b[s] = p
             ev.append('water:%d' % (0 if s == -1 else s))
     st.move_count += 1
-    if rs['win'] == 'mostOff':
+    # With removal, a side that has lost a piece can never bear all of them
+    # off, so the game ends when either side has nothing left in play.
+    if rs['win'] == 'mostOff' or rs['capture'] == 'remove':
         if in_play(st, p) == 0 or in_play(st, o) == 0:
             sp = st.off[p] + in_play(st, p)
             so = st.off[o] + in_play(st, o)
             st.winner = p if sp > so else (o if so > sp else p)
             ev.append('win')
     elif st.off[p] == rs['pieces']:
-        st.winner = p
-        ev.append('win')
-    elif rs['capture'] == 'remove' and st.off[o] + st.lost[o] == rs['pieces']:
         st.winner = p
         ev.append('win')
     return st, ev

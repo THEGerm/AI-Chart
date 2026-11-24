@@ -1,12 +1,12 @@
 {
   "project": "GERM-DEV-0031",
-  "created_utc": "2026-11-24T14:21:59Z",
-  "n_configs": 14336,
+  "created_utc": "2026-11-24T14:29:47Z",
+  "n_configs": 13312,
   "n_balance": 200,
   "n_skill": 200,
   "base_seed": 31,
   "space_hash": "28b849718ec8",
-  "code_hash": "41eff1740845",
+  "code_hash": "ca0d7cf3bb0c",
   "factors": {
     "zero": [
       5,

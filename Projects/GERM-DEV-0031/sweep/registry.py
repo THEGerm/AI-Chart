@@ -28,8 +28,9 @@ RESULTS = os.path.join(HERE, 'results')
 MANIFEST = os.path.join(RESULTS, 'manifest.json')
 CODE_FILES = ('senet.py', 'sim.py', 'space.py')
 
-METRICS = ['n_balance', 'n_skill', 'completion', 'throws', 'first_win', 'cones_win', 'pass_rate',
-           'decision_rate', 'options', 'hits', 'lead_changes', 'skill', 'skill_completion', 'seconds']
+METRICS = ['n_balance', 'n_skill', 'completion', 'timeouts', 'throws', 'first_win', 'cones_win', 'balance',
+           'pass_rate', 'decision_rate', 'options', 'hits', 'lead_changes', 'decisiveness', 'drama',
+           'skill', 'skill_completion', 'seconds']
 COLUMNS = ['config_id'] + list(space.FACTORS) + METRICS + ['space_hash', 'code_hash', 'session', 'finished_utc']
 
 

@@ -9,7 +9,7 @@ Python 3, standard library only. Run everything from this folder.
 | File | What |
 |---|---|
 | `senet.py` | Rules engine and computer players, a port of `../senet-engine.js` |
-| `space.py` | The 12 factors and their levels: 14,336 configurations |
+| `space.py` | The 12 factors and their levels: 13,312 configurations |
 | `sim.py` | Plays the games for one configuration and computes the metrics |
 | `run.py` | `init`, `dry`, `session`, `status` |
 | `registry.py` | The results registry: CSV per session, manifest, SQLite copy |
@@ -50,8 +50,14 @@ Per configuration: 200 games of the normal computer against itself, and 200 of t
 | decision_rate | share of throws with two or more legal moves |
 | options | mean legal moves when there is at least one |
 | hits | captures per game |
-| lead_changes | changes of leader per game, by race count |
-| skill | win rate of the normal computer against the random mover |
+| timeouts | share of games that hit 3,000 throws |
+| balance | 1 minus the gap between cones' and spools' wins over all games, a timeout counting half to each (Ludii Balance) |
+| lead_changes | changes of leader per move, by race count (Ludii LeadChange) |
+| decisiveness | share of a game's moves before the winner passes, for good, the best race share the loser reached (proxy for Ludii DecisivenessMoves) |
+| drama | mean race deficit of the eventual winner while it trails (proxy for Ludii Drama) |
+| skill | win rate of the normal computer against the random mover: the bottom rung of a skill ladder, a lower bound |
+
+Seeds depend on the game number only, so game *i* sees the same throws in every configuration (common random numbers).
 
 ## Runbook: one session
 
@@ -70,7 +76,25 @@ git add results && git commit -m "Senet sweep: session NNN" && git push
 - The runner stops starting new configurations when the slowest likely one would overrun the budget.
 - Configurations run in a fixed shuffled order, so a partial sweep is a random sample of the whole space and can be analysed early.
 - The manifest records the code and space hashes. If either changes, the runner refuses to add rows, because the results would no longer be comparable.
+- A session can end up to about a minute past its budget: configurations already running are allowed to finish.
 
 ## Estimate
 
-From `results/dryrun.json` (96 configurations, stratified by pieces and capture, 4 workers): about 5 seconds a configuration, 19.7 CPU hours, **5.5 hours of wall time** (90% band 4.1 to 6.9), about **18 sessions of 20 minutes**.
+From `results/dryrun.json` (96 configurations, stratified by pieces and capture, 4 workers): about 4.8 seconds a configuration, 17.8 CPU hours, **4.9 hours of wall time** (90% band 3.6 to 6.2), about **16 sessions of 20 minutes**.
+
+## Independent review (2026-11-24)
+
+An agent checked the code against Ludii's rule texts (`Senet.lud`) and metric source code. Changes made:
+
+- **Bug fixed, in both engines:** with remove-capture, a side that had lost a piece could never win by bearing off. A game with removal now ends when either side has nothing left in play, survivors counting as borne off. Regression test added.
+- Lead changes are now a rate per move, as Ludii defines them.
+- Ludii-form balance, timeouts, decisiveness and drama added.
+- Seeds no longer depend on the configuration, so comparisons share the throw stream.
+- 1,024 duplicate configurations dropped (protect and safe do nothing without capture).
+- The coverage claim corrected in `space.py`: Jéquier and Minimal are grid points; Kendall and Piccione are approximated (banked and split throws, Piccione's entry and extra-throw squares, Kendall's bear-off tail are not in the grid); Bell is off the grid.
+
+Limits that stand, for the analysis:
+
+- 200 games give a standard error of about 3.5 points on a win rate near 0.5. Two configurations must differ by about 14 points to be told apart at 80% power. **Stage 2:** rerun a shortlist at 2,000 games (standard error about 1.1 points), and use Wilson intervals with a false-discovery-rate control (Benjamini-Hochberg) for any "imbalanced" or "skilful" label.
+- Skill is one rung (heuristic against random). Stage 2 adds the expectimax player against the heuristic on the shortlist. No ranking on skill from the first stage alone.
+- Combinations with 7 pieces, all-home bearing off and send-back capture often never finish: the game cycles. Ludii reports the same for Jéquier (63 to 67% completion). These show up as timeouts and are a finding.

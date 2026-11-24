@@ -32,9 +32,11 @@ import senet
 
 HERE = registry.HERE
 PROJECT = os.path.dirname(HERE)
-FLOAT_METRICS = ['completion', 'throws', 'first_win', 'cones_win', 'pass_rate', 'decision_rate',
-                 'options', 'hits', 'lead_changes', 'skill', 'skill_completion']
-UNIT = ['completion', 'first_win', 'cones_win', 'pass_rate', 'decision_rate', 'skill', 'skill_completion']
+FLOAT_METRICS = ['completion', 'timeouts', 'throws', 'first_win', 'cones_win', 'balance', 'pass_rate',
+                 'decision_rate', 'options', 'hits', 'lead_changes', 'decisiveness', 'drama', 'skill',
+                 'skill_completion']
+UNIT = ['completion', 'timeouts', 'first_win', 'cones_win', 'balance', 'pass_rate', 'decision_rate',
+        'lead_changes', 'decisiveness', 'drama', 'skill', 'skill_completion']
 
 
 def check_parity():

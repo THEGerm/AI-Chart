@@ -1,27 +1,27 @@
 {
-  "date_utc": "2026-11-24T14:24:43Z",
+  "date_utc": "2026-11-24T14:34:44Z",
   "sample": 96,
   "workers": 4,
-  "sample_wall_s": 128.3,
-  "mean_s_per_config": 4.956,
-  "parallel_efficiency": 0.9,
-  "total_cpu_h": 19.74,
-  "total_wall_h": 5.5,
+  "sample_wall_s": 120.1,
+  "mean_s_per_config": 4.824,
+  "parallel_efficiency": 0.91,
+  "total_cpu_h": 17.84,
+  "total_wall_h": 4.9,
   "total_wall_h_90pct": [
-    4.1,
-    6.91
+    3.64,
+    6.16
   ],
-  "sessions_of_budget": 17.9,
+  "sessions_of_budget": 16.0,
   "budget_min": 20,
   "by_stratum_s": {
-    "p5-none": 1.061,
-    "p5-rear": 4.333,
-    "p5-remove": 0.312,
-    "p5-swap": 1.987,
-    "p7-none": 6.252,
-    "p7-rear": 15.62,
-    "p7-remove": 0.538,
-    "p7-swap": 8.248
+    "p5-none": 0.956,
+    "p5-rear": 4.086,
+    "p5-remove": 0.436,
+    "p5-swap": 1.799,
+    "p7-none": 5.822,
+    "p7-rear": 15.308,
+    "p7-remove": 0.656,
+    "p7-swap": 7.378
   },
   "n_balance": 200,
   "n_skill": 200

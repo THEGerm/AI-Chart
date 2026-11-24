@@ -29,7 +29,7 @@
       { s: 'E', rule: '5 pieces each.', note: 'Tutankhamun\'s box 585r, drawer unopened since burial: 5 red and 5 white pieces, "undoubtedly a complete set" (Carter\'s card).' },
       { s: 'X', rule: 'Count the light faces: 1 to 4 move that many; no light face moves 5. No extra throws.', note: 'No text gives throw values.' },
       { s: 'X', rule: 'Pieces start off the board and enter on the square equal to the throw.' },
-      { s: 'X', rule: 'A piece may not land on any occupied square, and nothing is captured.', note: 'The simplest rule. Captions cut against it: "I shall cause you to see it taken away" (Pepiankh).' },
+      { s: 'X', rule: 'A piece may not land on any occupied square, and nothing is captured.', note: 'The simplest rule. Captions cut against it: "I shall cause you to see it taken away" (Pepiankh) and "capturing (pieces) in senet".' },
       { s: 'I', rule: 'Every piece must stop on 26, the good house, before going on.', note: 'From the nfr mark and "I shall hold him back from the per-nefer" (Turin 1775).' },
       { s: 'I', rule: 'Landing on 27 (water) sends the piece back to 15, the ankh square, or the nearest free square below it.' },
       { s: 'I', rule: 'From 28 a piece leaves on an exact 3, from 29 on a 2, from 30 on a 1, and from 26 on a 5.', note: 'Reads the "three" and "two" marks as the throw still needed.' },
@@ -46,8 +46,8 @@
     backward: true, noBackFrom: 28, win: 'allOff',
     evidence: BOARD.concat([
       { s: 'I', rule: '7 pieces each, alternating on squares 1 to 14.', note: '7 a side is the Old Kingdom count (Hesy-Re) and "my seven" in Turin 1775; New Kingdom sets have 5. Beni Hasan shows 2 x 7 pieces alternating.' },
-      { s: 'X', rule: 'Count the light faces: 1 to 4 move that many; no light face moves 5. A 1, 4 or 5 throws again.', note: 'Adapted from tab (Lane 1836: all black = 6; 1, 4, 6 throw again).' },
-      { s: 'X', rule: 'Landing on an enemy piece swaps the two.', note: 'Captions show pieces struck or taken away; the swap itself is modern.' },
+      { s: 'X', rule: 'Count the light faces: 1 to 4 move that many; no light face moves 5. A 1, 4 or 5 throws again.', note: 'Adapted from tab, a stick game first recorded in 1310 CE, long after senet. No tab source scores zero as 5.' },
+      { s: 'X', rule: 'Landing on an enemy piece swaps the two.', note: 'Captions show pieces taken: "capturing (pieces) in senet" (Old Kingdom, after Masters 2024). The swap itself is modern.' },
       { s: 'X', rule: 'Two pieces in a row cannot be struck; three in a row cannot be passed.' },
       { s: 'X', rule: 'With no forward move, a piece must move backward. Pieces on 28 to 30 never move backward.' },
       { s: 'I', rule: 'Every piece must land exactly on 26.' },
@@ -66,8 +66,8 @@
     backward: true, win: 'allOff',
     evidence: BOARD.concat([
       { s: 'I', rule: '5 pieces each, alternating on the first row.', note: 'The count is evidenced (Tutankhamun 585r). Alternating rows of pieces appear in tomb scenes.' },
-      { s: 'X', rule: 'Count the light faces: 1 to 4 move that many; no light face moves 6. A 1, 4 or 6 throws again.', note: 'Exactly the scoring of tab, the 19th-century Egyptian stick game in Lane\'s Manners and Customs of the Modern Egyptians.' },
-      { s: 'I', rule: 'A struck piece goes to the rearmost empty square.', note: 'Captions show pieces taken away; where they go is modern.' },
+      { s: 'X', rule: 'Count the light faces: 1 to 4 move that many; no light face moves 6. A 1, 4 or 6 throws again.', note: 'Exactly the scoring of tab as Lane recorded it in Cairo (1836). Tab is first named in 1310 CE and has no documented link to senet; Hyde (1694) swaps its 4 and 6.' },
+      { s: 'I', rule: 'A struck piece goes to the rearmost empty square.', note: 'Captions show pieces taken: "capturing (pieces) in senet" (Old Kingdom, after Masters 2024). Where they go is modern.' },
       { s: 'X', rule: 'Two pieces in a row cannot be struck; three in a row cannot be passed.' },
       { s: 'I', rule: 'Squares 26, 28, 29 and 30 are safe.' },
       { s: 'I', rule: 'Landing on 27 sends the piece to the rearmost empty square.' },
@@ -102,7 +102,7 @@
     mustStop26: false, water: 'reserve', offFrom: 26, exactOff: true,
     backward: true, noBackFrom: 28, win: 'allOff',
     evidence: BOARD.concat([
-      { s: 'I', rule: '5 pieces each, off the board at the start. A throw of 1 enters a piece on square 1.', note: 'The count is evidenced. Entry on a 1 comes from tab, where each piece needs a 1 to start.' },
+      { s: 'I', rule: '5 pieces each, off the board at the start. A throw of 1 enters a piece on square 1.', note: 'The count is evidenced. Entry on a 1 comes from tab, a later game, where each piece needs a 1 to start. An Old Kingdom caption has zbi, "send out (the piece)".' },
       { s: 'X', rule: 'Count the light faces: 1 to 4 move that many; no light face moves 5. A 5 throws again.' },
       { s: 'I', rule: 'Landing on 15 or 26 throws again.', note: 'Piccione (1980) reads 15 as the house of repeating life and 26 as the good house.' },
       { s: 'I', rule: 'Two pieces never share a square, and nothing is captured.', note: 'Follows Piccione\'s reading of senet as "passing".' },
@@ -119,5 +119,5 @@
 if (typeof window !== 'undefined') window.SENET_ABOUT =
   '<p><b>Known from the objects.</b> Senet was played in Egypt from about 3100 BCE (Abu Rawash, Dynasty 1) to at least the 6th century BCE, and in the Levant and Cyprus. The board is 30 squares in 3 rows, played as one snaking path. Squares 26 to 29 carry the same marks for over a thousand years: good, water, three, two. Each player had cones or spools, 7 a side in the Old Kingdom and 5 a side by the New Kingdom. Tutankhamun\'s ivory box 585r, unopened since burial, held exactly 5 red and 5 white pieces with 2 knucklebones. Four throwsticks served as the lot.</p>' +
   '<p><b>Known from the words.</b> Tomb captions record players talking: "It has alighted. Be happy my heart, for I shall cause you to see it taken away." "You speak as one weak of tongue, for passing is mine." A Dynasty 20 papyrus in Turin has the player hold the opponent back from the good house, pass to the house of repeating life, and "take my draughtsmen so that I may find my house". By then the game was also a passage of the soul, played against an unseen opponent in the Book of the Dead.</p>' +
-  '<p><b>Not known.</b> No ancient source gives the throw values, the starting position, what happens when pieces meet, how a piece leaves the board, or who wins. Every modern rule set fills those gaps. Most fill them from tab, a game E.W. Lane watched in Cairo in the 1830s. The rules also changed over 2,500 years, so any one set is a composite.</p>' +
+  '<p><b>Not known.</b> No ancient source gives the throw values, the starting position, what happens when pieces meet, how a piece leaves the board, or who wins. Every modern rule set fills those gaps. Most fill them from tab, a stick game first recorded in Cairo in 1310 CE, some 2,000 years after the last dated senet board, with no documented link to it. The rules also changed over 2,500 years, so any one set is a composite.</p>' +
   '<p><b>Is it playable?</b> Only with invented rules. Computer-against-computer runs show all five sets here finish every game. Kendall, Jéquier and Piccione are balanced. The minimal set, closest to the evidence, plays as a thin race with few decisions. Bell\'s set, as Ludii summarises it, is a short strike-out with a strong seat advantage. Full figures and sources: research.md.</p>';

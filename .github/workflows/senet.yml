@@ -28,3 +28,9 @@ jobs:
         run: node --test Projects/GERM-DEV-0031/tests/*.test.js
       - name: Playability table
         run: node Projects/GERM-DEV-0031/tests/playability.js 200
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Python engine parity with the JavaScript engine
+        working-directory: Projects/GERM-DEV-0031
+        run: python -m unittest sweep/test_parity.py

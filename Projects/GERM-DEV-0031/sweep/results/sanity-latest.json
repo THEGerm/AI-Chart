@@ -1,0 +1,34 @@
+{
+  "parity": {
+    "ok": true,
+    "detail": "OK"
+  },
+  "code": {
+    "ok": true,
+    "detail": "manifest 41eff1740845/28b849718ec8, now 41eff1740845/28b849718ec8"
+  },
+  "integrity": {
+    "ok": true,
+    "detail": "0 rows; clean"
+  },
+  "logic": {
+    "ok": true,
+    "detail": "0 no-capture rows with hits; 0 configurations with unfinished games"
+  },
+  "determinism": {
+    "ok": true,
+    "detail": "no rows yet"
+  },
+  "anchors": {
+    "ok": true,
+    "detail": [
+      "minimal: throws 166 vs 165, first_win 0.525 vs 0.535, cones_win 0.465 vs 0.495, pass_rate 0.137 vs 0.134, skill 0.715 vs 0.632",
+      "kendall: throws 192 vs 195, first_win 0.562 vs 0.528, cones_win 0.487 vs 0.458, pass_rate 0.005 vs 0.005, skill 0.750 vs 0.708",
+      "jequier: throws 242 vs 243, first_win 0.470 vs 0.553, cones_win 0.505 vs 0.488, pass_rate 0.002 vs 0.001, skill 0.930 vs 0.923",
+      "bell: throws 45 vs 45, first_win 0.525 vs 0.510, cones_win 0.735 vs 0.750, pass_rate 0.058 vs 0.060, skill 0.993 vs 0.970",
+      "piccione: throws 177 vs 178, first_win 0.520 vs 0.510, cones_win 0.470 vs 0.480, pass_rate 0.091 vs 0.094, skill 0.845 vs 0.863"
+    ]
+  },
+  "rows": 0,
+  "date_utc": "2026-11-24T14:22:16Z"
+}

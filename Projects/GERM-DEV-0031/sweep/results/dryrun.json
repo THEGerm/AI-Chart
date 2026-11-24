@@ -1,0 +1,28 @@
+{
+  "date_utc": "2026-11-24T14:24:43Z",
+  "sample": 96,
+  "workers": 4,
+  "sample_wall_s": 128.3,
+  "mean_s_per_config": 4.956,
+  "parallel_efficiency": 0.9,
+  "total_cpu_h": 19.74,
+  "total_wall_h": 5.5,
+  "total_wall_h_90pct": [
+    4.1,
+    6.91
+  ],
+  "sessions_of_budget": 17.9,
+  "budget_min": 20,
+  "by_stratum_s": {
+    "p5-none": 1.061,
+    "p5-rear": 4.333,
+    "p5-remove": 0.312,
+    "p5-swap": 1.987,
+    "p7-none": 6.252,
+    "p7-rear": 15.62,
+    "p7-remove": 0.538,
+    "p7-swap": 8.248
+  },
+  "n_balance": 200,
+  "n_skill": 200
+}

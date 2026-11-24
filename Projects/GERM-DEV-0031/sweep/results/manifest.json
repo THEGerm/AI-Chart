@@ -1,0 +1,65 @@
+{
+  "project": "GERM-DEV-0031",
+  "created_utc": "2026-11-24T14:29:47Z",
+  "n_configs": 13312,
+  "n_balance": 200,
+  "n_skill": 200,
+  "base_seed": 31,
+  "space_hash": "28b849718ec8",
+  "code_hash": "ca0d7cf3bb0c",
+  "factors": {
+    "zero": [
+      5,
+      6
+    ],
+    "extra": [
+      "none",
+      "tab"
+    ],
+    "pieces": [
+      5,
+      7
+    ],
+    "start": [
+      "alternate",
+      "offboard"
+    ],
+    "capture": [
+      "none",
+      "swap",
+      "rear",
+      "remove"
+    ],
+    "protect": [
+      false,
+      true
+    ],
+    "block": [
+      false,
+      true
+    ],
+    "stop26": [
+      false,
+      true
+    ],
+    "water": [
+      "none",
+      "to15",
+      "rear",
+      "reserve"
+    ],
+    "backward": [
+      false,
+      true
+    ],
+    "bearoff": [
+      "exact26",
+      "row3"
+    ],
+    "safe": [
+      false,
+      true
+    ]
+  },
+  "max_throws": 3000
+}

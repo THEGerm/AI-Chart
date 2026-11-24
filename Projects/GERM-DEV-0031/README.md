@@ -4,6 +4,7 @@ Senet is the board game of ancient Egypt, played from about 3100 BCE to at least
 
 - [Play Senet](https://thegerm.github.io/AI-Chart/Projects/GERM-DEV-0031/): five rule sets, against the computer at three levels or with two players on one screen. Each rule in play is tagged evidenced, inferred or invented.
 - [Research, gap analysis and playability](research.md): the studies, the evidence, the gaps, and the simulation results.
+- [Rules table](rules.md): every rule in one line, with its source, a certainty percentage, and the other options where it is uncertain.
 
 ## Files
 

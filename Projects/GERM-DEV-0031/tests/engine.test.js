@@ -129,3 +129,18 @@ test('every rule set finishes 200 seeded computer games', () => {
     }
   }
 });
+
+test('remove capture: the game ends when a side has nothing left in play (review H1, 2026-11-24)', () => {
+  // Race win with removal: side 0 has lost a piece, so it can never bear all 5 off.
+  const rs = Object.assign({}, R.kendall, { pieces: 5, capture: 'remove', win: 'allOff' });
+  const st = empty(rs);
+  st.off = [3, 2]; st.lost = [1, 0];
+  st.board[30] = 0; st.board[10] = 1; st.board[12] = 1; st.board[14] = 1;
+  const r = S.applyMove(st, { from: 30, to: 31, dir: 1 }, rs);
+  assert.ok(r.state.winner >= 0, 'game must end once side 0 has nothing in play');
+  // Side 0: 4 off. Side 1: 2 off + 3 survivors = 5. Survivors count as borne off.
+  assert.strictEqual(r.state.winner, 1);
+  const st2 = empty(rs);
+  st2.off = [4, 1]; st2.lost = [0, 2]; st2.board[30] = 0; st2.board[10] = 1; st2.board[12] = 1;
+  assert.strictEqual(S.applyMove(st2, { from: 30, to: 31, dir: 1 }, rs).state.winner, 0);
+});

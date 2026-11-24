@@ -213,7 +213,9 @@
       }
     }
     st.moveCount++;
-    if (rs.win === 'mostOff') {
+    // With removal, a side that has lost a piece can never bear all of them
+    // off, so the game ends when either side has nothing left in play.
+    if (rs.win === 'mostOff' || rs.capture === 'remove') {
       if (inPlay(st, p) === 0 || inPlay(st, o) === 0) {
         // Pieces still in play are unopposed, so they count as borne off.
         const sp = st.off[p] + inPlay(st, p), so = st.off[o] + inPlay(st, o);
@@ -221,7 +223,6 @@
         ev.push('win');
       }
     } else if (st.off[p] === rs.pieces) { st.winner = p; ev.push('win'); }
-    else if (rs.capture === 'remove' && st.off[o] + st.lost[o] === rs.pieces) { st.winner = p; ev.push('win'); }
     return { state: st, events: ev };
   }
 

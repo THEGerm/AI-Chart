@@ -1,6 +1,6 @@
 # Senet: what the evidence says and whether it plays
 
-Senet cannot be played from the ancient evidence alone. The sources fix the board, the path, the pieces, the lot and the marked squares. No ancient source gives the throw values, the start, how pieces interact or how they leave the board. Add 4 to 6 invented rules (throw values, start, capture mechanism, bearing off) and it becomes a working game; every published reconstruction is that. Three of the four published rule sets that use sticks take their core mechanics from tab, a 19th-century Egyptian game recorded by E.W. Lane. In 400 seeded computer games per rule set, all five rule sets in the app finish every game. Kendall, Jéquier, Piccione and a minimal set are balanced within about 5 points. Bell's rules give one seat 75% of the wins. The strategy depth comes from the invented interaction rules.
+Senet cannot be played from the ancient evidence alone. The sources fix the board, the path, the pieces, the lot and the marked squares. No ancient source gives the throw values, the start, how pieces interact or how they leave the board. Add 4 to 6 invented rules (throw values, start, capture mechanism, bearing off) and it becomes a working game; every published reconstruction is that. Three of the four published rule sets that use sticks take their core mechanics from tab, a stick game first named in Cairo in 1310 CE and first scored by Thomas Hyde in 1694, some 2,000 years after the last securely dated senet board. No documented line runs from senet's sticks to tab. In 400 seeded computer games per rule set, all five rule sets in the app finish every game. Kendall, Jéquier, Piccione and a minimal set are balanced within about 5 points. Bell's rules give one seat 75% of the wins. The strategy depth comes from the invented interaction rules.
 
 ## 1. Studies
 
@@ -23,7 +23,7 @@ Crist, Dunn-Vaturi and de Voogt (2016) is the current synthesis, and it treats e
 | Lane, *Manners and Customs of the Modern Egyptians* (1836; 5th ed 1860, ch XVII pp 346-349) | Describes tab, a 19th-century stick game. Source of the throw scheme in three rule sets | Yes, 5th ed 1860 |
 | Digital Ludeme Project / Ludii (C. Browne, Maastricht; ERC 771292) | Encodes rulesets 528 ("historical information"), 529 Bell, 922-937 Kendall, 938 Piccione, 939 Jéquier; publishes self-play metrics | Portal read 2026-11-22 |
 
-Not opened: Needler, JEA 39 (1953) 60-75; Refat, *Le jeu de trente cases* (PhD ULB 1972); Decker and Herb, *Bildatlas zum Sport im Alten Ägypten* (1994) 642-681; Hoerth, *Gameboards in the Ancient Near East* (MA Chicago 1961); Widura, *SpielRäume* (2015); Konstantakos, "Board Games in Ancient Fiction", BGSJ 16 (2022) 449-490; Tait, *Game-Boxes and Accessories from the Tomb of Tutankhamun* (Oxford 1982); Jacquet-Gordon in Piankoff, *The Wandering of the Soul* (Princeton 1974) 116-124.
+Not opened: Needler, JEA 39 (1953) 60-75; Refat, *Le jeu des trente cases* (PhD ULB 1972); Decker and Herb, *Bildatlas zum Sport im Alten Ägypten* (1994) 642-681; Hoerth, *Gameboards in the Ancient Near East* (MA Chicago 1961); Widura, *SpielRäume* (2015); Konstantakos, "Board Games in Ancient Fiction", BGSJ 16 (2022) 449-490; Tait, *Game-Boxes and Accessories from the Tomb of Tutankhamun* (Oxford 1982); Jacquet-Gordon in Piankoff, *The Wandering of the Soul* (Princeton 1974) 116-124.
 
 Wikipedia says Bell's rules are "mostly identical" to Kendall's. Bell's text, checked at source, matches Ludii, and Ludii's Bell differs from Kendall on pieces, lot and capture.
 
@@ -60,7 +60,7 @@ The other Tutankhamun boxes are incomplete. Box 393 (JE 62060) has 4 + 5 pieces,
 
 **Date range (evidenced).** The earliest find is Abu Rawash tomb M1, Dyn 1 (c 3100-2900 BCE): 25 ivory squares, 3 marked like later senet squares (Crist 2021: 14). A three-row board appears as the hieroglyph mn from Narmer. The predynastic el-Mahasna 3 x 6 clay table is rejected (Crist 2021: 14). The first intact boards are from Early Bronze II Arad, Canaan, 3080-2700 BCE (Crist 2021: 14). The first full depiction is in the tomb of Hesy-Re, Dyn 3: a board with 2 x 7 domed pieces and 4 sticks (Quibell 1913; Crist et al. 2016: 44).
 
-The latest unequivocal boards are Dyn 26 (664-525 BCE), scratched on terracotta platters at Tell Defenneh: BM EA22323 and two more (Crist 2019: 108). "Played until Roman times" is a factoid (Crist 2021). Disputed late cases: Petosiris, c 300 BCE (a 3 x 11 board), and Dendera roof graffiti (Roman, unpublished photographs). Arnette (BIFAO 121, 2021) publishes a Ptolemaic board fragment. P.Oxy. 470 (3rd century CE, Greek) describes a 30-square game with pieces called "dogs", squares called "houses", 26 the "good house" and 30 the "House of Horus"; Piccione identifies it as senet (Crist et al. 2016: 63-64; Finkel 2007).
+The latest unequivocal boards are Dyn 26 (664-525 BCE), scratched on terracotta platters at Tell Defenneh: BM EA22323 and two more (Crist 2019: 108). "Played until Roman times" is a factoid (Crist 2021). Disputed late cases: Petosiris, c 300 BCE (a 3 x 11 board), and Dendera roof graffiti (Roman, unpublished photographs). Arnette (BIFAO 121, 2021) publishes a Ptolemaic board fragment. P.Oxy. 470 (3rd century CE, Greek) describes a 30-square game with pieces called "dogs", squares called "houses", 26 the "good house" and 30 the "House of Horus"; Piccione identifies it as senet (Crist et al. 2016: 63-64; Finkel 2007). A Demotic text of the 2nd century CE in the Thesaurus Linguae Aegyptiae corpus speaks of "going down and up the fields" and "the thoughts of the board"; its edition was not identified. The texts, then, run later than the boards.
 
 **Beyond Egypt (evidenced).** Boards occur in the Levant (Arad, Tell es-Safi, Byblos, Hama, Kamid el-Loz, Hazor), in periods of Egyptian presence. Cyprus has them from the end of the 3rd millennium to about 1000 BCE. Nubian finds are thin. Crete has three possible 3 x 10 stones, LM II (Crist 2021). Dunn-Vaturi, Crist and de Voogt (JAEI 2021) conclude that senet probably changed over about 3,000 years.
 
@@ -72,12 +72,12 @@ Status words: evidenced (at an ancient source), inferred (read from ancient mate
 
 | # | Gap | Status | Impact on play | Evidence | How the app handles it |
 |---|---|---|---|---|---|
-| 1 | Throw values: how 4 sticks map to moves, 0 light = 5 or 6 | invented | High: sets speed and odds | "Playing five" and the "finger" captions hint at a throw of 5 and at sticks, nothing more | Sticks counted; 0 = 5 (Kendall, Piccione, Minimal) or 6 (Jéquier); Bell uses a die |
-| 2 | Extra throws | invented (Piccione's extra on 15 and 26 is inferred from the marks) | Medium | Piccione 1980: 56 (frog, extra turn on 15) | Per rule set |
+| 1 | Throw values: how 4 sticks map to moves, 0 light = 5 or 6 | invented | High: sets speed and odds | "Playing five" and the "finger" captions hint at a throw of 5 and at sticks, nothing more. Tab, the usual model, has no stable scoring itself: Hyde (1694) and Lane (1836) swap the values of the all-one-colour throws, a Sudanese variant uses 3 sticks (Davies 1925), and no tab source scores zero as 5 | Sticks counted; 0 = 5 (Kendall, Piccione, Minimal) or 6 (Jéquier); Bell uses a die |
+| 2 | Extra throws | invented (Piccione's extra on 15 and 26 is inferred from the marks) | Medium | Piccione 1980: 56 (frog, extra turn on 15). Extra throws on 1, 4 and 6 are tab's rule, attested from 1694 | Per rule set |
 | 3 | Number of pieces | evidenced by period: 7 Old Kingdom, 5 New Kingdom | Low once a period is chosen | Hesy-Re; box 585r complete set | 5, 7 or 10 per rule set |
-| 4 | Start position | inferred at best; off-board entry invented | Medium | Depictions show alternating pieces or two camps; none is labelled as a start | Alternating starts, or off-board entry (Piccione) |
+| 4 | Start position | inferred at best; off-board entry invented | Medium | Depictions show alternating pieces or two camps; none is labelled as a start. An Old Kingdom caption uses zbi̯, "send out (the piece)" (TLA lemma 131460), a weak hint at pieces entering play | Alternating starts, or off-board entry (Piccione) |
 | 5 | Path and direction | evidenced (boustrophedon); numbering inferred from texts | Low | Crist 2019: 108; Middle Kingdom orientation reversed | Boustrophedon, 1 to 30 |
-| 6 | Capture | inferred that pieces could be taken away; the mechanism (swap, send back, remove) invented | High: the most consequential unknown for strategy | Pepiankh caption; "throw him into the water" | Swap (Kendall), send back (Jéquier), remove (Bell), none (Piccione, Minimal) |
+| 6 | Capture | inferred that pieces could be taken away; the mechanism (swap, send back, remove) invented | High: the most consequential unknown for strategy | Pepiankh caption; "throw him into the water"; an Old Kingdom caption ꞽṯi̯.t m zn.t, "capturing (pieces) in senet" (Masters 2024, citing Miatello; plate not seen) | Swap (Kendall), send back (Jéquier), remove (Bell), none (Piccione, Minimal) |
 | 7 | Protection and blocking | invented for pairs and triples; inferred that a player could hold an opponent back from 26 | High | Turin: "I shall hold him back from the per-nefer" | Per rule set |
 | 8 | Backward moves | invented | Medium | None | Per rule set |
 | 9 | Square 26 | mark evidenced; mandatory stop inferred | Medium | Crist 2019: 108-110 | Per rule set |
@@ -88,12 +88,12 @@ Status words: evidenced (at an ancient source), inferred (read from ancient mate
 | 14 | Winning condition | inferred; exact rule invented | Medium | "passing is mine"; "true of voice" | First off, or most off (Bell) |
 | 15 | Knucklebones | evidenced as finds with the sets; use unknown | Low | Boxes 585r, 393, 345, 593 | Not used |
 | 16 | Solo and religious play | evidenced as scenes; rules unknown | Low for a two-player game | BD 17; Nefertari | Not modelled |
-| 17 | Period drift | rules almost surely changed over 2,500 years | High for authenticity claims | 7 to 5 pieces; board turned; square marks change | Every rule set is tagged as a composite |
+| 17 | Period drift | rules almost surely changed over 2,500 years | High for authenticity claims | 7 to 5 pieces; board turned; square marks change; the Ptolemaic Setne tale calls the game ḥbꜥ.t, "the game", not zn.t | Every rule set is tagged as a composite |
 | 18 | Throw odds of real sticks | unmeasured | Medium: every published probability rests on it | No throwing experiment on ancient-style sticks found | Sticks assumed 50/50 per face |
 
-Two gaps cut across the rest. Period drift means any single rule set is a composite: boards, piece counts and square marks span 2,500 years, and a rule built from a Dyn 6 caption and a Dyn 20 papyrus joins evidence from different games. Dependence on tab is the second. Lane (1860) records tab, a 19th-century game with four palm-rib sticks, and three of the four published stick rule sets borrow its core mechanics. Lane does not link tab to senet. The link is modern.
+Two gaps cut across the rest. Period drift means any single rule set is a composite: boards, piece counts and square marks span 2,500 years, and a rule built from a Dyn 6 caption and a Dyn 20 papyrus joins evidence from different games. Dependence on tab is the second. Three of the four published stick rule sets borrow tab's scoring, as Lane (1860) recorded it in Cairo. The specialists on tab place its origin in the Byzantine and early Islamic Near East: its 3 x 14 and 4-row boards first appear in the Levant and Arabia in the 5th to 8th centuries CE, and Depaulis (2024) holds they "cannot reasonably be held as senet". The game is first named in 1310 and first scored in 1694. The two sticks-and-race traditions share four two-sided lots and nothing else on record. The borrowing is a modern guess.
 
-## 4. Second round of research
+## 4. Second and third rounds of research
 
 The second round settled six points.
 
@@ -116,6 +116,27 @@ Still open, not reached:
 - Jéquier 1930 at the journal, and Jéquier 1922
 - Nogueira, Rodrigues and Trabucho's stick odds
 - Refat 1972; Decker and Herb 1994; Hoerth 1961; Widura 2015; Konstantakos 2022; Jacquet-Gordon 1974
+
+### Third round: Egyptian texts, Arabic scholarship and the later stick games
+
+The third round searched three areas the first two missed: the Egyptian texts in the original language, scholarship in Arabic, and the record of stick games after senet.
+
+**Egyptian texts.** The Thesaurus Linguae Aegyptiae corpus (read through its open data dumps; the website sits behind a bot check) gives the Old Kingdom vocabulary of play.
+
+- ḥꜥb m zn.t, "playing at senet" (lemma 136150, Dyn 5).
+- ḥꜥb ꞽr=k, "Go on, play!" (lemma 102160), and zbi̯ ꞽr=k, "Move, then!", with zbi̯ meaning "send out" a piece (lemma 131460). Masters (2024) places the first in the tomb of Kaiemankh at Giza.
+- ꞽṯi̯, "take, seize": ꞽṯi̯.t m zn.t, "capturing (pieces) in senet", above two players in a tomb published by Quibell (Masters 2024, citing Miatello; the tomb is not named and the plate was not seen). Shore and Miatello read the verb as capturing a piece; Goede reads it as winning the game. On the first reading it is the strongest text yet that pieces could be taken.
+- No word for throwstick, knucklebone or game piece occurs in the Earlier or Late Egyptian corpus.
+
+The Demotic First Tale of Setne Khamwas (pCairo 30646, Ptolemaic) calls the game ḥbꜥ.t, "the game", and the pieces ꞽwꞽw, "dogs". Setne and the dead Naneferkaptah play three games for the Book of Thoth; each loss sinks Setne deeper into the ground. The tale says nothing about throws or moves. Piccione asked in a conference paper whether Setne played senet; that paper was not read. A Demotic text of the 2nd century CE, edition not identified, speaks of "going down and up the fields" of a board. In Coptic, ⲥⲓⲛⲉ means "pass by" (Crum 343b), which supports the "game of passing" etymology, and ⲃⲓϫ means "bones used as dice" (Crum 48b).
+
+**Arabic scholarship.** No Arabic peer-reviewed study of senet itself was found. Arabic sources mention the game in surveys of ancient Egyptian pastimes and in press coverage of the Grand Egyptian Museum display, which says the exact rules "are still a mystery". The Egyptian Knowledge Bank journal servers refused connections from this project, so their articles were judged from search snippets and absence is unproven. The one Egyptian dissertation on senet is W.M. Refat, *Le jeu des trente cases dans l'Égypte ancienne* (Université libre de Bruxelles, 1972, supervised by A. Théodoridès), which Crist (2019) lists among the standard studies. Its contents are not online.
+
+**The later stick games.** Tab is first named by the Cairo poet Ibn Dāniyāl (d. 1310) and first scored by Hyde (1694, pp 367-371 in the 1767 edition). Hyde's scoring differs from Lane's: 4 white scores 6 and 4 yellow scores 4, the reverse of Lane. Davies (Sudan Notes and Records 8, 1925) records Sudanese variants with three sticks. Tab-type boards appear from the 5th to 8th centuries CE at Horvat 'Aqav, Jerusalem, Hammat Gader and other Levantine and Arabian sites, and in early Islamic Morocco (Depaulis 2024; Penn, Fenwick and Limane 2026). The one Egyptian candidate, a 3 x 14 slab from Memphis (Petrie UC59257), is undated. No study derives tab from senet, and de Voogt, Hassanat and Alhasanat (2017) found no evidence for it in Roman or Nabataean sources.
+
+**Effect on the gaps.** Capture (gap 6) gains a caption. Entry (gap 4) gains a weak hint. Throw values and extra throws (gaps 1 and 2) stay invented, and the usual model for them, tab, turns out to be a later, unstable and unrelated tradition. Period drift (gap 17) gains late texts that may or may not describe senet.
+
+Still open after the third round: the Quibell plate with ꞽṯi̯.t m zn.t; the full Thesaurus attestation lists; the original wording of the Pepiankh, Nebkauhor, Idu and Beni Hasan captions and of pCairo JdE 58037 and Inherkhau; the edition of the Roman Demotic text; Piccione's paper on Setne; Refat 1972; the Egyptian Knowledge Bank journals; Murray 1952 and Rosenthal 1975 at source.
 
 ## 5. Is it playable?
 
@@ -200,6 +221,9 @@ The app is at https://thegerm.github.io/AI-Chart/Projects/GERM-DEV-0031/. It off
 - Crist, W. et al. "Ludus Coriovalli". *Antiquity* 100 (2026) 111-126. Read through press coverage only.
 - Crist, W., A.-E. Dunn-Vaturi and A. de Voogt. *Ancient Egyptians at Play: Board Games across Borders*. Bloomsbury, 2016. Senet pp 41-80.
 - Crist, W., M. Stephenson, É. Piette and C. Browne. "The Ludii Games Database". *Digital Humanities Quarterly* 18.4 (2024).
+- Davies, R. "Some Arab Games and Puzzles". *Sudan Notes and Records* 8 (1925) 137-152.
+- Depaulis, T. On early mancala and tab. *Board Game Studies Journal* 18 (2024). doi:10.2478/bgs-2024-0002.
+- de Voogt, A., A. Hassanat and M. Alhasanat. On tab in Jordan. *Journal of Near Eastern Studies* 76 (2017) 93-101. Not read in full.
 - Decker, W. and M. Herb. *Bildatlas zum Sport im Alten Ägypten*. 1994, pp 642-681. Not opened.
 - Digital Ludeme Project / Ludii. C. Browne, Maastricht University, ERC grant 771292. Rulesets 528, 529, 922-939; concepts.php and conceptsUCT.php, ludii.games, read 2026-11-22.
 - Duggan, E., Bell and Taylor. Throwing experiments with sheep astragali and replicas. Board Game Studies Colloquium XVIII, La Tour-de-Peilz, 2015. https://oars.uos.ac.uk/1156/
@@ -207,6 +231,7 @@ The app is at https://thegerm.github.io/AI-Chart/Projects/GERM-DEV-0031/. It off
 - Faulkner, R.O. *A Concise Dictionary of Middle Egyptian*. Oxford, 1962. Cited through Wiktionary, not checked.
 - Finkel, I. (ed.). *Ancient Board Games in Perspective*. British Museum Press, 2007.
 - Hoerth, A. *Gameboards in the Ancient Near East*. MA thesis, University of Chicago, 1961. Not opened.
+- Hyde, T. *De ludis orientalibus*. Oxford, 1694. Read in *Syntagma dissertationum*, ed. G. Sharpe, Oxford, 1767, vol 2 pp 367-372.
 - Jacquet-Gordon, H. In A. Piankoff, *The Wandering of the Soul*. Princeton, 1974, pp 116-124. Not opened.
 - Jéquier, G. 1922, p 18, as cited in Crist et al. 2016: 51, 85. Not opened.
 - Jéquier, G. "Un jeu renouvelé des anciens". *Chronique d'Égypte* 5 (1930) 124-127. Unverified.
@@ -216,18 +241,22 @@ The app is at https://thegerm.github.io/AI-Chart/Projects/GERM-DEV-0031/. It off
 - Konstantakos, I. "Board Games in Ancient Fiction". *Board Game Studies Journal* 16 (2022) 449-490. Not opened.
 - Lane, E.W. *An Account of the Manners and Customs of the Modern Egyptians*. 1836; 5th ed 1860, ch XVII pp 346-349.
 - Motte, A. Chapter 3, author's postprint, 2025, citing Pusch 1979 pl 6.
+- Masters, J.F.R. "Mehen, the Ancient Egyptian Serpent Game". *Interdisciplinary Egyptology* 3(2) (2024).
 - Needler, W. *Journal of Egyptian Archaeology* 39 (1953) 60-75. Not opened.
 - Nogueira, Rodrigues and Trabucho. "On the equilibrium of the Egyptian game Senet". Recreational Mathematics Colloquium. https://core.ac.uk/download/322889449.pdf (not reached).
+- Penn, T., C. Fenwick and H. Limane. Gaming boards from early Islamic Walila. *Libyan Studies* (2026). doi:10.1017/lis.2025.10033.
 - Piccione, P.A. "In Search of the Meaning of Senet". *Archaeology* 33(4) (1980) 55-58.
 - Piccione, P.A. Review of Pusch 1979. *Journal of Egyptian Archaeology* 70 (1984) 172-180.
 - Piccione, P.A. *The Historical Development of the Game of Senet and its Significance for Egyptian Religion*. PhD dissertation, University of Chicago, 1990.
 - Piccione, P.A. "The Egyptian Game of Senet and the Migration of the Soul". In Finkel (ed.) 2007, pp 54-63.
 - Pusch, E.B. *Das Senet-Brettspiel im Alten Ägypten*. Münchner Ägyptologische Studien 38, Munich, 1979.
 - Quibell, J.E. *Excavations at Saqqara (1911-12): The Tomb of Hesy*. Cairo, 1913.
-- Refat, W.M. *Le jeu de trente cases dans l'Égypte ancienne*. PhD thesis, Université Libre de Bruxelles, 1972. Not opened.
+- Refat, W.M. *Le jeu des trente cases dans l'Égypte ancienne*. PhD thesis, Université libre de Bruxelles, 1972, supervised by A. Théodoridès. Not opened.
+- Rosenthal, F. *Gambling in Islam*. Leiden, 1975, pp 43-44. Cited through Depaulis 2024; not opened.
 - Romano et al. "An Ancient Egyptian Senet Board in the Arizona State Museum". *Zeitschrift für Ägyptische Sprache* 145 (2018) 71-85.
 - Simpson, W.K. *The Mastabas of Qar and Idu*. Giza Mastabas 2. Boston, 1976, p 25.
 - Tait, W.J. *Game-Boxes and Accessories from the Tomb of Tutankhamun*. Oxford, 1982. Not opened.
-- Thesaurus Linguae Aegyptiae. Lemma 136150, zn.t.
+- Thesaurus Linguae Aegyptiae. Lemmas 136150 (zn.t), 102160 (ḥꜥb), 131460 (zbi̯), 33560 (ꞽṯi̯); corpus dumps on HuggingFace (Earlier Egyptian v18, Late Egyptian v19, Demotic v18), read 2026-11-24.
+- Crum, W.E. *A Coptic Dictionary*. Oxford, 1939, pp 48b, 343b-344b; via the KELLIA Comprehensive Coptic Lexicon v1.2 (2020).
 - Widura, A. *SpielRäume*. 2015. Not opened.
 - Wikipedia. "Senet". Read 2026-11-22, used for pointers only.

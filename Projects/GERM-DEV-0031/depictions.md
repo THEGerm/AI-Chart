@@ -33,7 +33,7 @@ Status: **read** means the image was analysed; **no image** means the scene is l
 | 23 | Dyn 18 | Papyrus of Yuya, Cairo CG 51189 | Book of the Dead 17 vignette | none | no image |
 | 24 | Dyn 20 | Turin satirical papyrus, Cat. 2031 | Lion and gazelle playing (reported) | Museo Egizio, 5 photos | unconfirmed: not found on the photos |
 | 25 | Dyn 19-20 | BM satirical papyrus EA 10016/1 | Lion plays a gazelle | none | no image |
-| 26 | Dyn 26 | Saqqara, lintel of Ankhefensekhmet | Players below musicians, with speech captions | Walters 22.152-153 | no image |
+| 26 | Dyn 26 | Saqqara, lintel of Ankhefensekhmet | Two men playing senet below musicians, with speech captions; mehen players beside them | Walters 22.152-153 (museum photos, CC0) | read |
 
 No depiction of play was found from Nubia or the Levant, where boards occur. List numbers in Piccione 1990, Pusch 1979 and Crist, Dunn-Vaturi and de Voogt 2016 were not checked; those works were not reachable.
 
@@ -51,6 +51,7 @@ No depiction of play was found from Nubia or the Levant, where boards occur. Lis
 | 19 Medinet Habu | board lost; each player holds one cone-topped piece | not legible | 2; a third figure watches | none seen | high on the held pieces |
 | 20 Ani | 3 cones, 2 squat pieces | grouped by shape | 1; wife watches, does not reach the board | none shown | high |
 | 21 Hunefer | 4, shape unclear | not legible | 1, opponent unseen | none shown | high on the count |
+| 26 Walters lintel | 10, all rounded cones; three may be slightly more pointed | not alternating; evenly spaced, no gap | 2; each has a hand at his own end of the row (left on piece 1, right on piece 9); the left player's other hand grips the board's leg | none seen | high on the count; medium on the hands |
 
 Hesy-Re's board, drawn in plan as a 3 x 10 grid, has faint marks in five squares: an X, horizontal strokes, wavy strokes, dots and one stroke. Read along the later path, they fall on squares 1, 11, 21, 27 and 30, and the wavy strokes sit on 27, the water square of later boards. Squares 26, 28 and 29, marked on New Kingdom boards, are blank. Position: high; the reading of the signs: low. Quibell notes some marks may be red underpainting showing through.
 
@@ -59,8 +60,8 @@ Hesy-Re's board, drawn in plan as a 3 x 10 grid, has faint marks in five squares
 1. **Seven a side in the Old Kingdom.** Hesy-Re's tray holds 7 and 7 (high). Mereruka shows 6 and 6 on the board with one more in each player's hand (medium), which also makes 7. This confirms the period count already in rules.md.
 2. **Pieces alternate in Old Kingdom and Middle Kingdom scenes.** Mereruka's row alternates without a break across 12 pieces (high). Meir's first five alternate (high), and one Beni Hasan board alternates (low). A profile view flattens three rows into one, so this shows order along the path, not squares. The plain reading is an alternating start, as in the Kendall and Jéquier reconstructions.
 3. **Meir looks like a game in progress.** The alternation breaks at the point where the player's hand hovers: two cones side by side, then a damaged piece. An alternating start that breaks once pieces move fits this.
-4. **New Kingdom scenes group the pieces by side.** Nefertari's row is 5 cones then 5 spools (high), and Ani's is grouped by shape (high). These are Book of the Dead scenes of a player alone. Grouped sides fit pieces lined up apart before play, or two armies facing each other; they do not fit an alternating start. The rule may have changed between the Old and New Kingdoms, or the funerary scenes follow their own convention.
-5. **Two players in daily life, one in funerary scenes.** Every Old and Middle Kingdom scene read has two players. The New Kingdom funerary scenes (Nefertari, Ani, Hunefer) show one player and no opponent, as the Book of the Dead 17 rubric describes. Medinet Habu, a palace scene, has two. The Germain Fate version fits the solo scenes.
+4. **New Kingdom and Late Period scenes do not alternate.** Nefertari's row is 5 cones then 5 spools (high), and Ani's is grouped by shape (high). These are Book of the Dead scenes of a player alone. The Walters lintel (Dynasty 26), a two-player scene, shows 10 like pieces with no alternation, each player's hand at his own end of the row. Grouped sides fit pieces lined up apart before play, or two armies facing each other; they do not fit an alternating start. The rule may have changed between the Old and New Kingdoms, or the funerary scenes follow their own convention.
+5. **Two players in daily life, one in funerary scenes.** Every Old and Middle Kingdom scene read has two players. The New Kingdom funerary scenes (Nefertari, Ani, Hunefer) show one player and no opponent, as the Book of the Dead 17 rubric describes. Medinet Habu, a palace scene, and the Walters lintel have two. The Germain Fate version fits the solo scenes.
 6. **The lot is almost never shown in play.** Only Hesy-Re's grave goods show sticks (four). No scene shows a throw.
 7. **Square marks may be older than thought.** If the Hesy-Re marks are real, square 27 carried a water sign by Dynasty 3, and squares 1, 11 and 21, where the path turns, were marked too.
 
@@ -83,5 +84,6 @@ The scenes support the two changes proposed for an Old Kingdom version of the Ge
 - Duell, P. *The Mastaba of Mereruka* II (OIP 39; Chicago, 1938), pl. 171-172. Free PDF from the Institute for the Study of Ancient Cultures, Chicago.
 - The Epigraphic Survey. *Medinet Habu* VIII (OIP 94; Chicago, 1970), pl. 640. Free PDF, same source.
 - Metropolitan Museum of Art, 08.201.2 (Nikauhor) and 30.4.145 (Nefertari facsimile), open access.
+- Walters Art Museum, 22.152-153, lintel of Ankhefensekhmet, museum photographs (CC0) and object page.
 - Newberry, P.E. *Beni Hasan* II (London: EEF, 1894), pl. VII. archive.org, item beni-hasan-v.-2.
 - Quibell, J.E. *Excavations at Saqqara 1911-12: The Tomb of Hesy* (Cairo, 1913), pl. XI. archive.org, item cu31924028671299.

@@ -268,11 +268,12 @@ Starts and seats alternate. The ± figures are 95% intervals. Results: `sweep/re
 
 ### What the depictions add
 
-Every depiction of play we could trace is catalogued in `depictions.md`: 26 scenes from Dynasty 3 to Dynasty 26. Eleven were read image by image; images for most of the rest are behind sites that block automated downloads. The findings, with confidence:
+Every depiction of play we could trace is catalogued in `depictions.md`: 26 scenes from Dynasty 3 to Dynasty 26. Twelve were read image by image; images for most of the rest are behind sites that block automated downloads. The findings, with confidence:
 
 - **Seven a side in the Old Kingdom.** Hesy-Re paints 7 and 7 pieces in a tray (high); Mereruka shows 6 and 6 on the board and one more in each player's hand (medium).
 - **Alternating order in Old and Middle Kingdom scenes.** Mereruka's 12 pieces alternate without a break (high); Meir's first five alternate (high), then break where the player's hand hovers, as in a game under way.
-- **No alternation after the Middle Kingdom.** Nefertari's row is 5 cones then 5 spools, and Ani's is grouped by shape (both high). The Walters lintel (Dynasty 26) shows two players at a row of 10 like pieces, not alternating, each with a hand at his own end. Either the start changed, or later artists drew the pieces another way.
+- **No alternation after the Middle Kingdom.** Nefertari's row is 5 cones then 5 spools, and Ani's is grouped by shape (both high). The British Museum lion and gazelle (Ramesside) has 4 pieces of each kind grouped on the owner's side and a fifth in each player's hand. The Walters lintel (Dynasty 26) shows two players at a row of 10 like pieces, not alternating, each with a hand at his own end. Either the start changed, or later artists drew the pieces another way.
+- **A knucklebone in play?** On the British Museum papyrus the lion holds a rounded object that the museum calls a knucklebone die (the image alone: low confidence). It would be the only lot shown in a scene of play.
 - **One player in funerary scenes, two in daily life.** Nefertari, Ani and Hunefer play alone; every Old and Middle Kingdom scene read, and Medinet Habu, has two.
 - **Marked squares in Dynasty 3.** Hesy-Re's plan view has faint marks on squares 1, 11, 21, 27 and 30 (position high, reading low), with wavy strokes on 27, the later water square.
 

@@ -1,0 +1,87 @@
+# Senet in Egyptian art: catalogue and image analysis
+
+GERM-DEV-0031, 2026-11-25. Every known depiction of senet play we could trace, and what a close reading of the images shows about the rules. Images were read by an image-analysis agent working on the raw files: it cropped, zoomed and measured, and gave a confidence for each finding. The images are not reproduced here; each row names its source.
+
+## Catalogue
+
+Status: **read** means the image was analysed; **no image** means the scene is listed in the literature but no image could be obtained (Wikimedia Commons, the British Museum and the Walters block automated downloads from this project's network); **unconfirmed** means the source we checked does not show the scene.
+
+| No. | Date | Place | Scene | Source read | Status |
+|---|---|---|---|---|---|
+| 01 | Dyn 3 | Saqqara, Hesy-Re | Board, pieces and sticks painted in plan among grave goods | Quibell 1913, pl. XI | read |
+| 02 | Dyn 5 | Saqqara, Rashepses (LS 16) | Pairs of men playing | Lepsius, Denkmäler II | no image |
+| 03 | Dyn 5 | Saqqara, Nikauhor | Two men playing | Met 08.201.2 (photo) | read |
+| 04 | Dyn 5 | Saqqara, Kaemrehu (D 2) | Men playing | Ny Carlsberg ÆIN 1271 | no image |
+| 05 | Dyn 5 | Saqqara, Ptahhotep | Reported game scene | Davies 1900-01 | unconfirmed: only boys' games found |
+| 06 | Dyn 5 | Saqqara, Niankhkhnum and Khnumhotep | Board game among festival scenes | none | no image |
+| 07 | Dyn 6 | Saqqara, Mereruka | Mereruka plays a son(?), wife beside him | Duell 1938, pl. 171 (photo), pl. 172 (drawing) | read |
+| 08 | Dyn 6 | Giza, Idu (G 7102) | Reported game scene | none | no image |
+| 09 | Dyn 5-6 | Giza, Kaemankh (G 4561) | Board-game players | none | no image |
+| 10 | Dyn 6 | Meir, Pepiankh the Middle | Two men playing, with speech captions | Blackman 1924, pl. X | read |
+| 11 | Dyn 11 | Beni Hasan 15, Baqet III | Two pairs playing | Newberry 1894, pl. VII | read |
+| 12 | Dyn 11 | Beni Hasan 17, Khety | Reported game scene | Newberry 1894, pl. IX-XIX | unconfirmed: no board found |
+| 13 | Dyn 12 | Beni Hasan 2, Amenemhat | Reported game scene | none | no image |
+| 14 | Dyn 12 | Meir, unidentified tomb | Reported game scene | none | no image |
+| 15 | Dyn 19 | Valley of the Queens, Nefertari (QV 66) | Nefertari plays alone, Book of the Dead 17 | Met 30.4.145 (facsimile) | read |
+| 16 | Dyn 19 | Deir el-Medina, Sennedjem (TT 1) | Reported game scene | Museo Egizio photo archive | no image of the scene |
+| 17 | Dyn 20 | Deir el-Medina, Inherkhau (TT 359) | Reported game scene | none | no image |
+| 18 | Dyn 19 | Deir el-Medina, Irynefer (TT 290) | Owner and wife playing (secondary lists) | none | no image |
+| 19 | Dyn 20 | Medinet Habu, Eastern High Gate | Ramesses III plays a princess | Medinet Habu VIII, pl. 640 (drawing) | read |
+| 20 | Dyn 19 | Papyrus of Ani, BM EA 10470 | Ani plays alone, wife behind him | Budge facsimile, pl. 7 | read |
+| 21 | Dyn 19 | Papyrus of Hunefer, BM EA 9901 | Hunefer plays alone | Commons photo, sheet 5 | read |
+| 22 | Dyn 18-19 | Papyrus of Nakht, BM EA 10471 | Book of the Dead 17 vignette | none | no image |
+| 23 | Dyn 18 | Papyrus of Yuya, Cairo CG 51189 | Book of the Dead 17 vignette | none | no image |
+| 24 | Dyn 20 | Turin satirical papyrus, Cat. 2031 | Lion and gazelle playing (reported) | Museo Egizio, 5 photos | unconfirmed: not found on the photos |
+| 25 | Dyn 19-20 | BM satirical papyrus EA 10016/1 | Lion plays a gazelle | none | no image |
+| 26 | Dyn 26 | Saqqara, lintel of Ankhefensekhmet | Players below musicians, with speech captions | Walters 22.152-153 | no image |
+
+No depiction of play was found from Nubia or the Levant, where boards occur. List numbers in Piccione 1990, Pusch 1979 and Crist, Dunn-Vaturi and de Voogt 2016 were not checked; those works were not reachable.
+
+## What the images show
+
+| No. | Pieces seen | Order on the board | Players | Lot | Confidence |
+|---|---|---|---|---|---|
+| 01 Hesy-Re | 14 in a tray, 7 and 7 of two shapes; none on the board | none on the board | none | 4 sticks, marked at both ends and the middle | high on counts |
+| 03 Nikauhor | not countable (faded) | not legible | 2, face to face | none seen | low |
+| 07 Mereruka | 12 on the board, plus 1 held by each player | short, tall, alternating, 6 and 6, evenly spaced, no gap | 2; each holds a tapering object toward the board | none seen | high on the row; medium that the held objects are pieces |
+| 10 Meir | 10 (9 or 11 if a damaged one is counted otherwise) | cone, dome alternating for pieces 1-5; then 2 cones together, a damaged piece, a dome | 2; one player's open hand hovers over pieces 6-7 | none seen | high on 1-5; medium on the rest |
+| 11 Beni Hasan 15, board A | about 4 dark, 5 light | grouped, with a gap between | 2 | none seen | medium to low (25 px high) |
+| 11 Beni Hasan 15, board B | about 11 | dark and light alternating, at least at the left | 2 | none seen | low |
+| 15 Nefertari | 5 cones, 5 spools | grouped: 5 cones then 5 spools | 1, opponent unseen | none shown | high |
+| 19 Medinet Habu | board lost; each player holds one cone-topped piece | not legible | 2; a third figure watches | none seen | high on the held pieces |
+| 20 Ani | 3 cones, 2 squat pieces | grouped by shape | 1; wife watches, does not reach the board | none shown | high |
+| 21 Hunefer | 4, shape unclear | not legible | 1, opponent unseen | none shown | high on the count |
+
+Hesy-Re's board, drawn in plan as a 3 x 10 grid, has faint marks in five squares: an X, horizontal strokes, wavy strokes, dots and one stroke. Read along the later path, they fall on squares 1, 11, 21, 27 and 30, and the wavy strokes sit on 27, the water square of later boards. Squares 26, 28 and 29, marked on New Kingdom boards, are blank. Position: high; the reading of the signs: low. Quibell notes some marks may be red underpainting showing through.
+
+## What this adds to the rules
+
+1. **Seven a side in the Old Kingdom.** Hesy-Re's tray holds 7 and 7 (high). Mereruka shows 6 and 6 on the board with one more in each player's hand (medium), which also makes 7. This confirms the period count already in rules.md.
+2. **Pieces alternate in Old Kingdom and Middle Kingdom scenes.** Mereruka's row alternates without a break across 12 pieces (high). Meir's first five alternate (high), and one Beni Hasan board alternates (low). A profile view flattens three rows into one, so this shows order along the path, not squares. The plain reading is an alternating start, as in the Kendall and Jéquier reconstructions.
+3. **Meir looks like a game in progress.** The alternation breaks at the point where the player's hand hovers: two cones side by side, then a damaged piece. An alternating start that breaks once pieces move fits this.
+4. **New Kingdom scenes group the pieces by side.** Nefertari's row is 5 cones then 5 spools (high), and Ani's is grouped by shape (high). These are Book of the Dead scenes of a player alone. Grouped sides fit pieces lined up apart before play, or two armies facing each other; they do not fit an alternating start. The rule may have changed between the Old and New Kingdoms, or the funerary scenes follow their own convention.
+5. **Two players in daily life, one in funerary scenes.** Every Old and Middle Kingdom scene read has two players. The New Kingdom funerary scenes (Nefertari, Ani, Hunefer) show one player and no opponent, as the Book of the Dead 17 rubric describes. Medinet Habu, a palace scene, has two. The Germain Fate version fits the solo scenes.
+6. **The lot is almost never shown in play.** Only Hesy-Re's grave goods show sticks (four). No scene shows a throw.
+7. **Square marks may be older than thought.** If the Hesy-Re marks are real, square 27 carried a water sign by Dynasty 3, and squares 1, 11 and 21, where the path turns, were marked too.
+
+## For the Old Kingdom rule set
+
+The scenes support the two changes proposed for an Old Kingdom version of the Germain Rules: 7 pieces a side (Hesy-Re, Mereruka) and an alternating start (Mereruka, Meir). The alternating start gave a 62% seat advantage in a forced-move version in a first test, so an Old Kingdom Fate would need an offboard start; the solo forced-move scenes are New Kingdom in any case.
+
+## Caveats
+
+- Profile views flatten the board. They show the order of pieces along the top, not which squares they stand on.
+- Artists may abbreviate. A row of 12 can stand for 14.
+- Several counts come from old scans at low resolution (Beni Hasan) or faded relief (Nikauhor).
+- Nine catalogue entries rest on secondary lists and were not checked at source this round (02, 04, 06, 08, 09, 13, 14, 17, 18). Two reported scenes were not found where the lists put them (05, 12), and the Turin lion and gazelle was not found on five photos of the papyrus (24).
+- Sign readings are partial. Published translations of the Meir and Walters captions exist and were not retrieved.
+
+## Sources
+
+- Blackman, A.M. *The Rock Tombs of Meir* IV (London: EEF, 1924), pl. X. archive.org, item ASE-EEF25.
+- Budge, E.A.W. *The Papyrus of Ani*, facsimile (London, 1890s), pl. 7. archive.org, item papyrusofanirepr31unse.
+- Duell, P. *The Mastaba of Mereruka* II (OIP 39; Chicago, 1938), pl. 171-172. Free PDF from the Institute for the Study of Ancient Cultures, Chicago.
+- The Epigraphic Survey. *Medinet Habu* VIII (OIP 94; Chicago, 1970), pl. 640. Free PDF, same source.
+- Metropolitan Museum of Art, 08.201.2 (Nikauhor) and 30.4.145 (Nefertari facsimile), open access.
+- Newberry, P.E. *Beni Hasan* II (London: EEF, 1894), pl. VII. archive.org, item beni-hasan-v.-2.
+- Quibell, J.E. *Excavations at Saqqara 1911-12: The Tomb of Hesy* (Cairo, 1913), pl. XI. archive.org, item cu31924028671299.

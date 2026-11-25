@@ -227,8 +227,10 @@ Skill is the win rate of the normal computer against a random mover, a lower bou
 The rest: 5 pieces each, entering from off the board, a throw of 0 light faces scores 5, no extra throws, every piece stops on 26, and 27 sends a piece back to 15. There are three versions:
 
 - **Fate:** the rearmost piece that can move must move.
-- **Contest:** free choice of which piece to move.
-- **Master:** free choice, and two pieces side by side cannot be struck.
+- **Contest:** free choice, and two pieces side by side cannot be struck.
+- **Master:** free choice of which piece to move; a lone piece can always be struck.
+
+The names of Contest and Master were swapped on 2026-11-25, after the results below showed the unprotected version is the harder game.
 
 Design and reasons: `sweep/stage2-candidates.md`.
 
@@ -238,7 +240,7 @@ Design and reasons: `sweep/stage2-candidates.md`.
 - **Skill:** normal against a random mover.
 - **Look-ahead:** hard (one-ply expectimax) against normal.
 
-Starts and seats alternate. The ± figures are 95% intervals. Results: `sweep/results/stage2.json`, run 2026-11-25.
+Starts and seats alternate. The ± figures are 95% intervals. Results: `sweep/results/stage2.json`, run 2026-11-25 after the rename and with the Old Kingdom versions added.
 
 | Rule set | Finish | Throws | 99th pct | Longest | Cones win | Decisions | Hits | Skill | Look-ahead |
 |---|---|---|---|---|---|---|---|---|---|
@@ -248,21 +250,35 @@ Starts and seats alternate. The ± figures are 95% intervals. Results: `sweep/re
 | Bell 1960 | 100% | 45 | 72 | 86 | 73.6% | 80.8% | 14.9 | 98.5% ± 0.5 | 58.0% ± 2.2 |
 | Piccione | 100% | 175 | 263 | 337 | 51.2% | 62.2% | 0.0 | 83.2% ± 1.6 | 54.0% ± 2.2 |
 | Germain: Fate | 100% | 317 | 512 | 677 | 49.3% | 0.0% | 100.1 | 51.2% ± 2.2 | 49.9% ± 2.2 |
-| Germain: Contest | 100% | 269 | 387 | 506 | 48.7% | 85.7% | 70.5 | 98.9% ± 0.5 | 68.6% ± 2.0 |
-| Germain: Master | 100% | 208 | 281 | 333 | 51.4% | 66.8% | 19.0 | 96.4% ± 0.8 | 55.5% ± 2.2 |
+| Germain: Contest | 100% | 208 | 282 | 330 | 51.7% | 67.0% | 19.2 | 95.2% ± 0.9 | 54.6% ± 2.2 |
+| Germain: Master | 100% | 269 | 392 | 471 | 49.7% | 85.5% | 70.1 | 99.1% ± 0.4 | 66.8% ± 2.1 |
+| Germain: Old Kingdom Contest | 100% | 264 | 353 | 426 | 48.8% | 73.7% | 30.9 | 98.9% ± 0.5 | 52.8% ± 2.2 |
+| Germain: Old Kingdom Master | 100% | 390 | 550 | 723 | 50.1% | 91.2% | 122.5 | 100.0% ± 0.1 | 71.3% ± 2.0 |
 
 **Against the pass marks set before the run:**
 
-- **Every game ends.** All three versions finish all 2,000 games. The longest Fate game takes 677 throws, well inside the 3,000 cap.
-- **Balanced.** Cones win 48.7% to 51.4%, within the noise.
+- **Every game ends.** Every Germain version finishes all 2,000 games. The longest game, Old Kingdom Master, takes 723 throws, well inside the 3,000 cap.
+- **Balanced.** Cones win 48.8% to 51.7%, within the noise.
 - **Fate is pure luck.** The normal player beats a random mover 51.2% of the time, which is chance. Fate has no decisions, so this confirms the rule works.
-- **Skill does not rise from Contest to Master.** This prediction failed. Contest has the most skill of any rule set tested: 98.9% against a random mover, and 68.6% for look-ahead against normal play. Master drops to 96.4% and 55.5%. Protecting pairs cuts hits from 70 a game to 19, and with fewer targets there is less to plan.
+- **Skill rises with the unprotected version, against the prediction.** The design expected protection to add skill. The version without it has the most skill of the 5-piece rule sets: 99.1% against a random mover, and 66.8% for look-ahead against normal play. With pairs protected it drops to 95.2% and 54.6%. Protecting pairs cuts hits from 70 a game to 19, and with fewer targets there is less to plan. The names were swapped to match: Master is now the unprotected version.
 
-**Reading.** Two rules drawn from the evidence remove unfinished games without adding a modern rule. Contest is the game of skill and the hardest to master; Master is calmer, close to Kendall in hits and length. The version names follow the stage 2 design and can change.
+**Old Kingdom versions.** The depictions (below and `depictions.md`) support 7 pieces a side and an alternating start in the Old Kingdom. With those two changes, Old Kingdom Master is the deepest game tested: look-ahead wins 71.3%, with 91% of throws offering a choice, at the cost of long games (390 throws). There is no Old Kingdom Fate: forced moves from an alternating start gave one seat 62% in a first test, and the solo scenes are New Kingdom.
+
+**Reading.** Two rules drawn from the evidence remove unfinished games without adding a modern rule. Master is the game of skill. Contest is calmer, close to Kendall in hits and length.
+
+### What the depictions add
+
+Every depiction of play we could trace is catalogued in `depictions.md`: 26 scenes from Dynasty 3 to Dynasty 26. Ten were read image by image; images for most of the rest are behind sites that block automated downloads. The findings, with confidence:
+
+- **Seven a side in the Old Kingdom.** Hesy-Re paints 7 and 7 pieces in a tray (high); Mereruka shows 6 and 6 on the board and one more in each player's hand (medium).
+- **Alternating order in Old and Middle Kingdom scenes.** Mereruka's 12 pieces alternate without a break (high); Meir's first five alternate (high), then break where the player's hand hovers, as in a game under way.
+- **Grouped sides in New Kingdom funerary scenes.** Nefertari's row is 5 cones then 5 spools, and Ani's is grouped by shape (both high). Either the start changed, or these scenes follow their own convention.
+- **One player in funerary scenes, two in daily life.** Nefertari, Ani and Hunefer play alone; every Old and Middle Kingdom scene read, and Medinet Habu, has two.
+- **Marked squares in Dynasty 3.** Hesy-Re's plan view has faint marks on squares 1, 11, 21, 27 and 30 (position high, reading low), with wavy strokes on 27, the later water square.
 
 ## 6. The app
 
-The app is at https://thegerm.github.io/AI-Chart/Projects/GERM-DEV-0031/. It offers eight rule sets: Minimal, Kendall 1978, Jéquier, Bell 1960, Piccione and the Germain Rules in three versions (Fate, Contest, Master). Play is against the computer at easy, normal or hard, or two players on one screen.
+The app is at https://thegerm.github.io/AI-Chart/Projects/GERM-DEV-0031/. It offers ten rule sets: Minimal, Kendall 1978, Jéquier, Bell 1960, Piccione and the Germain Rules in five versions (Fate, Contest, Master, Old Kingdom Contest, Old Kingdom Master). Play is against the computer at easy, normal or hard, or two players on one screen.
 
 **Evidence tags.** Every rule in every rule set carries a tag and a source note.
 

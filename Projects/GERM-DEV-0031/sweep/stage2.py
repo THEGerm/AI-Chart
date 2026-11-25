@@ -15,7 +15,7 @@ Three sets of games per rule set, each with starts alternated:
 Writes results/stage2.json and prints a Markdown table. Pass marks for the
 Germain Rules (stage2-candidates.md): completion 100%, the 99th percentile
 of game length bounded, balance near 1, skill near 0.5 for Fate and rising
-from Contest to Master.
+from Contest to Master (names as swapped on 2026-11-25).
 """
 from __future__ import annotations
 

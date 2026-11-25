@@ -146,7 +146,7 @@ test('remove capture: the game ends when a side has nothing left in play (review
 });
 
 test('Germain Rules: a struck piece past 15 goes to 15, otherwise off the board', () => {
-  const rs = R.germain_contest;
+  const rs = R.germain_master;
   const st = empty(rs);
   st.board[18] = 0; st.board[20] = 1;
   let r = S.applyMove(st, { from: 18, to: 20, dir: 1 }, rs);
@@ -165,19 +165,19 @@ test('Germain Rules: a struck piece past 15 goes to 15, otherwise off the board'
   assert.deepStrictEqual(r.events, ['hit:0']);
 });
 
-test('Germain Rules: Fate forces the rearmost piece; Master protects pairs', () => {
+test('Germain Rules: Fate forces the rearmost piece; Contest protects pairs', () => {
   const st = empty(R.germain_fate);
   st.reserve[0] = 1; st.board[5] = 0; st.board[10] = 0;
   assert.deepStrictEqual(S.legalMoves(st, 0, 2, R.germain_fate).map(m => m.from), [0]);
-  assert.strictEqual(S.legalMoves(st, 0, 2, R.germain_contest).length, 3);
-  const st2 = empty(R.germain_master);
+  assert.strictEqual(S.legalMoves(st, 0, 2, R.germain_master).length, 3);
+  const st2 = empty(R.germain_contest);
   st2.board[4] = 0; st2.board[8] = 1; st2.board[9] = 1;
-  assert.ok(!has(S.legalMoves(st2, 0, 4, R.germain_master), 4, 8));
-  assert.ok(has(S.legalMoves(st2, 0, 4, R.germain_contest), 4, 8));
+  assert.ok(!has(S.legalMoves(st2, 0, 4, R.germain_contest), 4, 8));
+  assert.ok(has(S.legalMoves(st2, 0, 4, R.germain_master), 4, 8));
 });
 
 test('Germain Rules: exits only from 26 on 5, 28 on 3, 29 on 2, 30 on 1', () => {
-  const rs = R.germain_contest;
+  const rs = R.germain_master;
   for (const [sq, t] of [[26, 5], [28, 3], [29, 2], [30, 1]]) {
     for (let v = 1; v <= 5; v++) {
       const st = empty(rs); st.board[sq] = 0;

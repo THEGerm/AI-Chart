@@ -25,13 +25,13 @@ Status: **read** means the image was analysed; **no image** means the scene is l
 | 15 | Dyn 19 | Valley of the Queens, Nefertari (QV 66) | Nefertari plays alone, Book of the Dead 17 | Met 30.4.145 (facsimile); photograph of the wall | read |
 | 16 | Dyn 19 | Deir el-Medina, Sennedjem (TT 1) | Sennedjem plays alone, his wife beside him, on the burial chamber door | Visitor's photo of the door, Cairo JE 27303 (analysis only, not reproduced) | read |
 | 17 | Dyn 20 | Deir el-Medina, Inherkhau (TT 359) | Reported game scene | none | no image |
-| 18 | Dyn 19 | Deir el-Medina, Irynefer (TT 290) | Owner and wife playing (secondary lists) | none | no image |
+| 18 | Dyn 19 | Deir el-Medina, Irynefer (TT 290) | Owner and wife playing (secondary lists) | Images circulating under this name | probably a mislabel: the images found under Irynefer's name are Sennedjem's door (16) |
 | 19 | Dyn 20 | Medinet Habu, Eastern High Gate | Ramesses III plays a princess | Medinet Habu VIII, pl. 640 (drawing) | read |
 | 20 | Dyn 19 | Papyrus of Ani, BM EA 10470 | Ani plays alone, wife behind him | Budge facsimile, pl. 7 | read |
 | 21 | Dyn 19 | Papyrus of Hunefer, BM EA 9901 | Hunefer plays alone | Commons photo, sheet 5 | read |
 | 22 | Dyn 18 | Papyrus of Nakht, BM EA 10471 | Nakht plays alone in a booth, Book of the Dead 17 vignette | British Museum photo, frame EA 10471,2 | read |
 | 23 | Dyn 18 | Papyrus of Yuya, Cairo CG 51189 | Book of the Dead 17 vignette | Naville 1908, pl. I-VI | unconfirmed: the chapter 17 vignettes show a tree goddess and the bier, no game |
-| 24 | Dyn 20 | Turin satirical papyrus, Cat. 2031 | Lion and gazelle playing (reported) | Museo Egizio, 5 photos | unconfirmed: not found on the photos |
+| 24 | Dyn 20 | Turin satirical papyrus, Cat. 2031 | Lion and gazelle playing (reported) | Museo Egizio, 5 photos; images circulating under this name | probably a mislabel: no game on the Turin photos, and the images found under Turin's name are the British Museum papyrus (25) |
 | 25 | Dyn 19-20 | BM satirical papyrus EA 10016/1, Deir el-Medina | Lion plays a gazelle | British Museum photo (screenshot) and object page | read |
 | 26 | Dyn 26 | Saqqara, lintel of Ankhefensekhmet | Two men playing senet below musicians, with speech captions; mehen players beside them | Walters 22.152-153 (museum photos, CC0) | read |
 
@@ -82,7 +82,7 @@ The scenes support the two changes proposed for an Old Kingdom version of the Ge
 - Profile views flatten the board. They show the order of pieces along the top, not which squares they stand on.
 - Artists may abbreviate. A row of 12 can stand for 14.
 - Several counts come from old scans at low resolution (Beni Hasan) or faded relief (Nikauhor).
-- Five catalogue entries rest on secondary lists and were not checked at source this round (04, 06, 14, 17, 18). Four reported scenes were not found where the lists put them (05, 12, 13, 23), and the Turin lion and gazelle was not found on five photos of the papyrus (24).
+- Five catalogue entries rest on secondary lists and were not checked at source this round (04, 06, 14, 17, 18). Four reported scenes were not found where the lists put them (05, 12, 13, 23), and two are probably mislabelled copies of other entries (18 is Sennedjem, 24 is the British Museum papyrus), and the Turin lion and gazelle was not found on five photos of the papyrus (24).
 - Sign readings are partial. Published translations of the Meir and Walters captions exist and were not retrieved.
 
 ## Sources

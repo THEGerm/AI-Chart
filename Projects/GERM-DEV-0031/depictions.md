@@ -11,7 +11,7 @@ Status: **read** means the image was analysed; **no image** means the scene is l
 | 01 | Dyn 3 | Saqqara, Hesy-Re | Board, pieces and sticks painted in plan among grave goods | Quibell 1913, pl. XI | read |
 | 02 | Dyn 5 | Saqqara, Rashepses (LS 16) | Two men playing senet, beside a mehen game and musicians | Lepsius, Denkmäler II, pl. 61a (drawing, ULB Halle) | read |
 | 03 | Dyn 5 | Saqqara, Nikauhor | Two men playing | Met 08.201.2 (photo) | read |
-| 04 | Dyn 5 | Saqqara, Kaemrehu (D 2) | Men playing | Ny Carlsberg ÆIN 1271 | no image |
+| 04 | Dyn 5 | Saqqara, Kaemrehu (D 2) | Men playing | Ny Carlsberg ÆIN 1271 | no image (not in the museum's online collection) |
 | 05 | Dyn 5 | Saqqara, Ptahhotep | Reported game scene | Davies 1900-01 | unconfirmed: only boys' games found |
 | 06 | Dyn 5 | Saqqara, Niankhkhnum and Khnumhotep | Board game among festival scenes | none | no image |
 | 07 | Dyn 6 | Saqqara, Mereruka | Mereruka plays a son(?), wife beside him | Duell 1938, pl. 171 (photo), pl. 172 (drawing) | read |
@@ -20,7 +20,7 @@ Status: **read** means the image was analysed; **no image** means the scene is l
 | 10 | Dyn 6 | Meir, Pepiankh the Middle | Two men playing, with speech captions | Blackman 1924, pl. X | read |
 | 11 | Dyn 11 | Beni Hasan 15, Baqet III | Two pairs playing | Newberry 1894, pl. VII | read |
 | 12 | Dyn 11 | Beni Hasan 17, Khety | Reported game scene | Newberry 1894, pl. IX-XIX | unconfirmed: no board found |
-| 13 | Dyn 12 | Beni Hasan 2, Amenemhat | Reported game scene | none | no image |
+| 13 | Dyn 12 | Beni Hasan 2, Amenemhat | Reported game scene | Newberry 1893, pl. IX-XX | unconfirmed: no board game on any plate of the tomb |
 | 14 | Dyn 12 | Meir, unidentified tomb | Reported game scene | none | no image |
 | 15 | Dyn 19 | Valley of the Queens, Nefertari (QV 66) | Nefertari plays alone, Book of the Dead 17 | Met 30.4.145 (facsimile) | read |
 | 16 | Dyn 19 | Deir el-Medina, Sennedjem (TT 1) | Reported game scene | Museo Egizio photo archive | no image of the scene |
@@ -30,7 +30,7 @@ Status: **read** means the image was analysed; **no image** means the scene is l
 | 20 | Dyn 19 | Papyrus of Ani, BM EA 10470 | Ani plays alone, wife behind him | Budge facsimile, pl. 7 | read |
 | 21 | Dyn 19 | Papyrus of Hunefer, BM EA 9901 | Hunefer plays alone | Commons photo, sheet 5 | read |
 | 22 | Dyn 18-19 | Papyrus of Nakht, BM EA 10471 | Book of the Dead 17 vignette | none | no image |
-| 23 | Dyn 18 | Papyrus of Yuya, Cairo CG 51189 | Book of the Dead 17 vignette | none | no image |
+| 23 | Dyn 18 | Papyrus of Yuya, Cairo CG 51189 | Book of the Dead 17 vignette | Naville 1908, pl. I-VI | unconfirmed: the chapter 17 vignettes show a tree goddess and the bier, no game |
 | 24 | Dyn 20 | Turin satirical papyrus, Cat. 2031 | Lion and gazelle playing (reported) | Museo Egizio, 5 photos | unconfirmed: not found on the photos |
 | 25 | Dyn 19-20 | BM satirical papyrus EA 10016/1, Deir el-Medina | Lion plays a gazelle | British Museum photo (screenshot) and object page | read |
 | 26 | Dyn 26 | Saqqara, lintel of Ankhefensekhmet | Two men playing senet below musicians, with speech captions; mehen players beside them | Walters 22.152-153 (museum photos, CC0) | read |
@@ -76,7 +76,7 @@ The scenes support the two changes proposed for an Old Kingdom version of the Ge
 - Profile views flatten the board. They show the order of pieces along the top, not which squares they stand on.
 - Artists may abbreviate. A row of 12 can stand for 14.
 - Several counts come from old scans at low resolution (Beni Hasan) or faded relief (Nikauhor).
-- Nine catalogue entries rest on secondary lists and were not checked at source this round (02, 04, 06, 08, 09, 13, 14, 17, 18). Two reported scenes were not found where the lists put them (05, 12), and the Turin lion and gazelle was not found on five photos of the papyrus (24).
+- Seven catalogue entries rest on secondary lists and were not checked at source this round (04, 06, 08, 09, 14, 17, 18). Four reported scenes were not found where the lists put them (05, 12, 13, 23), and the Turin lion and gazelle was not found on five photos of the papyrus (24).
 - Sign readings are partial. Published translations of the Meir and Walters captions exist and were not retrieved.
 
 ## Sources

@@ -82,7 +82,7 @@ The scenes support the two changes proposed for an Old Kingdom version of the Ge
 - Profile views flatten the board. They show the order of pieces along the top, not which squares they stand on.
 - Artists may abbreviate. A row of 12 can stand for 14.
 - Several counts come from old scans at low resolution (Beni Hasan) or faded relief (Nikauhor).
-- Five catalogue entries rest on secondary lists and were not checked at source this round (04, 06, 14, 17, 18). Four reported scenes were not found where the lists put them (05, 12, 13, 23), and two are probably mislabelled copies of other entries (18 is Sennedjem, 24 is the British Museum papyrus), and the Turin lion and gazelle was not found on five photos of the papyrus (24).
+- Four catalogue entries rest on secondary lists and were not checked at source this round (04, 06, 14, 17). Four reported scenes were not found where the lists put them (05, 12, 13, 23), and two are probably mislabelled copies of other entries (18 is Sennedjem, 24 is the British Museum papyrus), and the Turin lion and gazelle was not found on five photos of the papyrus (24).
 - Sign readings are partial. Published translations of the Meir and Walters captions exist and were not retrieved.
 
 ## Sources

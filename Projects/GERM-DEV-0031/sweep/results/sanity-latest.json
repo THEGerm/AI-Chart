@@ -29,9 +29,11 @@
       "piccione: throws 177 vs 178, first_win 0.525 vs 0.510, cones_win 0.430 vs 0.480, pass_rate 0.093 vs 0.094, skill 0.865 vs 0.863",
       "germain_fate: throws 323 vs 326, first_win 0.492 vs 0.505, cones_win 0.507 vs 0.520, pass_rate 0.033 vs 0.034, skill 0.507 vs 0.453",
       "germain_contest: throws 209 vs 207, first_win 0.500 vs 0.535, cones_win 0.520 vs 0.505, pass_rate 0.077 vs 0.077, skill 0.943 vs 0.968",
-      "germain_master: throws 275 vs 270, first_win 0.535 vs 0.563, cones_win 0.530 vs 0.488, pass_rate 0.021 vs 0.021, skill 0.993 vs 0.985"
+      "germain_master: throws 275 vs 270, first_win 0.535 vs 0.563, cones_win 0.530 vs 0.488, pass_rate 0.021 vs 0.021, skill 0.993 vs 0.985",
+      "germain_ok_contest: throws 260 vs 262, first_win 0.475 vs 0.525, cones_win 0.525 vs 0.535, pass_rate 0.065 vs 0.064, skill 0.978 vs 0.988",
+      "germain_ok_master: throws 389 vs 386, first_win 0.517 vs 0.510, cones_win 0.463 vs 0.475, pass_rate 0.013 vs 0.013, skill 1.000 vs 1.000"
     ]
   },
   "rows": 13312,
-  "date_utc": "2026-11-25T07:32:09Z"
+  "date_utc": "2026-11-25T08:49:55Z"
 }

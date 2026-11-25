@@ -9,7 +9,7 @@ Status: **read** means the image was analysed; **no image** means the scene is l
 | No. | Date | Place | Scene | Source read | Status |
 |---|---|---|---|---|---|
 | 01 | Dyn 3 | Saqqara, Hesy-Re | Board, pieces and sticks painted in plan among grave goods | Quibell 1913, pl. XI | read |
-| 02 | Dyn 5 | Saqqara, Rashepses (LS 16) | Pairs of men playing | Lepsius, Denkmäler II | no image |
+| 02 | Dyn 5 | Saqqara, Rashepses (LS 16) | Two men playing senet, beside a mehen game and musicians | Lepsius, Denkmäler II, pl. 61a (drawing, ULB Halle) | read |
 | 03 | Dyn 5 | Saqqara, Nikauhor | Two men playing | Met 08.201.2 (photo) | read |
 | 04 | Dyn 5 | Saqqara, Kaemrehu (D 2) | Men playing | Ny Carlsberg ÆIN 1271 | no image |
 | 05 | Dyn 5 | Saqqara, Ptahhotep | Reported game scene | Davies 1900-01 | unconfirmed: only boys' games found |
@@ -42,6 +42,7 @@ No depiction of play was found from Nubia or the Levant, where boards occur. Lis
 | No. | Pieces seen | Order on the board | Players | Lot | Confidence |
 |---|---|---|---|---|---|
 | 01 Hesy-Re | 14 in a tray, 7 and 7 of two shapes; none on the board | none on the board | none | 4 sticks, marked at both ends and the middle | high on counts |
+| 02 Rashepses | 11 in one touching row (medium-high; a crack adds doubt) | pieces 2-9 alternate dome, tall cone; the end pieces sit under the players' hands | 2; each rests a hand on an end piece | none seen | medium; 1840s copy |
 | 03 Nikauhor | not countable (faded) | not legible | 2, face to face | none seen | low |
 | 07 Mereruka | 12 on the board, plus 1 held by each player | short, tall, alternating, 6 and 6, evenly spaced, no gap | 2; each holds a tapering object toward the board | none seen | high on the row; medium that the held objects are pieces |
 | 10 Meir | 10 (9 or 11 if a damaged one is counted otherwise) | cone, dome alternating for pieces 1-5; then 2 cones together, a damaged piece, a dome | 2; one player's open hand hovers over pieces 6-7 | none seen | high on 1-5; medium on the rest |
@@ -59,7 +60,7 @@ Hesy-Re's board, drawn in plan as a 3 x 10 grid, has faint marks in five squares
 ## What this adds to the rules
 
 1. **Seven a side in the Old Kingdom.** Hesy-Re's tray holds 7 and 7 (high). Mereruka shows 6 and 6 on the board with one more in each player's hand (medium), which also makes 7. This confirms the period count already in rules.md.
-2. **Pieces alternate in Old Kingdom and Middle Kingdom scenes.** Mereruka's row alternates without a break across 12 pieces (high). Meir's first five alternate (high), and one Beni Hasan board alternates (low). A profile view flattens three rows into one, so this shows order along the path, not squares. The plain reading is an alternating start, as in the Kendall and Jéquier reconstructions.
+2. **Pieces alternate in Old Kingdom and Middle Kingdom scenes.** Mereruka's row alternates without a break across 12 pieces (high). Rashepses' row of 11 alternates across its middle eight (medium). Meir's first five alternate (high), and one Beni Hasan board alternates (low). A profile view flattens three rows into one, so this shows order along the path, not squares. The plain reading is an alternating start, as in the Kendall and Jéquier reconstructions.
 3. **Meir looks like a game in progress.** The alternation breaks at the point where the player's hand hovers: two cones side by side, then a damaged piece. An alternating start that breaks once pieces move fits this.
 4. **New Kingdom and Late Period scenes do not alternate.** Nefertari's row is 5 cones then 5 spools (high), and Ani's is grouped by shape (high). The British Museum lion and gazelle (Ramesside) is a two-player game: 4 pieces of each kind stand grouped on the owner's side, and each player holds a fifth, which makes 5 a side. These are Book of the Dead scenes of a player alone. The Walters lintel (Dynasty 26), a two-player scene, shows 10 like pieces with no alternation, each player's hand at his own end of the row. Grouped sides fit pieces lined up apart before play, or two armies facing each other; they do not fit an alternating start. The rule may have changed between the Old and New Kingdoms, or the funerary scenes follow their own convention.
 5. **Two players in daily life, one in funerary scenes.** Every Old and Middle Kingdom scene read has two players. The New Kingdom funerary scenes (Nefertari, Ani, Hunefer) show one player and no opponent, as the Book of the Dead 17 rubric describes. Medinet Habu, a palace scene, and the Walters lintel have two. The Germain Fate version fits the solo scenes.
@@ -85,6 +86,7 @@ The scenes support the two changes proposed for an Old Kingdom version of the Ge
 - Duell, P. *The Mastaba of Mereruka* II (OIP 39; Chicago, 1938), pl. 171-172. Free PDF from the Institute for the Study of Ancient Cultures, Chicago.
 - The Epigraphic Survey. *Medinet Habu* VIII (OIP 94; Chicago, 1970), pl. 640. Free PDF, same source.
 - Metropolitan Museum of Art, 08.201.2 (Nikauhor) and 30.4.145 (Nefertari facsimile), open access.
+- Lepsius, C.R. *Denkmäler aus Aegypten und Aethiopien*, Abt. II (Berlin, 1849-59), pl. 61a. Digital edition, Universitäts- und Landesbibliothek Sachsen-Anhalt, Halle.
 - British Museum, EA 10016,1, satirical papyrus, museum photograph and object page.
 - Walters Art Museum, 22.152-153, lintel of Ankhefensekhmet, museum photographs (CC0) and object page.
 - Newberry, P.E. *Beni Hasan* II (London: EEF, 1894), pl. VII. archive.org, item beni-hasan-v.-2.

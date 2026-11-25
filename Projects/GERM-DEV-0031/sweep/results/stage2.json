@@ -125,25 +125,6 @@
       "short": "Germain: Contest",
       "games": 2000,
       "completion": 1.0,
-      "throws_mean": 268.846,
-      "throws_p99": 387,
-      "throws_max": 506,
-      "cones_win": 0.487,
-      "first_win": 0.488,
-      "balance": 0.974,
-      "balance_ci": 0.021906058175764985,
-      "decision_rate": 0.8569478437469779,
-      "hits": 70.468,
-      "drama": 0.057811312826765,
-      "skill": 0.989,
-      "skill_ci": 0.004571256194964358,
-      "hard": 0.686,
-      "hard_ci": 0.020340796523243623
-    },
-    "germain_master": {
-      "short": "Germain: Master",
-      "games": 2000,
-      "completion": 1.0,
       "throws_mean": 208.0675,
       "throws_p99": 281,
       "throws_max": 333,
@@ -158,6 +139,26 @@
       "skill_ci": 0.008164523452106685,
       "hard": 0.555,
       "hard_ci": 0.021780486220468083
+    },
+    "germain_master": {
+      "short": "Germain: Master",
+      "games": 2000,
+      "completion": 1.0,
+      "throws_mean": 268.846,
+      "throws_p99": 387,
+      "throws_max": 506,
+      "cones_win": 0.487,
+      "first_win": 0.488,
+      "balance": 0.974,
+      "balance_ci": 0.021906058175764985,
+      "decision_rate": 0.8569478437469779,
+      "hits": 70.468,
+      "drama": 0.057811312826765,
+      "skill": 0.989,
+      "skill_ci": 0.004571256194964358,
+      "hard": 0.686,
+      "hard_ci": 0.020340796523243623
     }
-  }
+  },
+  "note": "2026-11-25: Contest and Master renamed after this run. Figures are unchanged; each moved with its rules. Seeds were drawn from the old names, so a re-run gives fresh games."
 }

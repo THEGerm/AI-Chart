@@ -141,11 +141,13 @@
   germain('germain_fate', 'Germain Rules: Fate', 'Germain: Fate', { forced: true }, [
     { s: 'X', rule: 'No choice: the rearmost piece that can move must move.', note: 'For solo and ritual play, as in the Book of the Dead 17 vignette where the dead play an unseen opponent.' }
   ]);
-  germain('germain_contest', 'Germain Rules: Contest', 'Germain: Contest', {}, [
-    { s: 'X', rule: 'Free choice of which piece to move. A lone piece can always be struck.', note: 'For the two-player game of the tomb scenes.' }
+  // Names swapped 2026-11-25 after stage 2: the version without protection
+  // proved the harder game, so it is Master.
+  germain('germain_contest', 'Germain Rules: Contest', 'Germain: Contest', { protectPairs: true }, [
+    { s: 'X', rule: 'Free choice of which piece to move. Two pieces side by side cannot be struck.', note: 'Modern protection rule. The calmer two-player game, close to Kendall in length and captures.' }
   ]);
-  germain('germain_master', 'Germain Rules: Master', 'Germain: Master', { protectPairs: true }, [
-    { s: 'X', rule: 'Free choice of which piece to move. Two pieces side by side cannot be struck.', note: 'Modern protection rule, for keen players.' }
+  germain('germain_master', 'Germain Rules: Master', 'Germain: Master', {}, [
+    { s: 'X', rule: 'Free choice of which piece to move. A lone piece can always be struck.', note: 'The hardest version: most captures, most decisions, and the largest gain from looking ahead.' }
   ]);
 
   if (typeof module !== 'undefined' && module.exports) module.exports = S;

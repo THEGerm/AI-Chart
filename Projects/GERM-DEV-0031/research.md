@@ -227,8 +227,10 @@ Skill is the win rate of the normal computer against a random mover, a lower bou
 The rest: 5 pieces each, entering from off the board, a throw of 0 light faces scores 5, no extra throws, every piece stops on 26, and 27 sends a piece back to 15. There are three versions:
 
 - **Fate:** the rearmost piece that can move must move.
-- **Contest:** free choice of which piece to move.
-- **Master:** free choice, and two pieces side by side cannot be struck.
+- **Contest:** free choice, and two pieces side by side cannot be struck.
+- **Master:** free choice of which piece to move; a lone piece can always be struck.
+
+The names of Contest and Master were swapped on 2026-11-25, after the results below showed the unprotected version is the harder game.
 
 Design and reasons: `sweep/stage2-candidates.md`.
 
@@ -248,17 +250,17 @@ Starts and seats alternate. The ± figures are 95% intervals. Results: `sweep/re
 | Bell 1960 | 100% | 45 | 72 | 86 | 73.6% | 80.8% | 14.9 | 98.5% ± 0.5 | 58.0% ± 2.2 |
 | Piccione | 100% | 175 | 263 | 337 | 51.2% | 62.2% | 0.0 | 83.2% ± 1.6 | 54.0% ± 2.2 |
 | Germain: Fate | 100% | 317 | 512 | 677 | 49.3% | 0.0% | 100.1 | 51.2% ± 2.2 | 49.9% ± 2.2 |
-| Germain: Contest | 100% | 269 | 387 | 506 | 48.7% | 85.7% | 70.5 | 98.9% ± 0.5 | 68.6% ± 2.0 |
-| Germain: Master | 100% | 208 | 281 | 333 | 51.4% | 66.8% | 19.0 | 96.4% ± 0.8 | 55.5% ± 2.2 |
+| Germain: Contest | 100% | 208 | 281 | 333 | 51.4% | 66.8% | 19.0 | 96.4% ± 0.8 | 55.5% ± 2.2 |
+| Germain: Master | 100% | 269 | 387 | 506 | 48.7% | 85.7% | 70.5 | 98.9% ± 0.5 | 68.6% ± 2.0 |
 
 **Against the pass marks set before the run:**
 
 - **Every game ends.** All three versions finish all 2,000 games. The longest Fate game takes 677 throws, well inside the 3,000 cap.
 - **Balanced.** Cones win 48.7% to 51.4%, within the noise.
 - **Fate is pure luck.** The normal player beats a random mover 51.2% of the time, which is chance. Fate has no decisions, so this confirms the rule works.
-- **Skill does not rise from Contest to Master.** This prediction failed. Contest has the most skill of any rule set tested: 98.9% against a random mover, and 68.6% for look-ahead against normal play. Master drops to 96.4% and 55.5%. Protecting pairs cuts hits from 70 a game to 19, and with fewer targets there is less to plan.
+- **Skill rises with the unprotected version, against the prediction.** The design expected protection to add skill. The version without it has the most skill of any rule set tested: 98.9% against a random mover, and 68.6% for look-ahead against normal play. With pairs protected it drops to 96.4% and 55.5%. Protecting pairs cuts hits from 70 a game to 19, and with fewer targets there is less to plan. The names were swapped to match: Master is now the unprotected version.
 
-**Reading.** Two rules drawn from the evidence remove unfinished games without adding a modern rule. Contest is the game of skill and the hardest to master; Master is calmer, close to Kendall in hits and length. The version names follow the stage 2 design and can change.
+**Reading.** Two rules drawn from the evidence remove unfinished games without adding a modern rule. Master is the game of skill. Contest is calmer, close to Kendall in hits and length.
 
 ## 6. The app
 

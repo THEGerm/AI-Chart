@@ -4,6 +4,7 @@
   python3 run.py dry [--sample 96] [--workers 4]                    time a sample, estimate the total
   python3 run.py session [--budget-min 20] [--workers 4]            run one session, then stop
   python3 run.py status                                             progress and time left
+  python3 run.py relock --reason TEXT [--k 24]                     accept a code change once stored rows reproduce
 
 Sessions are resumable: each finished configuration is written to
 results/session-NNN.csv at once, and the next session skips everything
@@ -158,6 +159,27 @@ def cmd_status(a):
               f'({left_h * 60 / (a.budget_min * 0.92):.1f} sessions of {a.budget_min} min).')
 
 
+def cmd_relock(a):
+    """Accept a code change only if stored rows re-run under it reproduce exactly."""
+    import json
+    import sanity
+    m = registry.load_manifest()
+    old, new = registry.locked_hash(m), registry.code_hash()
+    if old == new:
+        print('Code unchanged since the lock; nothing to do.')
+        return
+    ok, msg = sanity.check_determinism(m, registry.read_rows(), k=a.k)
+    print(msg)
+    if not ok:
+        raise SystemExit('Stored rows do not reproduce under the new code: not re-locked.')
+    m.setdefault('code_relocks', []).append({'utc': registry.now_utc(), 'from': old, 'to': new,
+                                             'reason': a.reason, 'check': msg})
+    with open(registry.MANIFEST, 'w') as fh:
+        json.dump(m, fh, indent=2)
+        fh.write('\n')
+    print(f'Re-locked {old} -> {new}.')
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='cmd', required=True)
@@ -171,8 +193,11 @@ def main():
     p.add_argument('--workers', type=int, default=os.cpu_count() or 1)
     p = sub.add_parser('status'); p.add_argument('--workers', type=int, default=os.cpu_count() or 1)
     p.add_argument('--budget-min', type=float, default=20)
+    p = sub.add_parser('relock'); p.add_argument('--reason', required=True)
+    p.add_argument('--k', type=int, default=24)
     a = ap.parse_args()
-    {'init': cmd_init, 'dry': cmd_dry, 'session': cmd_session, 'status': cmd_status}[a.cmd](a)
+    {'init': cmd_init, 'dry': cmd_dry, 'session': cmd_session, 'status': cmd_status,
+     'relock': cmd_relock}[a.cmd](a)
 
 
 if __name__ == '__main__':

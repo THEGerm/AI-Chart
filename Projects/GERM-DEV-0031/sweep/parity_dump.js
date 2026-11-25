@@ -7,12 +7,12 @@
 const S = require('../senet-rulesets.js');
 const RULE_KEYS = ['pieces', 'start', 'lot', 'zero', 'extra', 'extraSquares', 'enterOn', 'enterAt',
   'capture', 'protectPairs', 'blockRun', 'safe', 'mustStop26', 'water', 'offFrom', 'exactOff',
-  'anyOffFrom30', 'allHomeToBearOff', 'backward', 'noBackFrom', 'win'];
+  'anyOffFrom30', 'allHomeToBearOff', 'backward', 'noBackFrom', 'win', 'forced'];
 const rng = S.mulberry32(20261124);
 const pick = a => a[Math.floor(rng() * a.length)];
 
 function randomRules() {
-  const capture = pick(['none', 'swap', 'rear', 'remove']);
+  const capture = pick(['none', 'swap', 'rear', 'remove', 'to15']);
   return {
     pieces: pick([5, 7]), start: pick(['alternate', 'offboard']), lot: 'sticks', zero: pick([5, 6]),
     extra: pick([[], [1, 4, 5], [1, 4, 6]]), extraSquares: pick([[], [15, 26]]),
@@ -20,7 +20,8 @@ function randomRules() {
     safe: pick([[], [26, 28, 29, 30]]), mustStop26: rng() < 0.5,
     water: pick(['none', 'to15', 'rear', 'reserve']), offFrom: pick([21, 26]),
     exactOff: rng() < 0.5, anyOffFrom30: rng() < 0.5, allHomeToBearOff: rng() < 0.5,
-    backward: rng() < 0.5, noBackFrom: pick([0, 28]), win: pick(['allOff', 'mostOff'])
+    backward: rng() < 0.5, noBackFrom: pick([0, 28]), win: pick(['allOff', 'mostOff']),
+    forced: rng() < 0.2
   };
 }
 

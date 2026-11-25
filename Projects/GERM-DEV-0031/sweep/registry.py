@@ -68,11 +68,19 @@ def write_manifest(n_balance: int, n_skill: int, seed: int) -> dict:
     return m
 
 
+def locked_hash(m: dict) -> str:
+    """The code hash results are checked against: the manifest's, or the latest re-lock.
+
+    A re-lock (run.py relock) is recorded only after stored rows re-run under
+    the new code reproduce exactly, so every row stays reproducible."""
+    return m['code_relocks'][-1]['to'] if m.get('code_relocks') else m['code_hash']
+
+
 def check_code(m: dict) -> None:
     """Refuse to mix results from different code or a different space."""
-    if m['code_hash'] != code_hash() or m['space_hash'] != space.space_hash():
+    if locked_hash(m) != code_hash() or m['space_hash'] != space.space_hash():
         raise SystemExit(
-            f"Code or space changed since the manifest (manifest {m['code_hash']}/{m['space_hash']}, "
+            f"Code or space changed since the manifest (locked {locked_hash(m)}/{m['space_hash']}, "
             f"now {code_hash()}/{space.space_hash()}). Results would not be comparable. "
             'Revert the change, or start a new sweep.')
 

@@ -112,6 +112,42 @@
     ])
   };
 
+  // The Germain Rules (Germain et al.): the smallest rules the evidence
+  // suggests in place of the invented ones, built so every game ends.
+  function germain(id, name, short, extra, evidence) {
+    const rs = {
+      id, name, short,
+      source: 'Built for GERM-DEV-0031 (Germain et al.). A first-stage sweep of 13,312 rule sets found that unfinished games and most of the skill come from two invented rules: how a piece leaves and what a capture does. These rules replace both with the smallest rules the evidence suggests. Every move goes forward, and a struck piece falls back no further than 15 once past it, so every game ends.',
+      pieces: 5, start: 'offboard', lot: 'sticks', zero: 5, extra: [],
+      capture: 'to15', protectPairs: false, blockRun: 0, safe: [],
+      mustStop26: true, water: 'to15', offFrom: 26, exactOff: true,
+      backward: false, forced: false, win: 'allOff'
+    };
+    Object.assign(rs, extra);
+    rs.evidence = BOARD.concat([
+      { s: 'E', rule: '5 pieces each.', note: 'Tutankhamun\'s box 585r, drawer unopened since burial: 5 red and 5 white pieces.' },
+      { s: 'I', rule: 'Count the light faces: 1 to 4 move that many; no light face moves 5. No extra throws.', note: 'The caption "playing five" (Old Kingdom). The sweep shows throw scoring and extra throws barely change the game.' },
+      { s: 'I', rule: 'Pieces start off the board and enter on the square equal to the throw.', note: 'An Old Kingdom caption has zbi, "send out (the piece)".' },
+      { s: 'I', rule: 'Landing on a lone enemy piece strikes it. A struck piece that had passed 15 goes back to 15, or the nearest free square below; otherwise it goes off the board and enters again.', note: 'Captions: "I shall cause you to see it taken away" and "capturing (pieces) in senet". The Turin game text calls 15 the house of repeating life.' },
+      { s: 'I', rule: 'Every piece must stop on 26, the good house, before going on.', note: '"I shall hold him back from the per-nefer" (Turin 1775).' },
+      { s: 'I', rule: 'Landing on 27 (water) sends the piece back to 15, or the nearest free square below it.', note: 'The water mark and the drowning text.' },
+      { s: 'I', rule: 'A piece leaves from 26 on a 5, from 28 on a 3, from 29 on a 2 and from 30 on a 1, by the exact throw only.', note: 'Reads the "three" and "two" marks, and the Old Kingdom "one", as the throw still needed.' }
+    ]).concat(evidence).concat([
+      { s: 'X', rule: 'No backward moves. First to bear off all 5 pieces wins.', note: 'The aim is evidenced ("passing is mine"); the exact win rule is modern.' }
+    ]);
+    R[id] = rs;
+  }
+
+  germain('germain_fate', 'Germain Rules: Fate', 'Germain: Fate', { forced: true }, [
+    { s: 'X', rule: 'No choice: the rearmost piece that can move must move.', note: 'For solo and ritual play, as in the Book of the Dead 17 vignette where the dead play an unseen opponent.' }
+  ]);
+  germain('germain_contest', 'Germain Rules: Contest', 'Germain: Contest', {}, [
+    { s: 'X', rule: 'Free choice of which piece to move. A lone piece can always be struck.', note: 'For the two-player game of the tomb scenes.' }
+  ]);
+  germain('germain_master', 'Germain Rules: Master', 'Germain: Master', { protectPairs: true }, [
+    { s: 'X', rule: 'Free choice of which piece to move. Two pieces side by side cannot be struck.', note: 'Modern protection rule, for keen players.' }
+  ]);
+
   if (typeof module !== 'undefined' && module.exports) module.exports = S;
 })(typeof window !== 'undefined' ? window : globalThis);
 
@@ -120,4 +156,4 @@ if (typeof window !== 'undefined') window.SENET_ABOUT =
   '<p><b>Known from the objects.</b> Senet was played in Egypt from about 3100 BCE (Abu Rawash, Dynasty 1) to at least the 6th century BCE, and in the Levant and Cyprus. The board is 30 squares in 3 rows, played as one snaking path. Squares 26 to 29 carry the same marks for over a thousand years: good, water, three, two. Each player had cones or spools, 7 a side in the Old Kingdom and 5 a side by the New Kingdom. Tutankhamun\'s ivory box 585r, unopened since burial, held exactly 5 red and 5 white pieces with 2 knucklebones. Four throwsticks served as the lot.</p>' +
   '<p><b>Known from the words.</b> Tomb captions record players talking: "It has alighted. Be happy my heart, for I shall cause you to see it taken away." "You speak as one weak of tongue, for passing is mine." A Dynasty 20 papyrus in Turin has the player hold the opponent back from the good house, pass to the house of repeating life, and "take my draughtsmen so that I may find my house". By then the game was also a passage of the soul, played against an unseen opponent in the Book of the Dead.</p>' +
   '<p><b>Not known.</b> No ancient source gives the throw values, the starting position, what happens when pieces meet, how a piece leaves the board, or who wins. Every modern rule set fills those gaps. Most fill them from tab, a stick game first recorded in Cairo in 1310 CE, some 2,000 years after the last dated senet board, with no documented link to it. The rules also changed over 2,500 years, so any one set is a composite.</p>' +
-  '<p><b>Is it playable?</b> Only with invented rules. Computer-against-computer runs show all five sets here finish every game. Kendall, Jéquier and Piccione are balanced. The minimal set, closest to the evidence, plays as a thin race with few decisions. Bell\'s set, as Ludii summarises it, is a short strike-out with a strong seat advantage. Full figures and sources: research.md.</p>';
+  '<p><b>Is it playable?</b> Only with invented rules. Computer-against-computer runs show all eight sets here finish every game. Kendall, Jéquier and Piccione are balanced. The minimal set, closest to the evidence, plays as a thin race with few decisions. Bell\'s set, as Ludii summarises it, is a short strike-out with a strong seat advantage. The Germain Rules replace the two invented rules that most shape the game, capture and leaving, with the smallest rules the evidence suggests. Full figures and sources: research.md.</p>';

@@ -61,5 +61,14 @@
       true
     ]
   },
-  "max_throws": 3000
+  "max_throws": 3000,
+  "code_relocks": [
+    {
+      "utc": "2026-11-25T07:13:00Z",
+      "from": "ca0d7cf3bb0c",
+      "to": "3d7f2e906111",
+      "reason": "Germain Rules: new capture mode to15 and the forced rule, both off by default; stage 1 rule sets unchanged",
+      "check": "24 re-run; identical"
+    }
+  ]
 }

@@ -22,7 +22,7 @@ Status: **read** means the image was analysed; **no image** means the scene is l
 | 12 | Dyn 11 | Beni Hasan 17, Khety | Reported game scene | Newberry 1894, pl. IX-XIX | unconfirmed: no board found |
 | 13 | Dyn 12 | Beni Hasan 2, Amenemhat | Reported game scene | Newberry 1893, pl. IX-XX | unconfirmed: no board game on any plate of the tomb |
 | 14 | Dyn 12 | Meir, unidentified tomb | Reported game scene | none | no image |
-| 15 | Dyn 19 | Valley of the Queens, Nefertari (QV 66) | Nefertari plays alone, Book of the Dead 17 | Met 30.4.145 (facsimile) | read |
+| 15 | Dyn 19 | Valley of the Queens, Nefertari (QV 66) | Nefertari plays alone, Book of the Dead 17 | Met 30.4.145 (facsimile); photograph of the wall | read |
 | 16 | Dyn 19 | Deir el-Medina, Sennedjem (TT 1) | Reported game scene | Museo Egizio photo archive | no image of the scene |
 | 17 | Dyn 20 | Deir el-Medina, Inherkhau (TT 359) | Reported game scene | none | no image |
 | 18 | Dyn 19 | Deir el-Medina, Irynefer (TT 290) | Owner and wife playing (secondary lists) | none | no image |
@@ -48,7 +48,7 @@ No depiction of play was found from Nubia or the Levant, where boards occur. Lis
 | 10 Meir | 10 (9 or 11 if a damaged one is counted otherwise) | cone, dome alternating for pieces 1-5; then 2 cones together, a damaged piece, a dome | 2; one player's open hand hovers over pieces 6-7 | none seen | high on 1-5; medium on the rest |
 | 11 Beni Hasan 15, board A | about 4 dark, 5 light | grouped, with a gap between | 2 | none seen | medium to low (25 px high) |
 | 11 Beni Hasan 15, board B | about 11 | dark and light alternating, at least at the left | 2 | none seen | low |
-| 15 Nefertari | 5 cones, 5 spools | grouped: 5 cones then 5 spools | 1, opponent unseen | none shown | high |
+| 15 Nefertari | 5 cones, 5 spools (facsimile and wall photo agree) | grouped: 5 cones then 5 spools, touching, no gap | 1, opponent unseen | none shown | high |
 | 19 Medinet Habu | board lost; each player holds one cone-topped piece | not legible | 2; a third figure watches | none seen | high on the held pieces |
 | 20 Ani | 3 cones, 2 squat pieces | grouped by shape | 1; wife watches, does not reach the board | none shown | high |
 | 21 Hunefer | 4, shape unclear | not legible | 1, opponent unseen | none shown | high on the count |

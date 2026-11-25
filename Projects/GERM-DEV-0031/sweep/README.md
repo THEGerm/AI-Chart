@@ -11,11 +11,15 @@ Python 3, standard library only. Run everything from this folder.
 | `senet.py` | Rules engine and computer players, a port of `../senet-engine.js` |
 | `space.py` | The 12 factors and their levels: 13,312 configurations |
 | `sim.py` | Plays the games for one configuration and computes the metrics |
-| `run.py` | `init`, `dry`, `session`, `status` |
+| `run.py` | `init`, `dry`, `session`, `status`, `relock` |
 | `registry.py` | The results registry: CSV per session, manifest, SQLite copy |
 | `sanity.py` | Six checks, run after every session |
+| `summary.py`, `effects.py` | Basic statistics; the share of each result each rule explains |
+| `chain.sh` | Runs sessions back to back: session, quick sanity, commit, push |
+| `stage2.py` | Stage 2: every rule set in the app at 2,000 games, with an expectimax rung |
+| `stage2-candidates.md` | The Germain Rules: design, versions and test |
 | `test_parity.py`, `parity_dump.js` | The Python engine against the JavaScript engine, 3,000 positions |
-| `results/` | `manifest.json`, `session-NNN.csv`, `dryrun.json`, `sanity-latest.json` |
+| `results/` | `manifest.json`, `session-NNN.csv`, `dryrun.json`, `sanity-latest.json`, `stage2.json` |
 
 ## Factors
 
@@ -76,6 +80,7 @@ git add results && git commit -m "Senet sweep: session NNN" && git push
 - The runner stops starting new configurations when the slowest likely one would overrun the budget.
 - Configurations run in a fixed shuffled order, so a partial sweep is a random sample of the whole space and can be analysed early.
 - The manifest records the code and space hashes. If either changes, the runner refuses to add rows, because the results would no longer be comparable.
+- An engine change that leaves the stage 1 rules alone (new options, off by default) is accepted with `python3 run.py relock --reason TEXT`. It re-runs 24 stored configurations under the new code and records the new hash in `code_relocks` only if every metric reproduces exactly. Done once, 2026-11-25, for the Germain Rules.
 - A session can end up to about a minute past its budget: configurations already running are allowed to finish.
 
 ## Estimate

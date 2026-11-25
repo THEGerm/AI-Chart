@@ -2,7 +2,7 @@
 
 Senet is the board game of ancient Egypt, played from about 3100 BCE to at least the 6th century BCE. The boards, pieces and throwsticks survive. The rules don't. This project gathers what the scholarship knows, tests whether that is enough to play, and publishes a game that plays every serious reconstruction side by side.
 
-- [Play Senet](https://thegerm.github.io/AI-Chart/Projects/GERM-DEV-0031/): five rule sets, against the computer at three levels or with two players on one screen. Each rule in play is tagged evidenced, inferred or invented.
+- [Play Senet](https://thegerm.github.io/AI-Chart/Projects/GERM-DEV-0031/): eight rule sets, against the computer at three levels or with two players on one screen. Each rule in play is tagged evidenced, inferred or invented.
 - [Research, gap analysis and playability](research.md): the studies, the evidence, the gaps, and the simulation results.
 - [Rules table](rules.md): every rule in one line, with its source, a certainty percentage, and the other options where it is uncertain.
 
@@ -12,7 +12,7 @@ Senet is the board game of ancient Egypt, played from about 3100 BCE to at least
 |---|---|
 | `index.html` | The page |
 | `senet-engine.js` | Rules engine: every disputed rule is a parameter. Runs in the browser and under Node |
-| `senet-rulesets.js` | The five rule sets, with the evidence tag and source note for each rule |
+| `senet-rulesets.js` | The eight rule sets, with the evidence tag and source note for each rule |
 | `senet-ui.js` | Board drawing and game flow |
 | `tests/engine.test.js` | Rule tests: `node --test tests/*.test.js` |
 | `tests/playability.js` | Computer-against-computer simulation behind the playability table: `node tests/playability.js 400` |

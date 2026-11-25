@@ -22,7 +22,9 @@
  *   enterOn       (opt) throws that may enter a piece; default any
  *   enterAt       (opt) 'throw' (enter on square = throw) | 1 (always square 1)
  *   capture       'swap' | 'rear' (struck piece to rearmost empty square) |
- *                 'remove' (struck piece leaves the game) | 'none' (no landing on a piece)
+ *                 'remove' (struck piece leaves the game) | 'none' (no landing on a piece) |
+ *                 'to15' (struck piece past 15 goes back to 15, or the nearest free
+ *                 square below it; otherwise off the board, to enter again)
  *   protectPairs  a piece next to a friend on the path cannot be struck
  *   blockRun      (opt) this many friends in a row cannot be passed
  *   safe          squares where a piece cannot be struck
@@ -34,6 +36,7 @@
  *   allHomeToBearOff (opt) all own pieces must be at or beyond offFrom
  *   backward      move a piece backward when no forward move exists
  *   noBackFrom    (opt) pieces on this square or beyond never move backward
+ *   forced        (opt) the rearmost piece that can move must move (no choice)
  *   win           'allOff' (first to bear off all) | 'mostOff' (game ends when a
  *                 side has nothing left in play; most borne off wins)
  */
@@ -158,9 +161,11 @@
   }
 
   function legalMoves(st, p, t, rs) {
-    const f = forwardMoves(st, p, t, rs);
-    if (f.length || !rs.backward) return f;
-    return backwardMoves(st, p, t, rs);
+    let m = forwardMoves(st, p, t, rs);
+    if (!m.length && rs.backward) m = backwardMoves(st, p, t, rs);
+    // Moves are generated rearmost first (reserve, then square 1 upward).
+    if (rs.forced && m.length > 1) m = [m[0]];
+    return m;
   }
 
   function nearestFreeDown(b, sq) {
@@ -200,6 +205,11 @@
           ev.push('hit:' + (s === -1 ? 0 : s));
         } else if (rs.capture === 'remove') {
           st.lost[o]++; ev.push('removed');
+        } else if (rs.capture === 'to15') {
+          b[mv.to] = p; // hold the square while finding the free one
+          const s = mv.to > 15 ? nearestFreeDown(b, 15) : -1;
+          if (s === -1) st.reserve[o]++; else b[s] = o;
+          ev.push('hit:' + (s === -1 ? 0 : s));
         }
       }
       b[mv.to] = p;
@@ -259,7 +269,8 @@
             const from = s - Number(k);
             if (from >= 1 && b[from] === r && !blocked(st, from, s, q, rs)) risk += dist[k];
           }
-          const loss = rs.capture === 'remove' ? 30 : rs.capture === 'rear' ? s : Math.max(4, s * 0.45);
+          const loss = rs.capture === 'remove' ? 30 : rs.capture === 'rear' ? s :
+            rs.capture === 'to15' ? (s > 15 ? s - 15 : s) : Math.max(4, s * 0.45);
           v -= risk * loss;
         }
       }

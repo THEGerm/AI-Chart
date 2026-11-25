@@ -24,7 +24,7 @@ DEFAULTS = {
     'safe': (), 'mustStop26': False, 'water': 'none', 'offFrom': 26,
     'exactOff': True, 'anyOffFrom30': False, 'allHomeToBearOff': False,
     'backward': False, 'noBackFrom': 0, 'win': 'allOff', 'start': 'alternate',
-    'pieces': 5,
+    'pieces': 5, 'forced': False,
 }
 
 
@@ -186,10 +186,13 @@ def backward_moves(st: State, p: int, t: int, rs: dict) -> list:
 
 def legal_moves(st: State, p: int, t: int, rs: dict) -> list:
     """Moves as (from, to, dir) tuples, in the JavaScript engine's order."""
-    f = forward_moves(st, p, t, rs)
-    if f or not rs['backward']:
-        return f
-    return backward_moves(st, p, t, rs)
+    m = forward_moves(st, p, t, rs)
+    if not m and rs['backward']:
+        m = backward_moves(st, p, t, rs)
+    # Moves are generated rearmost first (reserve, then square 1 upward).
+    if rs['forced'] and len(m) > 1:
+        m = [m[0]]
+    return m
 
 
 def _nearest_free_down(b: list, sq: int) -> int:
@@ -253,6 +256,14 @@ def apply_move(st0: State, mv: tuple, rs: dict):
             elif cap == 'remove':
                 st.lost[o] += 1
                 ev.append('removed')
+            elif cap == 'to15':
+                b[to] = p
+                s = _nearest_free_down(b, 15) if to > 15 else -1
+                if s == -1:
+                    st.reserve[o] += 1
+                else:
+                    b[s] = o
+                ev.append('hit:%d' % (0 if s == -1 else s))
         b[to] = p
         if to == 27 and rs['water'] != 'none':
             b[27] = -1
@@ -330,6 +341,8 @@ def evaluate(st: State, p: int, rs: dict, dist: dict | None = None) -> float:
                     loss = 30
                 elif cap == 'rear':
                     loss = s
+                elif cap == 'to15':
+                    loss = s - 15 if s > 15 else s
                 else:
                     loss = max(4, s * 0.45)
                 v -= risk * loss

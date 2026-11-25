@@ -144,3 +144,44 @@ test('remove capture: the game ends when a side has nothing left in play (review
   st2.off = [4, 1]; st2.lost = [0, 2]; st2.board[30] = 0; st2.board[10] = 1; st2.board[12] = 1;
   assert.strictEqual(S.applyMove(st2, { from: 30, to: 31, dir: 1 }, rs).state.winner, 0);
 });
+
+test('Germain Rules: a struck piece past 15 goes to 15, otherwise off the board', () => {
+  const rs = R.germain_contest;
+  const st = empty(rs);
+  st.board[18] = 0; st.board[20] = 1;
+  let r = S.applyMove(st, { from: 18, to: 20, dir: 1 }, rs);
+  assert.strictEqual(r.state.board[15], 1);
+  assert.strictEqual(r.state.board[20], 0);
+  assert.deepStrictEqual(r.events, ['hit:15']);
+  // 15 taken: the nearest free square below it.
+  st.board[15] = 0;
+  r = S.applyMove(st, { from: 18, to: 20, dir: 1 }, rs);
+  assert.strictEqual(r.state.board[14], 1);
+  // Not yet past 15: off the board, to enter again.
+  const st2 = empty(rs);
+  st2.board[9] = 0; st2.board[12] = 1;
+  r = S.applyMove(st2, { from: 9, to: 12, dir: 1 }, rs);
+  assert.strictEqual(r.state.reserve[1], 1);
+  assert.deepStrictEqual(r.events, ['hit:0']);
+});
+
+test('Germain Rules: Fate forces the rearmost piece; Master protects pairs', () => {
+  const st = empty(R.germain_fate);
+  st.reserve[0] = 1; st.board[5] = 0; st.board[10] = 0;
+  assert.deepStrictEqual(S.legalMoves(st, 0, 2, R.germain_fate).map(m => m.from), [0]);
+  assert.strictEqual(S.legalMoves(st, 0, 2, R.germain_contest).length, 3);
+  const st2 = empty(R.germain_master);
+  st2.board[4] = 0; st2.board[8] = 1; st2.board[9] = 1;
+  assert.ok(!has(S.legalMoves(st2, 0, 4, R.germain_master), 4, 8));
+  assert.ok(has(S.legalMoves(st2, 0, 4, R.germain_contest), 4, 8));
+});
+
+test('Germain Rules: exits only from 26 on 5, 28 on 3, 29 on 2, 30 on 1', () => {
+  const rs = R.germain_contest;
+  for (const [sq, t] of [[26, 5], [28, 3], [29, 2], [30, 1]]) {
+    for (let v = 1; v <= 5; v++) {
+      const st = empty(rs); st.board[sq] = 0;
+      assert.strictEqual(has(S.legalMoves(st, 0, v, rs), sq, 31), v === t, sq + ' on ' + v);
+    }
+  }
+});

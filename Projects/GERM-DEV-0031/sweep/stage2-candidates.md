@@ -1,6 +1,6 @@
 # Stage 2 candidate: the Germain Rules
 
-The Germain Rules (named for the paper, Germain et al.) are a rule set that replaces the invented rules with the smallest rules the evidence suggests, never loops forever, and works with skill switched off. To be built and tested after the first-stage sweep ends, since engine changes would stop the running sweep from accepting rows.
+The Germain Rules (named for the paper, Germain et al.) are a rule set that replaces the invented rules with the smallest rules the evidence suggests, never loops forever, and works with skill switched off. Built and tested 2026-11-25, after the first-stage sweep ended. Results: `../research.md`, "Stage 2 test of the Germain Rules".
 
 ## Rules
 
@@ -33,10 +33,12 @@ No backward moves; a struck piece falls back no further than 15 once past it; no
 
 ## Engine work
 
-- New capture mode: struck piece to 15 if past it, else off the board.
-- New computer level `forced`: move the rearmost piece that can move.
-- Both added to the JavaScript and Python engines together, with parity cases.
+- New capture mode `to15`: a struck piece past 15 goes to 15, or the nearest free square below; otherwise off the board.
+- New rule field `forced`: only the rearmost piece that can move may move. It is a rule, so it binds human players in the app too.
+- Both added to the JavaScript and Python engines together, with parity cases and three rule tests. Rule sets `germain_fate`, `germain_contest` and `germain_master` are in the app.
 
 ## Test
 
 2,000 games each for Germain Rules Fate, Contest and Master, beside Kendall, Jéquier, Piccione and Minimal. Pass marks: completion 100%; the longest games bounded (report the 99th percentile); balance near 0.5. Skill should be near 0.5 for Fate and rise from Contest to Master.
+
+Outcome, 2026-11-25: completion 100% for all three; 99th percentile 512 (Fate), 387 (Contest) and 281 (Master) throws; cones win 49.3%, 48.7% and 51.4%; Fate skill 51.2%, which is chance. The last mark failed: Contest has more skill than Master (98.9% against 96.4% versus a random mover, 68.6% against 55.5% for look-ahead), because protecting pairs cuts hits from 70 a game to 19.

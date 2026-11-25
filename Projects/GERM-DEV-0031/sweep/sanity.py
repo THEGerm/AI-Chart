@@ -46,8 +46,9 @@ def check_parity():
 
 
 def check_code(m):
-    ok = m['code_hash'] == registry.code_hash() and m['space_hash'] == space.space_hash()
-    return ok, f"manifest {m['code_hash']}/{m['space_hash']}, now {registry.code_hash()}/{space.space_hash()}"
+    lock = registry.locked_hash(m)
+    ok = lock == registry.code_hash() and m['space_hash'] == space.space_hash()
+    return ok, f"locked {lock}/{m['space_hash']}, now {registry.code_hash()}/{space.space_hash()}"
 
 
 def check_integrity(m, rows):

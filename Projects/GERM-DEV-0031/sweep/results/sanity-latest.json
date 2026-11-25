@@ -9,15 +9,15 @@
   },
   "integrity": {
     "ok": true,
-    "detail": "0 rows; clean"
+    "detail": "13312 rows; clean"
   },
   "logic": {
     "ok": true,
-    "detail": "0 no-capture rows with hits; 0 configurations with unfinished games"
+    "detail": "0 no-capture rows with hits; 2229 configurations with unfinished games"
   },
   "determinism": {
     "ok": true,
-    "detail": "no rows yet"
+    "detail": "3 re-run; identical"
   },
   "anchors": {
     "ok": true,
@@ -29,6 +29,6 @@
       "piccione: throws 177 vs 178, first_win 0.525 vs 0.510, cones_win 0.430 vs 0.480, pass_rate 0.093 vs 0.094, skill 0.865 vs 0.863"
     ]
   },
-  "rows": 0,
-  "date_utc": "2026-11-24T14:30:04Z"
+  "rows": 13312,
+  "date_utc": "2026-11-24T19:35:50Z"
 }

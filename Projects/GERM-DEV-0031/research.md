@@ -184,6 +184,39 @@ Minimal is playable but thin. 13% of throws have no move, only 55% offer a choic
 - Bell's rules in the simulation follow Ludii's encoding, which the 1969 text matches.
 - The simulation found and fixed one bug: the Bell end-game tie-break first gave the win to the side wiped out.
 
+### Rule sweep: which invented rules drive the results
+
+**Method.** The folder `sweep/` holds a Python port of the engine, checked case by case against the JavaScript engine. It varies the 12 open rules of section 3 and plays every combination: 13,312 rule sets, 200 games of normal against normal and 200 of normal against a random mover each, with the same dice sequences across rule sets. The run took 17 sessions and 19 CPU hours, completed 2026-11-24, and passed every sanity check (parity, code lock, integrity, logic, determinism, anchors against the five published rule sets). The registry is `sweep/results/`.
+
+**Measure.** For each result, the share of its variation across rule sets that one rule explains on its own (eta squared). A large share means the result comes from that modern choice. Certainty is from `rules.md`.
+
+| Rule (certainty) | Finish | Skill | Balance | Throws | Decisions | Drama |
+|---|---|---|---|---|---|---|
+| Capture mechanism (20%) | 0.10 | **0.48** | **0.22** | **0.28** | **0.27** | **0.69** |
+| Bearing off (25-60%) | **0.12** | 0.00 | 0.00 | 0.13 | 0.00 | 0.03 |
+| Pieces, 5 or 7 (90%) | 0.10 | 0.05 | 0.00 | 0.11 | 0.00 | 0.01 |
+| Protection (5%) | 0.00 | 0.03 | 0.03 | 0.01 | 0.12 | 0.00 |
+| Start (35%) | 0.00 | 0.00 | 0.09 | 0.00 | 0.01 | 0.00 |
+| Stop on 26 (55%) | 0.00 | 0.05 | 0.00 | 0.00 | 0.03 | 0.00 |
+| Square 27 (60%) | 0.00 | 0.03 | 0.00 | 0.01 | 0.00 | 0.02 |
+| Extra throws (5%) | 0.01 | 0.01 | 0.01 | 0.00 | 0.00 | 0.02 |
+| Safe squares (invented) | 0.01 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
+| Zero throw scores 5 or 6 (20%) | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
+| Blockade (15%) | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
+| Backward moves (5%) | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
+
+Skill is the win rate of the normal computer against a random mover, a lower bound. Balance is Ludii's measure (1 is fair). Decisions is the share of throws with 2 or more legal moves. Drama is a proxy: how far the eventual winner trailed in the race, on average, while behind.
+
+**Findings.**
+
+- **Unfinished games come from one invented rule.** 2,229 rule sets (16.7%) leave games unfinished within 3,000 throws. 2,208 of them use the bear-off rule that requires every piece in the last row before any leaves. With exits from 26 on exact throws, 100% of games finish; with the last-row rule, 85%. Rear capture and 7 pieces make it worse.
+- **Skill comes from the capture mechanism.** Capture alone explains 48% of the variation in skill, and its pairing with the stop on 26 explains 59%. By mechanism, the normal player beats a random mover 75% of the time with no capture, 81% with a swap, 86% with removal and 98% when the struck piece goes to the rear. The mechanism has 20% certainty.
+- **The evidenced rules matter little.** The number of pieces, the stop on 26 and square 27 explain 5% of skill or less each. Throw scoring, blockades and backward moves explain nothing measurable on any result.
+- **Seat balance depends on capture and the start.** 10.8% of rule sets favour one seat by more than 10 points. Capture explains 22% of balance, and capture with the start 42%.
+- **Pure luck is rare.** Only 1.1% of rule sets have skill under 60%. Almost any combination of rules leaves room for a better player.
+
+**Reading.** The two results that decide whether a reconstruction works, whether games end and whether skill pays, rest on two of the least certain rules: how pieces leave and what a capture does. The rules with ancient support shape the game far less. The Germain Rules (`sweep/stage2-candidates.md`) replace exactly those two with the smallest rules the evidence suggests. A second stage will test them at 2,000 games each.
+
 ## 6. The app
 
 The app is at https://thegerm.github.io/AI-Chart/Projects/GERM-DEV-0031/. It offers five rule sets: Minimal, Kendall 1978, Jéquier, Bell 1960 and Piccione. Play is against the computer at easy, normal or hard, or two players on one screen.

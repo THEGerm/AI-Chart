@@ -15,8 +15,8 @@ Status: **read** means the image was analysed; **no image** means the scene is l
 | 05 | Dyn 5 | Saqqara, Ptahhotep | Reported game scene | Davies 1900-01 | unconfirmed: only boys' games found |
 | 06 | Dyn 5 | Saqqara, Niankhkhnum and Khnumhotep | Board game among festival scenes | none | no image |
 | 07 | Dyn 6 | Saqqara, Mereruka | Mereruka plays a son(?), wife beside him | Duell 1938, pl. 171 (photo), pl. 172 (drawing) | read |
-| 08 | Dyn 6 | Giza, Idu (G 7102) | Reported game scene | none | no image |
-| 09 | Dyn 5-6 | Giza, Kaemankh (G 4561) | Board-game players | none | no image |
+| 08 | Dyn 6 | Giza, Idu (G 7102) | Two senet pairs and a mehen pair, with speech captions | Simpson 1976, fig. 38 (drawing) and pl. XXIVb (photo) | read |
+| 09 | Dyn 5-6 | Giza, Kaemankh (G 4561) | Kaemankh plays senet against a seated man; mehen beside it | Junker 1940, Abb. 9 (drawing) | read |
 | 10 | Dyn 6 | Meir, Pepiankh the Middle | Two men playing, with speech captions | Blackman 1924, pl. X | read |
 | 11 | Dyn 11 | Beni Hasan 15, Baqet III | Two pairs playing | Newberry 1894, pl. VII | read |
 | 12 | Dyn 11 | Beni Hasan 17, Khety | Reported game scene | Newberry 1894, pl. IX-XIX | unconfirmed: no board found |
@@ -45,6 +45,9 @@ No depiction of play was found from Nubia or the Levant, where boards occur. Lis
 | 02 Rashepses | 11 in one touching row (medium-high; a crack adds doubt) | pieces 2-9 alternate dome, tall cone; the end pieces sit under the players' hands | 2; each rests a hand on an end piece | none seen | medium; 1840s copy |
 | 03 Nikauhor | not countable (faded) | not legible | 2, face to face | none seen | low |
 | 07 Mereruka | 12 on the board, plus 1 held by each player | short, tall, alternating, 6 and 6, evenly spaced, no gap | 2; each holds a tapering object toward the board | none seen | high on the row; medium that the held objects are pieces |
+| 08 Idu, pair A | 8, no gap | narrow cones and wider domes alternate (medium) | 2; left hand on piece 1, right hand raised | none seen | high on the count |
+| 08 Idu, pair B | 8 (two scans and the photo agree) | all domes, no clear alternation (medium) | 2; left hand over piece 1; right hand on piece 7 holding an oval, perhaps a lifted piece (low to medium) | none seen | high on the count |
+| 09 Kaemankh | 14 in an even row, no gap: 7 a side | short and tall alternate from piece 3 to 12; pieces 2 and 3 are both short; end pieces under the hands | 2; each has a hand on the end piece nearest him | none seen | high |
 | 10 Meir | 10 (9 or 11 if a damaged one is counted otherwise) | cone, dome alternating for pieces 1-5; then 2 cones together, a damaged piece, a dome | 2; one player's open hand hovers over pieces 6-7 | none seen | high on 1-5; medium on the rest |
 | 11 Beni Hasan 15, board A | about 4 dark, 5 light | grouped, with a gap between | 2 | none seen | medium to low (25 px high) |
 | 11 Beni Hasan 15, board B | about 11 | dark and light alternating, at least at the left | 2 | none seen | low |
@@ -59,13 +62,14 @@ Hesy-Re's board, drawn in plan as a 3 x 10 grid, has faint marks in five squares
 
 ## What this adds to the rules
 
-1. **Seven a side in the Old Kingdom.** Hesy-Re's tray holds 7 and 7 (high). Mereruka shows 6 and 6 on the board with one more in each player's hand (medium), which also makes 7. This confirms the period count already in rules.md.
-2. **Pieces alternate in Old Kingdom and Middle Kingdom scenes.** Mereruka's row alternates without a break across 12 pieces (high). Rashepses' row of 11 alternates across its middle eight (medium). Meir's first five alternate (high), and one Beni Hasan board alternates (low). A profile view flattens three rows into one, so this shows order along the path, not squares. The plain reading is an alternating start, as in the Kendall and Jéquier reconstructions.
+1. **Seven a side in the Old Kingdom.** Hesy-Re's tray holds 7 and 7 (high). Kaemankh shows all 14 on the board (high). Mereruka shows 6 and 6 on the board with one more in each player's hand (medium), which also makes 7. This confirms the period count already in rules.md.
+2. **Pieces alternate in Old Kingdom and Middle Kingdom scenes.** Kaemankh's 14 pieces, a full Old Kingdom set, stand in one row and alternate from piece 3 to 12 (high). Mereruka's row alternates without a break across 12 pieces (high). Rashepses' row of 11 alternates across its middle eight (medium). Meir's first five alternate (high), and one Beni Hasan board alternates (low). A profile view flattens three rows into one, so this shows order along the path, not squares. The plain reading is an alternating start, as in the Kendall and Jéquier reconstructions.
 3. **Meir looks like a game in progress.** The alternation breaks at the point where the player's hand hovers: two cones side by side, then a damaged piece. An alternating start that breaks once pieces move fits this.
 4. **New Kingdom and Late Period scenes do not alternate.** Nefertari's row is 5 cones then 5 spools (high), and Ani's is grouped by shape (high). The British Museum lion and gazelle (Ramesside) is a two-player game: 4 pieces of each kind stand grouped on the owner's side, and each player holds a fifth, which makes 5 a side. These are Book of the Dead scenes of a player alone. The Walters lintel (Dynasty 26), a two-player scene, shows 10 like pieces with no alternation, each player's hand at his own end of the row. Grouped sides fit pieces lined up apart before play, or two armies facing each other; they do not fit an alternating start. The rule may have changed between the Old and New Kingdoms, or the funerary scenes follow their own convention.
 5. **Two players in daily life, one in funerary scenes.** Every Old and Middle Kingdom scene read has two players. The New Kingdom funerary scenes (Nefertari, Ani, Hunefer) show one player and no opponent, as the Book of the Dead 17 rubric describes. Medinet Habu, a palace scene, and the Walters lintel have two. The Germain Fate version fits the solo scenes.
 6. **The lot is almost never shown in play.** Hesy-Re's grave goods show four sticks. The only lot in a scene of play is the object in the lion's paw on the British Museum papyrus, which the museum identifies as a knucklebone die. If that reading holds, it matches the knucklebones found with New Kingdom sets (rules.md row 15).
-7. **Square marks may be older than thought.** If the Hesy-Re marks are real, square 27 carried a water sign by Dynasty 3, and squares 1, 11 and 21, where the path turns, were marked too.
+7. **The captions name the game and the play.** Kaemankh's label over senet reads ḥꜥb m znt, "playing at senet" (medium); the verb jṯj, "take", stands only over the mehen game beside it. At Idu, Simpson translates one player's words as "the one and the two belong to me; you have no right to them". If "one" and "two" are the marked squares 30 and 29, the player claims the exits.
+8. **Square marks may be older than thought.** If the Hesy-Re marks are real, square 27 carried a water sign by Dynasty 3, and squares 1, 11 and 21, where the path turns, were marked too.
 
 ## For the Old Kingdom rule set
 
@@ -76,7 +80,7 @@ The scenes support the two changes proposed for an Old Kingdom version of the Ge
 - Profile views flatten the board. They show the order of pieces along the top, not which squares they stand on.
 - Artists may abbreviate. A row of 12 can stand for 14.
 - Several counts come from old scans at low resolution (Beni Hasan) or faded relief (Nikauhor).
-- Seven catalogue entries rest on secondary lists and were not checked at source this round (04, 06, 08, 09, 14, 17, 18). Four reported scenes were not found where the lists put them (05, 12, 13, 23), and the Turin lion and gazelle was not found on five photos of the papyrus (24).
+- Five catalogue entries rest on secondary lists and were not checked at source this round (04, 06, 14, 17, 18). Four reported scenes were not found where the lists put them (05, 12, 13, 23), and the Turin lion and gazelle was not found on five photos of the papyrus (24).
 - Sign readings are partial. Published translations of the Meir and Walters captions exist and were not retrieved.
 
 ## Sources
@@ -85,7 +89,9 @@ The scenes support the two changes proposed for an Old Kingdom version of the Ge
 - Budge, E.A.W. *The Papyrus of Ani*, facsimile (London, 1890s), pl. 7. archive.org, item papyrusofanirepr31unse.
 - Duell, P. *The Mastaba of Mereruka* II (OIP 39; Chicago, 1938), pl. 171-172. Free PDF from the Institute for the Study of Ancient Cultures, Chicago.
 - The Epigraphic Survey. *Medinet Habu* VIII (OIP 94; Chicago, 1970), pl. 640. Free PDF, same source.
+- Simpson, W.K. *The Mastabas of Qar and Idu, G 7101 and 7102* (Giza Mastabas 2; Boston, 1976), fig. 38, pl. XXIVb, p. 25. Giza Project library.
 - Metropolitan Museum of Art, 08.201.2 (Nikauhor) and 30.4.145 (Nefertari facsimile), open access.
+- Junker, H. *Gîza* IV: *Die Mastaba des Kaʿjemʿanch* (Vienna, 1940), Abb. 9. Giza Project library, Harvard and Museum of Fine Arts, Boston.
 - Lepsius, C.R. *Denkmäler aus Aegypten und Aethiopien*, Abt. II (Berlin, 1849-59), pl. 61a. Digital edition, Universitäts- und Landesbibliothek Sachsen-Anhalt, Halle.
 - British Museum, EA 10016,1, satirical papyrus, museum photograph and object page.
 - Walters Art Museum, 22.152-153, lintel of Ankhefensekhmet, museum photographs (CC0) and object page.

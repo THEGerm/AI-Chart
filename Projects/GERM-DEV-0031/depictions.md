@@ -11,7 +11,7 @@ Status: **read** means the image was analysed; **no image** means the scene is l
 | 01 | Dyn 3 | Saqqara, Hesy-Re | Board, pieces and sticks painted in plan among grave goods | Quibell 1913, pl. XI | read |
 | 02 | Dyn 5 | Saqqara, Rashepses (LS 16) | Two men playing senet, beside a mehen game and musicians | Lepsius, Denkmäler II, pl. 61a (drawing, ULB Halle) | read |
 | 03 | Dyn 5 | Saqqara, Nikauhor | Two men playing | Met 08.201.2 (photo) | read |
-| 04 | Dyn 5 | Saqqara, Kaemrehu (D 2) | Men playing | Ny Carlsberg ÆIN 1271 | no image (not in the museum's online collection) |
+| 04 | Dyn 5 | Saqqara, Kaemrehu (D 2) | Men playing (secondary lists) | Ny Carlsberg ÆIN 1271, photograph of the block | unconfirmed: ÆIN 1271 shows an offering procession, no game; the rest of the chapel not seen |
 | 05 | Dyn 5 | Saqqara, Ptahhotep | Reported game scene | Davies 1900-01 | unconfirmed: only boys' games found |
 | 06 | Dyn 5 | Saqqara, Niankhkhnum and Khnumhotep | Board game among festival scenes (secondary lists) | Wikimedia Commons photographs of the tomb's walls | unconfirmed: no game scene on any wall photographed |
 | 07 | Dyn 6 | Saqqara, Mereruka | Mereruka plays a son(?), wife beside him | Duell 1938, pl. 171 (photo), pl. 172 (drawing) | read |
@@ -34,7 +34,7 @@ Status: **read** means the image was analysed; **no image** means the scene is l
 | 24 | Dyn 20 | Turin satirical papyrus, Cat. 2031 | Lion and gazelle playing (reported) | Museo Egizio, 5 photos; images circulating under this name | probably a mislabel: no game on the Turin photos, and the images found under Turin's name are the British Museum papyrus (25) |
 | 25 | Dyn 19-20 | BM satirical papyrus EA 10016/1, Deir el-Medina | Lion plays a gazelle | British Museum photo (screenshot) and object page | read |
 | 26 | Dyn 26 | Saqqara, lintel of Ankhefensekhmet | Two men playing senet below musicians, with speech captions; mehen players beside them | Walters 22.152-153 (museum photos, CC0) | read |
-| 27 | late Dyn 18 to Dyn 19 | Game box of Imenmes, Musée du Louvre | Imenmes seated at a board on a stand, a servant offering a tray; engraved on the end of a senet box | Visitor's photo, 2014 (analysis only, not reproduced) | read |
+| 27 | late Dyn 18 to Dyn 19 | Game box of Imenmes, Louvre E 2710 (Pusch 1979, Da. 19) | Imenmes seated at a board on a stand, a servant offering a bowl; engraved on the end of a senet box | Louvre photographs (end panel and senet face) | read |
 
 No depiction of play was found from Nubia or the Levant, where boards occur. List numbers in Piccione 1990, Pusch 1979 and Crist, Dunn-Vaturi and de Voogt 2016 were not checked; those works were not reachable.
 
@@ -52,17 +52,17 @@ No depiction of play was found from Nubia or the Levant, where boards occur. Lis
 | 10 Meir | 10 (9 or 11 if a damaged one is counted otherwise) | cone, dome alternating for pieces 1-5; then 2 cones together, a damaged piece, a dome | 2; one player's open hand hovers over pieces 6-7 | none seen | high on 1-5; medium on the rest |
 | 11 Beni Hasan 15, board A | about 4 dark, 5 light | grouped, with a gap between | 2 | none seen | medium to low (25 px high) |
 | 11 Beni Hasan 15, board B | about 11 | dark and light alternating, at least at the left | 2 | none seen | low |
-| 15 Nefertari | 5 cones, 5 spools (facsimile and wall photo agree) | grouped: 5 cones then 5 spools, touching, no gap | 1, opponent unseen | none shown | high |
+| 15 Nefertari | 5 cones, 5 spools (facsimile and wall photo agree) | grouped: 5 cones then 5 spools, touching, no gap | 1, opponent unseen | none shown | high; her empty hand is cupped over cone 2, plaster loss at the contact point |
 | 19 Medinet Habu | board lost; each player holds one cone-topped piece | not legible | 2; a third figure watches | none seen | high on the held pieces |
 | 20 Ani | 3 cones, 2 squat pieces | grouped by shape | 1; wife watches, does not reach the board | none shown | high |
 | 21 Hunefer | 4, shape unclear | not legible | 1, opponent unseen | none shown | high on the count |
 | 25 BM lion and gazelle | 4 round-headed pawns on the gazelle's side, 4 spools on the lion's side; each player holds one more of its own kind | grouped by side, with a gap between the groups | 2, each moving a piece of its own group | the lion's other paw holds a rounded object; the museum calls it a knucklebone die, the image alone does not settle it | high on the board counts; medium on the held pieces; low on the lot |
 | 22 Nakht | 10: 5 tall spool-like pieces, then 5 short dark cones | grouped by side, touching (a pale spot may be a gap or an 11th piece, low) | 1, alone; his hand hovers over piece 10 | none seen | medium |
 | 16 Sennedjem | 10: 5 white spools, 5 red cones | strict alternation, spool first at his end, no gap | 1, alone; his hand grips piece 1 without lifting it; his wife watches | none seen | high |
-| 27 Imenmes box | 4 visible, perhaps 1 or 2 more under the hand | not legible (low) | 1 player; a standing servant offers a tray | two waisted, two-lobed objects under the stand: knucklebones, not sticks (medium) | low on the pieces |
+| 27 Imenmes box | 5 or 6, all visible: one spool, a bar that may be two spools, then three cones | grouped by kind, not alternating | 1 player, his fingers on the leftmost cone; a standing servant offers an empty bowl | two knucklebones under the stand (high on shape); the Louvre catalogue lists an osselet | medium on the count |
 | 26 Walters lintel | 10, all rounded cones; three may be slightly more pointed | not alternating; evenly spaced, no gap | 2; each has a hand at his own end of the row (left on piece 1, right on piece 9); the left player's other hand grips the board's leg | none seen | high on the count; medium on the hands |
 
-Hesy-Re's board, drawn in plan as a 3 x 10 grid, has faint marks in five squares: an X, horizontal strokes, wavy strokes, dots and one stroke. Read along the later path, they fall on squares 1, 11, 21, 27 and 30, and the wavy strokes sit on 27, the water square of later boards. Squares 26, 28 and 29, marked on New Kingdom boards, are blank. Position: high; the reading of the signs: low. Quibell notes some marks may be red underpainting showing through.
+Hesy-Re's board, drawn in plan as a 3 x 10 grid, has marks in five squares (position high). A modern colour copy of the same facsimile, with the same torn patch and signature, makes the signs legible; it is not an independent witness. Read along the later path: square 1 has a five-armed star (probably N14); square 11 two horizontal strokes; square 21 five short dashes, two over three; square 27 four tall closed loops; square 30 one vertical stroke. The single stroke on 30 matches the Old Kingdom "one" on that square (rules.md row 10). The five dashes on 21 may be a "five". The loops on 27 look less like water than the greyscale scan suggested. Squares 26, 28 and 29, marked on New Kingdom boards, are blank. The Imenmes box (Louvre E 2710) shows the New Kingdom set on its senet face: three nfr on 26, three water lines on 27, three birds on 28, two kneeling men on 29, and 30 blank. Sign identities: low to medium.
 
 ## What this adds to the rules
 
@@ -71,9 +71,9 @@ Hesy-Re's board, drawn in plan as a 3 x 10 grid, has faint marks in five squares
 3. **Meir looks like a game in progress.** The alternation breaks at the point where the player's hand hovers: two cones side by side, then a damaged piece. An alternating start that breaks once pieces move fits this.
 4. **New Kingdom and Late Period scenes are mixed.** Sennedjem's door (Dynasty 19) alternates strictly: 5 white spools and 5 red cones, no gap (high). Other scenes group the pieces by side: Nefertari's row is 5 cones then 5 spools (high), Nakht's (Dynasty 18) is 5 spools then 5 cones (medium), and Ani's is grouped by shape (high). These four are all Book of the Dead scenes of a player alone, so the funerary convention does not explain the difference. The British Museum lion and gazelle (Ramesside), a two-player scene, has 4 pieces of each kind grouped on the owner's side and a fifth in each player's hand. The Walters lintel (Dynasty 26) shows 10 like pieces, not alternating, each player's hand at his own end of the row. Grouped sides fit pieces lined up apart before play; alternating rows fit the Old Kingdom start. Both readings appear in the same period, so the art alone cannot fix a New Kingdom start.
 5. **Two players in daily life, one in funerary scenes.** Every Old and Middle Kingdom scene read has two players. The New Kingdom funerary scenes (Nakht, Nefertari, Sennedjem, Ani, Hunefer) show one player and no opponent, as the Book of the Dead 17 rubric describes. Medinet Habu, a palace scene, and the Walters lintel have two. The Germain Fate version fits the solo scenes.
-6. **The lot is rarely shown, and in the New Kingdom it is knucklebones.** Hesy-Re's grave goods (Dynasty 3) show four sticks. Two New Kingdom scenes show a lot: the Imenmes game box has two knucklebones under the board's stand (medium), and the lion on the British Museum papyrus holds an object the museum identifies as a knucklebone die (low from the image). Both match the pairs of knucklebones found in New Kingdom game boxes (rules.md row 15).
+6. **The lot is rarely shown, and in the New Kingdom it is knucklebones.** Hesy-Re's grave goods (Dynasty 3) show four sticks. Two New Kingdom scenes show a lot: the Imenmes game box has two knucklebones under the board's stand (high on shape; the Louvre catalogue lists an osselet), and the lion on the British Museum papyrus holds an object the museum identifies as a knucklebone die (low from the image). Both match the pairs of knucklebones found in New Kingdom game boxes (rules.md row 15).
 7. **The captions name the game and the play.** Kaemankh's label over senet reads ḥꜥb m znt, "playing at senet" (medium); the verb jṯj, "take", stands only over the mehen game beside it. At Idu, Simpson translates one player's words as "the one and the two belong to me; you have no right to them". If "one" and "two" are the marked squares 30 and 29, the player claims the exits.
-8. **Square marks may be older than thought.** If the Hesy-Re marks are real, square 27 carried a water sign by Dynasty 3, and squares 1, 11 and 21, where the path turns, were marked too.
+8. **Square marks go back to Dynasty 3.** Hesy-Re's board marks squares 1, 11, 21, 27 and 30. Square 30 carries a single stroke, the "one" of later Old Kingdom boards; square 21 may carry a "five". The sign on 27 is not clearly water.
 
 ## For the Old Kingdom rule set
 
@@ -84,7 +84,7 @@ The scenes support the two changes proposed for an Old Kingdom version of the Ge
 - Profile views flatten the board. They show the order of pieces along the top, not which squares they stand on.
 - Artists may abbreviate. A row of 12 can stand for 14.
 - Several counts come from old scans at low resolution (Beni Hasan) or faded relief (Nikauhor).
-- Three catalogue entries rest on secondary lists and were not checked at source this round (04, 14, 17). Five reported scenes were not found where the lists put them (05, 06, 12, 13, 23), and two are probably mislabelled copies of other entries (18 is Sennedjem, 24 is the British Museum papyrus), and the Turin lion and gazelle was not found on five photos of the papyrus (24).
+- Two catalogue entries rest on secondary lists and were not checked at source this round (14, 17). Five reported scenes were not found where the lists put them (05, 06, 12, 13, 23), Kaemrehu's block ÆIN 1271 has no game (04), and two are probably mislabelled copies of other entries (18 is Sennedjem, 24 is the British Museum papyrus), and the Turin lion and gazelle was not found on five photos of the papyrus (24).
 - Sign readings are partial. Published translations of the Meir and Walters captions exist and were not retrieved.
 
 ## Sources

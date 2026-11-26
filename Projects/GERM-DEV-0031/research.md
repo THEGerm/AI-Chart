@@ -275,7 +275,7 @@ Every depiction of play we could trace is catalogued in `depictions.md`: 27 scen
 - **Mixed order in the New Kingdom and after.** Sennedjem's door (Dynasty 19) alternates strictly, 5 white spools and 5 red cones (high). Nefertari's row is 5 cones then 5 spools, Nakht's 5 spools then 5 cones, and Ani's is grouped by shape; all four are solo funerary scenes. The British Museum lion and gazelle (Ramesside) has 4 pieces of each kind grouped on the owner's side and a fifth in each player's hand. The Walters lintel (Dynasty 26) shows 10 like pieces, not alternating. The art does not fix a New Kingdom start.
 - **Knucklebones in New Kingdom scenes.** The Imenmes game box (Louvre) shows two knucklebones under the board's stand (medium), and on the British Museum papyrus the lion holds an object the museum calls a knucklebone die (low from the image). Hesy-Re's Dynasty 3 grave goods show four sticks instead.
 - **One player in funerary scenes, two in daily life.** Nefertari, Ani and Hunefer play alone; every Old and Middle Kingdom scene read, and Medinet Habu, has two.
-- **Marked squares in Dynasty 3.** Hesy-Re's plan view has faint marks on squares 1, 11, 21, 27 and 30 (position high, reading low), with wavy strokes on 27, the later water square.
+- **Marked squares in Dynasty 3.** Hesy-Re's plan view marks squares 1, 11, 21, 27 and 30 (position high). A colour copy of the same facsimile shows a star on 1, two strokes on 11, five dashes on 21, four loops on 27 and one stroke on 30, the "one" of later Old Kingdom boards (sign identities low to medium).
 
 ## 6. The app
 

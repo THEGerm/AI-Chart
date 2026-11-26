@@ -11,7 +11,7 @@ Status: **read** means the image was analysed; **no image** means the scene is l
 | 01 | Dyn 3 | Saqqara, Hesy-Re | Board, pieces and sticks painted in plan among grave goods | Quibell 1913, pl. XI | read |
 | 02 | Dyn 5 | Saqqara, Rashepses (LS 16) | Two men playing senet, beside a mehen game and musicians | Lepsius, Denkmäler II, pl. 61a (drawing, ULB Halle) | read |
 | 03 | Dyn 5 | Saqqara, Nikauhor | Two men playing | Met 08.201.2 (photo) | read |
-| 04 | Dyn 5 | Saqqara, Kaemrehu (D 2) | Men playing | Ny Carlsberg ÆIN 1271 | no image (not in the museum's online collection) |
+| 04 | Dyn 5 | Saqqara, Kaemrehu (D 2) | Men playing (secondary lists) | Ny Carlsberg ÆIN 1271, photograph of the block | unconfirmed: ÆIN 1271 shows an offering procession, no game; the rest of the chapel not seen |
 | 05 | Dyn 5 | Saqqara, Ptahhotep | Reported game scene | Davies 1900-01 | unconfirmed: only boys' games found |
 | 06 | Dyn 5 | Saqqara, Niankhkhnum and Khnumhotep | Board game among festival scenes (secondary lists) | Wikimedia Commons photographs of the tomb's walls | unconfirmed: no game scene on any wall photographed |
 | 07 | Dyn 6 | Saqqara, Mereruka | Mereruka plays a son(?), wife beside him | Duell 1938, pl. 171 (photo), pl. 172 (drawing) | read |
@@ -52,7 +52,7 @@ No depiction of play was found from Nubia or the Levant, where boards occur. Lis
 | 10 Meir | 10 (9 or 11 if a damaged one is counted otherwise) | cone, dome alternating for pieces 1-5; then 2 cones together, a damaged piece, a dome | 2; one player's open hand hovers over pieces 6-7 | none seen | high on 1-5; medium on the rest |
 | 11 Beni Hasan 15, board A | about 4 dark, 5 light | grouped, with a gap between | 2 | none seen | medium to low (25 px high) |
 | 11 Beni Hasan 15, board B | about 11 | dark and light alternating, at least at the left | 2 | none seen | low |
-| 15 Nefertari | 5 cones, 5 spools (facsimile and wall photo agree) | grouped: 5 cones then 5 spools, touching, no gap | 1, opponent unseen | none shown | high |
+| 15 Nefertari | 5 cones, 5 spools (facsimile and wall photo agree) | grouped: 5 cones then 5 spools, touching, no gap | 1, opponent unseen | none shown | high; her empty hand is cupped over cone 2, plaster loss at the contact point |
 | 19 Medinet Habu | board lost; each player holds one cone-topped piece | not legible | 2; a third figure watches | none seen | high on the held pieces |
 | 20 Ani | 3 cones, 2 squat pieces | grouped by shape | 1; wife watches, does not reach the board | none shown | high |
 | 21 Hunefer | 4, shape unclear | not legible | 1, opponent unseen | none shown | high on the count |
@@ -84,7 +84,7 @@ The scenes support the two changes proposed for an Old Kingdom version of the Ge
 - Profile views flatten the board. They show the order of pieces along the top, not which squares they stand on.
 - Artists may abbreviate. A row of 12 can stand for 14.
 - Several counts come from old scans at low resolution (Beni Hasan) or faded relief (Nikauhor).
-- Three catalogue entries rest on secondary lists and were not checked at source this round (04, 14, 17). Five reported scenes were not found where the lists put them (05, 06, 12, 13, 23), and two are probably mislabelled copies of other entries (18 is Sennedjem, 24 is the British Museum papyrus), and the Turin lion and gazelle was not found on five photos of the papyrus (24).
+- Two catalogue entries rest on secondary lists and were not checked at source this round (14, 17). Five reported scenes were not found where the lists put them (05, 06, 12, 13, 23), Kaemrehu's block ÆIN 1271 has no game (04), and two are probably mislabelled copies of other entries (18 is Sennedjem, 24 is the British Museum papyrus), and the Turin lion and gazelle was not found on five photos of the papyrus (24).
 - Sign readings are partial. Published translations of the Meir and Walters captions exist and were not retrieved.
 
 ## Sources

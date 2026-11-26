@@ -13,7 +13,7 @@ Status: **read** means the image was analysed; **no image** means the scene is l
 | 03 | Dyn 5 | Saqqara, Nikauhor | Two men playing | Met 08.201.2 (photo) | read |
 | 04 | Dyn 5 | Saqqara, Kaemrehu (D 2) | Men playing | Ny Carlsberg ÆIN 1271 | no image (not in the museum's online collection) |
 | 05 | Dyn 5 | Saqqara, Ptahhotep | Reported game scene | Davies 1900-01 | unconfirmed: only boys' games found |
-| 06 | Dyn 5 | Saqqara, Niankhkhnum and Khnumhotep | Board game among festival scenes | none | no image |
+| 06 | Dyn 5 | Saqqara, Niankhkhnum and Khnumhotep | Board game among festival scenes (secondary lists) | Wikimedia Commons photographs of the tomb's walls | unconfirmed: no game scene on any wall photographed |
 | 07 | Dyn 6 | Saqqara, Mereruka | Mereruka plays a son(?), wife beside him | Duell 1938, pl. 171 (photo), pl. 172 (drawing) | read |
 | 08 | Dyn 6 | Giza, Idu (G 7102) | Two senet pairs and a mehen pair, with speech captions | Simpson 1976, fig. 38 (drawing) and pl. XXIVb (photo) | read |
 | 09 | Dyn 5-6 | Giza, Kaemankh (G 4561) | Kaemankh plays senet against a seated man; mehen beside it | Junker 1940, Abb. 9 (drawing) | read |
@@ -82,7 +82,7 @@ The scenes support the two changes proposed for an Old Kingdom version of the Ge
 - Profile views flatten the board. They show the order of pieces along the top, not which squares they stand on.
 - Artists may abbreviate. A row of 12 can stand for 14.
 - Several counts come from old scans at low resolution (Beni Hasan) or faded relief (Nikauhor).
-- Four catalogue entries rest on secondary lists and were not checked at source this round (04, 06, 14, 17). Four reported scenes were not found where the lists put them (05, 12, 13, 23), and two are probably mislabelled copies of other entries (18 is Sennedjem, 24 is the British Museum papyrus), and the Turin lion and gazelle was not found on five photos of the papyrus (24).
+- Three catalogue entries rest on secondary lists and were not checked at source this round (04, 14, 17). Five reported scenes were not found where the lists put them (05, 06, 12, 13, 23), and two are probably mislabelled copies of other entries (18 is Sennedjem, 24 is the British Museum papyrus), and the Turin lion and gazelle was not found on five photos of the papyrus (24).
 - Sign readings are partial. Published translations of the Meir and Walters captions exist and were not retrieved.
 
 ## Sources

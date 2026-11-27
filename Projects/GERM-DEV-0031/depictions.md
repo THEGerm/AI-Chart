@@ -63,7 +63,7 @@ No depiction of play was found from Nubia or the Levant, where boards occur. Lis
 | 22 Nakht | 10: 5 tall spool-like pieces, then 5 short dark cones | grouped by side, touching (a pale spot may be a gap or an 11th piece, low) | 1, alone; his hand hovers over piece 10 | none seen | medium |
 | 16 Sennedjem | 10: 5 white spools, 5 red cones | strict alternation, spool first at his end, no gap | 1, alone; his hand grips piece 1 without lifting it; his wife watches | none seen | high |
 | 27 Imenmes box | 5 or 6, all visible: one spool, a bar that may be two spools, then three cones | grouped by kind, not alternating | 1 player, his fingers on the leftmost cone; a standing servant offers an empty bowl | two knucklebones under the stand (high on shape); the Louvre catalogue lists an osselet | medium on the count |
-| 17 Inherkhau | 6 certain, all one knob-headed type, standing together; 3 more forms at the right end may be pieces (low); Bruyère says nine | grouped, no gap among the six | players' heads and arms lost to plaster damage | none seen | high on the six; the 1933 plate is retouched in ink |
+| 17 Inherkhau | 6 certain in the photo; Bruyère, who saw the wall, gives 9: 5 white, 3 blue, 1 red, all one tall shape | not alternating; 5 of one colour against 4 | 2; he reaches to take a piece, his wife stretches her hand over the game in blessing (Bruyère 1933: 42) | none seen | high on the six; Bruyère for the rest |
 | 12 Khety, pair 2 | 10: 5 light, 5 dark | grouped by side, with a gap between the groups | 2; left hand on light piece 1, right fingertip over dark piece 5 | none seen | medium (pieces 5-10 px wide) |
 | 12 Khety, pair 1 | about 4 dark, perhaps alternating with 4 light, packed at one end | possibly alternating (low) | 2 | none seen | low to medium |
 | 28 Neferirtenef | about 13 (±1) | not legible on the halftone print | 2 | none seen; the table has a hatched drawer | low |
@@ -87,6 +87,22 @@ Hesy-Re's board, drawn in plan as a 3 x 10 grid, has marks in five squares (posi
 
 The scenes support the two changes proposed for an Old Kingdom version of the Germain Rules: 7 pieces a side (Hesy-Re, Kaemankh, Mereruka) and an alternating start (Kaemankh, Mereruka, Rashepses, Meir). Five Old Kingdom rows alternate; two (Nebkauhor, Idu pair B) show one kind only. The Middle Kingdom boards at Beni Hasan are mixed. The alternating start gave a 62% seat advantage in a forced-move version in a first test, so an Old Kingdom Fate would need an offboard start; the solo forced-move scenes are New Kingdom in any case.
 
+## What the players say
+
+Published translations checked against the images. "Agrees" means the signs read independently in the image analysis, before seeing the translation, fit it.
+
+| Scene | Published translation | Source | Check against the image |
+|---|---|---|---|
+| 02 Rashepses (Dyn 5) | Title "watching senet" (mꜣꜣ m znt). Speech: "I have made 3 in the game. Carry 3, [I make] 2 in the game." | Montet 1925: 375, from LD II 61a | Agrees: three stacked strokes and two strokes, each before "in senet", are on the plate |
+| 08 Idu G 7102 (Dyn 6) | "I cause my finger to be led to the house of the ibis (?)"; "the one and the two belong to me; you have no right to them" (or "you will not win at it") | Simpson 1976: 25 | Agrees: rdj and the finger sign are visible; "one" and "two" not confirmed in the drawing |
+| 09 Kaemankh (Dyn 5-6) | Title ḥꜥb m znt, "playing senet"; mehen label jṯj.t m mḥn; speech "Hurry up! Play!" (Beeile dich doch! Spiel doch!) | Junker 1940: 36-38 | Agrees: ḥꜥb m znt read over the senet pair; jṯj only over the mehen pair |
+| 10 Meir, Pepiankh D2 (Dyn 6) | Emrori: "... a good thing! ... I cause you to see that I take it." Khunre: "You say this too hastily. The board is mine." | Blackman 1924: 31-32 | Agrees: the eye sign (mꜣꜣ, "see") and k are among the signs read |
+| 29 Nebkauhor (Dyn 6) | "Let indeed your finger lead to the house of bones (?)"; "Lift this (piece), hurry up, you fool" | Abdou 2011: 110-111 | Agrees: ḥm, k, r, wn (hurry), n are among the signs read |
+| 26 Walters lintel (Dyn 26) | Not published online | Steindorff 1947 (library) | Partial reading only: the incised Dyn 27 lines look like personal names; the raised groups gave no game words |
+| 17 Inherkhau (Dyn 20) | Not published online; edition in Cherpion and Corteggiani 2010 (MIFAO 128) | Bruyère 1933: 43 (hieroglyphic copy) | Project's partial reading: a copy of the "Great Game Text" (Arnette 2021: 39 n. 110). The deceased speaks in the first person, invokes Thoth and Horus, says "I have come" and "it is opened for me", and names the pr-nfr, the good house (square 26). About half the columns are not read |
+
+**What the words add.** Two Old Kingdom captions name numbers in play: Rashepses' "3" and "2", and Idu's "the one and the two". These are the marks of squares 28, 29 and 30, the exit squares, so players appear to speak of the throws needed to leave (rules.md row 31). Two captions speak of leading one's finger, that is a piece, to a named house (Idu, Nebkauhor). Meir confirms taking a piece ("I cause you to see that I take it", rules.md row 24). Kaemankh and Nebkauhor show the banter: "Hurry up! Play!", "hurry up, you fool".
+
 ## Boards read
 
 Two boards were read for their marked squares; they are objects, not scenes of play.
@@ -104,7 +120,7 @@ Both keep "three" on 28 and "two" on 29 while changing the picture, which suppor
 - Artists may abbreviate. A row of 12 can stand for 14.
 - Several counts come from old scans at low resolution (Beni Hasan) or faded relief (Nikauhor).
 - Porter & Moss, *Topographical Bibliography* (Griffith Institute), was checked tomb by tomb on 2026-11-27. Six entries taken from secondary lists have no game scene there (04, 05, 06, 13, 14, 18), and the Yuya papyrus shows none (23). Two are confirmed (12 Khety, 17 Inherkhau); Inherkhau is now read; an earlier search of Newberry's plates missed Khety's scene. PM adds three Old Kingdom scenes not in the first lists (28, 29, 30). Entry 24 is probably the British Museum papyrus (25) under the wrong name.
-- Sign readings are partial. Published translations of the Meir and Walters captions exist and were not retrieved.
+- Caption translations come from the publications named; only the Rashepses numerals were checked on the plate by eye. The Walters and Inherkhau texts have no reachable published translation.
 
 ## Sources
 

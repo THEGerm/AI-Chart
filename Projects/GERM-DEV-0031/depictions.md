@@ -89,7 +89,7 @@ The scenes support the two changes proposed for an Old Kingdom version of the Ge
 
 ## What the players say
 
-Published translations checked against the images. "Agrees" means the signs Chameleon read independently, before seeing the translation, fit it.
+Published translations checked against the images. "Agrees" means the signs read independently in the image analysis, before seeing the translation, fit it.
 
 | Scene | Published translation | Source | Check against the image |
 |---|---|---|---|

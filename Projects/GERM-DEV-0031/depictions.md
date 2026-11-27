@@ -87,6 +87,17 @@ Hesy-Re's board, drawn in plan as a 3 x 10 grid, has marks in five squares (posi
 
 The scenes support the two changes proposed for an Old Kingdom version of the Germain Rules: 7 pieces a side (Hesy-Re, Kaemankh, Mereruka) and an alternating start (Kaemankh, Mereruka, Rashepses, Meir). Five Old Kingdom rows alternate; two (Nebkauhor, Idu pair B) show one kind only. The Middle Kingdom boards at Beni Hasan are mixed. The alternating start gave a 62% seat advantage in a forced-move version in a first test, so an Old Kingdom Fate would need an offboard start; the solo forced-move scenes are New Kingdom in any case.
 
+## Boards read
+
+Two boards were read for their marked squares; they are objects, not scenes of play.
+
+| Board | Date | Marked squares (26 to 30) | Confidence |
+|---|---|---|---|
+| Imenmes, Louvre E 2710 (senet face) | late Dyn 18 to Dyn 19 | 26 three nfr; 27 three water lines; 28 three birds; 29 two kneeling men; 30 blank | medium |
+| Nesiamunipet, Walters 48.408, faience, said to be from Abydos | Dyn 19 to 20 | 26 a table or stand (not nfr); 27 a hippopotamus, no water lines; 28 three standing men; 29 two seated men; 30 a falcon, probably Horus | high on 28-29, medium on 27, low on 26 and 30 |
+
+Both keep "three" on 28 and "two" on 29 while changing the picture, which supports reading those marks as numbers. Square 27 is the hazard square on both, drawn as water or as a water animal.
+
 ## Caveats
 
 - Profile views flatten the board. They show the order of pieces along the top, not which squares they stand on.

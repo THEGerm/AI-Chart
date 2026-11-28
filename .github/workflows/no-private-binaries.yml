@@ -51,7 +51,7 @@ jobs:
                   line = line.split("#")[0].strip()
                   if line:
                       allow.add(line)
-          raw = git("log", "--format=", "--raw", "-z", "--no-abbrev", "--diff-filter=AMR", *revs)
+          raw = git("log", "--format=", "--raw", "-z", "--no-abbrev", "-m", "--diff-filter=AMRT", *revs)  # -m: merges too; T: type changes
           parts = raw.split(b"\0")
           seen, fail, i = set(), False, 0
           blocked = re.compile(r"\.(pdf|docx?|xlsx?|xlsm|pptx?|msg|eml|zip|7z)$")

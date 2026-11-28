@@ -1,0 +1,39 @@
+{
+  "parity": {
+    "ok": true,
+    "detail": "OK"
+  },
+  "code": {
+    "ok": true,
+    "detail": "locked 3d7f2e906111/28b849718ec8, now 3d7f2e906111/28b849718ec8"
+  },
+  "integrity": {
+    "ok": true,
+    "detail": "13312 rows; clean"
+  },
+  "logic": {
+    "ok": true,
+    "detail": "0 no-capture rows with hits; 2229 configurations with unfinished games"
+  },
+  "determinism": {
+    "ok": true,
+    "detail": "3 re-run; identical"
+  },
+  "anchors": {
+    "ok": true,
+    "detail": [
+      "minimal: throws 166 vs 165, first_win 0.482 vs 0.535, cones_win 0.532 vs 0.495, pass_rate 0.135 vs 0.134, skill 0.670 vs 0.632",
+      "kendall: throws 196 vs 195, first_win 0.515 vs 0.528, cones_win 0.485 vs 0.458, pass_rate 0.005 vs 0.005, skill 0.777 vs 0.708",
+      "jequier: throws 242 vs 243, first_win 0.475 vs 0.553, cones_win 0.460 vs 0.488, pass_rate 0.001 vs 0.001, skill 0.938 vs 0.923",
+      "bell: throws 45 vs 45, first_win 0.542 vs 0.510, cones_win 0.738 vs 0.750, pass_rate 0.061 vs 0.060, skill 0.988 vs 0.970",
+      "piccione: throws 177 vs 178, first_win 0.525 vs 0.510, cones_win 0.430 vs 0.480, pass_rate 0.093 vs 0.094, skill 0.865 vs 0.863",
+      "germain_fate: throws 323 vs 326, first_win 0.492 vs 0.505, cones_win 0.507 vs 0.520, pass_rate 0.033 vs 0.034, skill 0.507 vs 0.453",
+      "germain_contest: throws 209 vs 207, first_win 0.500 vs 0.535, cones_win 0.520 vs 0.505, pass_rate 0.077 vs 0.077, skill 0.943 vs 0.968",
+      "germain_master: throws 275 vs 270, first_win 0.535 vs 0.563, cones_win 0.530 vs 0.488, pass_rate 0.021 vs 0.021, skill 0.993 vs 0.985",
+      "germain_ok_contest: throws 260 vs 262, first_win 0.475 vs 0.525, cones_win 0.525 vs 0.535, pass_rate 0.065 vs 0.064, skill 0.978 vs 0.988",
+      "germain_ok_master: throws 389 vs 386, first_win 0.517 vs 0.510, cones_win 0.463 vs 0.475, pass_rate 0.013 vs 0.013, skill 1.000 vs 1.000"
+    ]
+  },
+  "rows": 13312,
+  "date_utc": "2026-11-25T08:49:55Z"
+}

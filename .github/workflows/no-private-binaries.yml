@@ -1,0 +1,63 @@
+# This repo is public and shares the Projects/<ID>/ layout with a private repo.
+# Fail any change that adds a private-looking binary, so Pages cannot publish it.
+name: no-private-binaries
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+
+      - name: Block private binaries
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+          PUSH_AFTER: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          ALLOW=.github/public-binaries-allow.txt
+          if [ "$EVENT" = "pull_request" ]; then
+            RANGE="$PR_BASE...$PR_HEAD"
+          elif [[ "$PUSH_BEFORE" =~ ^0+$ ]]; then
+            RANGE="$(git hash-object -t tree /dev/null)..$PUSH_AFTER"
+          else
+            RANGE="$PUSH_BEFORE..$PUSH_AFTER"
+          fi
+          TIP="${PR_HEAD:-$PUSH_AFTER}"
+          fail=0
+          while IFS= read -r -d '' f; do
+            allowed=0
+            if [ -f "$ALLOW" ] && grep -vE '^\s*(#|$)' "$ALLOW" | sed 's/\s*$//' | grep -qxF -- "$f"; then
+              allowed=1
+            fi
+            [ "$allowed" = 1 ] && continue
+            lc="${f,,}"
+            reason=""
+            case "$lc" in
+              *.pdf|*.doc|*.docx|*.xls|*.xlsx|*.xlsm|*.ppt|*.pptx|*.msg|*.eml|*.zip|*.7z) reason="blocked file type" ;;
+            esac
+            case "/$lc" in
+              */archive/*) reason="${reason:+$reason, }path contains /archive/" ;;
+            esac
+            size=$(git cat-file -s "$TIP:$f" 2>/dev/null || echo 0)
+            if [ "$size" -gt 5242880 ]; then
+              reason="${reason:+$reason, }over 5 MB ($size bytes)"
+            fi
+            if [ -n "$reason" ]; then
+              echo "::error file=$f::$reason. Add the path to $ALLOW only if it is meant to be public."
+              fail=1
+            fi
+          done < <(git diff --name-only --diff-filter=AMR -z "$RANGE")
+          exit $fail

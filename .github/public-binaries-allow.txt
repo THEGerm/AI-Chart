@@ -1,0 +1,3 @@
+# Files Germ deliberately publishes despite the no-private-binaries check.
+# One repo path per line. Lines starting with # are comments.
+# No office, archive or large files were on main before 2026-11-28.

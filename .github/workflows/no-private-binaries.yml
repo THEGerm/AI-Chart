@@ -1,0 +1,90 @@
+# This repo is public and shares the Projects/<ID>/ layout with a private repo.
+# Fail any change that adds a private-looking binary, so Pages cannot publish it.
+name: no-private-binaries
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # Checks every commit in the range, so a file added and then deleted is still caught
+      # (it stays in public history). Any git error fails the job (Quake, 2026-11-28).
+      - name: Block private binaries
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+          PUSH_AFTER: ${{ github.sha }}
+        shell: python3 {0}
+        run: |
+          import os, re, subprocess, sys
+          env = os.environ
+          if env["EVENT"] == "pull_request":
+              revs = [env["PR_BASE"] + ".." + env["PR_HEAD"]]
+          elif re.fullmatch(r"0+", env.get("PUSH_BEFORE") or "0"):
+              revs = [env["PUSH_AFTER"]]              # first push: all history
+          else:
+              revs = [env["PUSH_BEFORE"] + ".." + env["PUSH_AFTER"]]
+          def git(*a):
+              r = subprocess.run(["git", *a], capture_output=True)
+              if r.returncode:
+                  print("git failed: " + r.stderr.decode(errors="replace"), file=sys.stderr)
+                  sys.exit(1)                          # fail closed
+              return r.stdout
+          allow_path = ".github/public-binaries-allow.txt"
+          allow = set()
+          if os.path.isfile(allow_path):
+              for line in open(allow_path, encoding="utf-8"):
+                  line = line.split("#")[0].strip()
+                  if line:
+                      allow.add(line)
+          raw = git("log", "--format=", "--raw", "-z", "--no-abbrev", "-m", "--diff-filter=AMRT", *revs)  # -m: merges too; T: type changes
+          parts = raw.split(b"\0")
+          seen, fail, i = set(), False, 0
+          blocked = re.compile(r"\.(pdf|docx?|xlsx?|xlsm|pptx?|msg|eml|zip|7z)$")
+          while i < len(parts) - 1:
+              meta = parts[i].decode().lstrip("\n")
+              if not meta.startswith(":"):
+                  i += 1
+                  continue
+              fields = meta[1:].split()
+              status, blob = fields[4], fields[3]
+              n = 2 if status.startswith("R") else 1
+              path = parts[i + n].decode("utf-8", errors="replace")
+              i += n + 1
+              if (path, blob) in seen:
+                  continue
+              seen.add((path, blob))
+              if "\n" in path or "\r" in path:
+                  print("Blocked: a file name contains a line break: " + repr(path))
+                  fail = True
+                  continue
+              if path in allow:
+                  continue
+              reasons = []
+              low = path.lower()
+              if blocked.search(low):
+                  reasons.append("blocked file type")
+              if "/archive/" in "/" + low:
+                  reasons.append("path contains /archive/")
+              size = int(git("cat-file", "-s", blob).strip())
+              if size > 5 * 1024 * 1024:
+                  reasons.append("over 5 MB (%d bytes)" % size)
+              if reasons:
+                  safe = path.replace("%", "%25").replace(":", "%3A").replace(",", "%2C")
+                  print("::error file=%s::%s. Add the path to %s only if it is meant to be public." % (safe, ", ".join(reasons), allow_path))
+                  fail = True
+          sys.exit(1 if fail else 0)
